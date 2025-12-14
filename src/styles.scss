@@ -116,7 +116,7 @@
   --z-modal: 1050;
   --z-popover: 1060;
   --z-tooltip: 1070;
-
+  
   // Container width
   --container-width: 1200px;
   --container-narrow: 900px;
@@ -568,10 +568,10 @@ a {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { 
+  0%, 100% {
     box-shadow: 0 0 5px rgba(201, 162, 39, 0.4);
   }
-  50% { 
+  50% {
     box-shadow: 0 0 25px rgba(201, 162, 39, 0.8), 0 0 40px rgba(201, 162, 39, 0.4);
   }
 }

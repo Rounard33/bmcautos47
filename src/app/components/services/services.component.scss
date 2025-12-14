@@ -27,11 +27,11 @@
   margin-bottom: var(--spacing-3xl);
   position: relative;
   z-index: 1;
-
+  
   @media (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
   }
-
+  
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
   }
@@ -70,7 +70,7 @@
 
     &::before {
       transform: scaleX(1);
-    }
+}
 
     .service-icon .icon-wrapper {
       background: var(--accent-500);
@@ -84,8 +84,8 @@
     
     &::before {
       transform: scaleX(1);
-    }
   }
+}
 }
 
 // Featured Badge
@@ -122,8 +122,8 @@
   svg {
     width: 32px;
     height: 32px;
+    }
   }
-}
 
 // Service Content
 .service-content {
@@ -195,7 +195,7 @@
 
   svg {
     transition: transform 0.3s ease;
-  }
+}
 
   &:hover {
     background: var(--accent-500);
@@ -224,13 +224,13 @@
   border-radius: var(--radius-xl);
   backdrop-filter: blur(10px);
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
     flex-direction: column;
     text-align: center;
     padding: var(--spacing-xl);
     gap: var(--spacing-lg);
   }
-}
+  }
 
 .info-icon {
   flex-shrink: 0;
@@ -242,7 +242,7 @@
   background: rgba(201, 162, 39, 0.15);
   border-radius: var(--radius-lg);
   color: var(--accent-500);
-}
+  }
 
 .info-content {
   flex: 1;
@@ -261,8 +261,8 @@
     margin: 0;
     line-height: 1.6;
   }
-}
-
+  }
+  
 .btn-outline {
   display: inline-flex;
   align-items: center;

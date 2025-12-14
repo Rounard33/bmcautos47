@@ -17,7 +17,7 @@ export class CguComponent implements AfterViewInit, OnDestroy {
   @ViewChild('title') title!: ElementRef;
   @ViewChild('description') description!: ElementRef;
 
-  lastUpdate = '07/12/2025';
+  lastUpdate = '14/12/2025';
 
   ngAfterViewInit(): void {
     this.initWelcomeAnimations();

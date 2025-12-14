@@ -80,7 +80,7 @@
   &:hover {
     color: var(--accent-500);
   }
-}
+  }
 
 .question-text {
   flex: 1;
@@ -96,7 +96,7 @@
   color: var(--accent-500);
   
   svg {
-    transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
   }
 
   line {
@@ -154,7 +154,7 @@
   border-radius: var(--radius-lg);
   color: var(--accent-500);
   margin: 0 auto var(--spacing-lg);
-}
+  }
 
 .faq-cta h3 {
   font-family: var(--font-display);
