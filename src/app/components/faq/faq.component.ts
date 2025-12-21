@@ -38,6 +38,11 @@ export class FaqComponent {
       isOpen: false
     },
     {
+      question: 'Vous occupez-vous du design du logo ?',
+      answer: 'Non, je n\'ai pas les connaissances techniques dans la création de logo.',
+      isOpen: false
+    },
+    {
       question: 'Qu\'est-ce que le référencement SEO ?',
       answer: 'Le SEO (Search Engine Optimization), ou référencement naturel, consiste à aider les moteurs de recherche à interpréter votre contenu, et à aider les internautes à trouver votre site.',
       isOpen: false
