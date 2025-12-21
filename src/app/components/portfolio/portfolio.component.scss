@@ -47,6 +47,10 @@
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
+  @media (max-width: 640px) {
+    margin-bottom: 20px;
+  }
+
   &:hover {
     border-color: rgba(201, 162, 39, 0.3);
     transform: translateY(-8px);
