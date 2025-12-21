@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, signal} from '@angular/core';
+import {Component} from '@angular/core';
 
 interface Service {
   id: string;
@@ -42,7 +42,6 @@ export class ServicesComponent {
       features: [
         'Développement sur-mesure',
         'Interface intuitive',
-        'Gestion des utilisateurs',
         'Base de données sécurisée',
         'Évolutif selon vos besoins'
       ]
@@ -60,19 +59,6 @@ export class ServicesComponent {
         'Optimisation SEO'
       ]
     },
-    {
-      id: 'maintenance',
-      title: 'Maintenance',
-      description: 'Un accompagnement continu pour garder votre site performant et sécurisé.',
-      iconType: 'maintenance',
-      features: [
-        'Mises à jour régulières',
-        'Sauvegardes automatiques',
-        'Surveillance sécurité',
-        'Support technique réactif',
-        'Modifications mineures incluses'
-      ]
-    }
   ];
 
   scrollToContact(event: Event): void {

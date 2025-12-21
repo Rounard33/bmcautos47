@@ -27,7 +27,8 @@ export class PortfolioComponent {
       description: 'Site vitrine pour une praticienne Reiki. Design apaisant avec système de réservation en ligne et gestion des rendez-vous.',
       image: 'assets/img/portfolio/reiki-sens.jpg',
       tags: ['Angular', 'TypeScript', 'Supabase', 'SCSS'],
-      status: 'in-progress'
+      url: 'https://reikietsens.fr',
+      status: 'completed'
     }
   ]);
 

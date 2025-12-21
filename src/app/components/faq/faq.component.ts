@@ -48,11 +48,6 @@ export class FaqComponent {
       isOpen: false
     },
     {
-      question: 'Proposez-vous un service de maintenance ?',
-      answer: 'Oui, je propose des forfaits de maintenance mensuels incluant les mises à jour, sauvegardes, surveillance de sécurité et modifications mineures. Cela garantit la pérennité de votre site.',
-      isOpen: false
-    },
-    {
       question: 'Comment se passe le paiement ?',
       answer: 'Je demande généralement un acompte de 30% à la signature du devis, puis le solde à la livraison. Pour les projets importants, un échelonnement peut être envisagé.',
       isOpen: false

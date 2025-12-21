@@ -22,20 +22,26 @@
       @for (project of projects(); track project.id) {
         <div class="project-card" [class.in-progress]="project.status === 'in-progress'">
           <!-- Image -->
-          <div class="project-image">
+          <div class="project-image" (click)="openProject(project)" [class.clickable]="project.url">
             <div class="image-placeholder">
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                <rect x="2" y="3" width="20" height="14" rx="2"/>
-                <path d="M8 21h8"/>
-                <path d="M12 17v4"/>
-              </svg>
-              <span>Aperçu bientôt disponible</span>
+              <img src="../../../assets/img/portfolio_1.png">
             </div>
             
             @if (project.status === 'in-progress') {
               <div class="status-badge">
                 <span class="status-dot"></span>
                 En cours
+              </div>
+            }
+            
+            @if (project.url) {
+              <div class="overlay">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15,3 21,3 21,9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                <span>Voir le site</span>
               </div>
             }
           </div>
