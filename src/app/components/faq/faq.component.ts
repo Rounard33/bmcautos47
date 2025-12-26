@@ -18,43 +18,48 @@ export class FaqComponent {
   
   faqs = signal<FaqItem[]>([
     {
-      question: 'Combien coûte la création d\'un site web ?',
-      answer: 'Le prix varie selon vos besoins : nombre de pages, fonctionnalités souhaitées, design personnalisé... Je propose des devis gratuits et personnalisés. Comptez en moyenne entre 800€ et 3000€ pour un site vitrine professionnel.',
+      question: 'Quels types de véhicules proposez-vous ?',
+      answer: 'Nous proposons un large choix de véhicules d\'occasion et neufs : citadines, berlines, SUV, utilitaires, et véhicules électriques/hybrides. Toutes marques disponibles. Notre stock est régulièrement renouvelé.',
       isOpen: false
     },
     {
-      question: 'Combien de temps faut-il pour créer un site ?',
-      answer: 'En général, comptez 2 à 4 semaines pour un site vitrine standard. Ce délai peut varier selon la complexité du projet et votre réactivité pour les validations. Je vous tiens informé à chaque étape.',
+      question: 'Les véhicules sont-ils garantis ?',
+      answer: 'Oui, nous proposons une garantie de 12 mois sur la plupart de nos véhicules. Cette garantie couvre les pièces mécaniques et électriques principales. Des extensions de garantie sont également disponibles.',
       isOpen: false
     },
     {
-      question: 'Mon site sera-t-il adapté aux mobiles ?',
-      answer: 'Absolument ! Tous mes sites sont conçus en "responsive design", ce qui signifie qu\'ils s\'adaptent automatiquement à tous les écrans : ordinateurs, tablettes et smartphones.',
+      question: 'Puis-je faire reprendre mon ancien véhicule ?',
+      answer: 'Absolument ! Nous reprenons votre ancien véhicule au meilleur prix. Nous réalisons une estimation gratuite et vous proposons une reprise immédiate pour faciliter votre achat.',
       isOpen: false
     },
     {
-      question: 'Puis-je modifier mon site moi-même après sa création ?',
-      answer: 'Oui, selon vos besoins. Je peux intégrer un système de gestion de contenu simple qui vous permettra de modifier textes et images. Je vous forme également à son utilisation.',
+      question: 'Comment se passe la réservation d\'un véhicule ?',
+      answer: 'Contactez-nous par téléphone ou via le formulaire de contact. Nous vous réservons le véhicule pendant 48h le temps que vous puissiez venir le voir et l\'essayer. Un acompte peut être demandé pour confirmer la réservation.',
       isOpen: false
     },
     {
-      question: 'Vous occupez-vous du design du logo ?',
-      answer: 'Non, je n\'ai pas les connaissances techniques dans la création de logo.',
+      question: 'Proposez-vous des solutions de financement ?',
+      answer: 'Oui, nous travaillons avec plusieurs organismes de crédit pour vous proposer des solutions de financement adaptées à votre budget. Nous vous accompagnons dans toutes vos démarches.',
       isOpen: false
     },
     {
-      question: 'Qu\'est-ce que le référencement SEO ?',
-      answer: 'Le SEO (Search Engine Optimization), ou référencement naturel, consiste à aider les moteurs de recherche à interpréter votre contenu, et à aider les internautes à trouver votre site.',
+      question: 'Les véhicules ont-ils un historique vérifiable ?',
+      answer: 'Tous nos véhicules sont sélectionnés avec soin. Nous vérifions systématiquement l\'historique (carnet d\'entretien, rapport HistoVec, contrôle technique) et vous le communiquons de manière transparente.',
       isOpen: false
     },
     {
-      question: 'Le référencement (SEO) est-il inclus ?',
-      answer: 'Oui, j\'optimise tous mes sites pour le référencement naturel : structure technique, balises, vitesse de chargement... Cela vous assure une bonne base pour apparaître sur Google.',
+      question: 'Puis-je essayer le véhicule avant l\'achat ?',
+      answer: 'Bien sûr ! Nous vous proposons systématiquement un essai routier pour que vous puissiez juger du comportement et du confort du véhicule avant votre décision d\'achat.',
       isOpen: false
     },
     {
-      question: 'Comment se passe le paiement ?',
-      answer: 'Je demande généralement un acompte de 30% à la signature du devis, puis le solde à la livraison. Pour les projets importants, un échelonnement peut être envisagé.',
+      question: 'Vous occupez-vous des démarches administratives ?',
+      answer: 'Oui, nous prenons en charge toutes les formalités : carte grise, certificat de cession, contrôle technique si nécessaire. Nous vous accompagnons jusqu\'à la remise des clés.',
+      isOpen: false
+    },
+    {
+      question: 'Faites-vous de la recherche personnalisée ?',
+      answer: 'Oui ! Si vous cherchez un véhicule précis que nous n\'avons pas en stock, confiez-nous votre recherche. Nous mettons notre réseau à votre service pour trouver le véhicule qui correspond exactement à vos critères.',
       isOpen: false
     }
   ]);

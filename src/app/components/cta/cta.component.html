@@ -1,18 +1,18 @@
 <!-- Contact Section -->
 <section class="contact" id="contact">
-  <div class="hex-pattern"></div>
+  <div class="bg-pattern"></div>
   
   <div class="container">
     <div class="section-header">
       <div class="section-badge">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+          <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
         </svg>
         Contact
       </div>
-      <h2 class="section-title">Démarrons votre projet</h2>
+      <h2 class="section-title">Contactez-nous</h2>
       <p class="section-description">
-        Parlons de vos besoins et construisons ensemble votre présence en ligne
+        Une question sur un véhicule ? Besoin d'une estimation ? N'hésitez pas à nous contacter
       </p>
     </div>
     
@@ -60,19 +60,20 @@
           
           <div class="form-row">
             <div class="form-group">
-              <label for="phone" class="form-label">Téléphone</label>
+              <label for="phone" class="form-label">Téléphone *</label>
               <input 
                 type="tel" 
                 id="phone" 
                 name="phone" 
                 [(ngModel)]="formData.phone"
+                required
                 class="form-input"
                 placeholder="06 12 34 56 78"
               >
             </div>
             
             <div class="form-group">
-              <label for="projectType" class="form-label">Type de projet *</label>
+              <label for="projectType" class="form-label">Objet de la demande *</label>
               <select 
                 id="projectType" 
                 name="projectType" 
@@ -81,33 +82,243 @@
                 class="form-input form-select"
               >
                 <option value="" disabled selected>Sélectionnez</option>
-                <option value="site-vitrine">Site vitrine</option>
-                <option value="application-web">Application web</option>
-                <option value="refonte">Refonte de site</option>
-                <option value="autre">Autre</option>
+                <option value="info-vehicule">Information sur un véhicule</option>
+                <option value="recherche">Recherche personnalisée</option>
+                <option value="reprise">Demande de reprise</option>
+                <option value="financement">Financement</option>
+                <option value="autre">Autre demande</option>
               </select>
             </div>
           </div>
           
-          <div class="form-group">
-            <label for="budget" class="form-label">Budget envisagé</label>
-            <select 
-              id="budget" 
-              name="budget" 
-              [(ngModel)]="formData.budget"
-              class="form-input form-select"
-            >
-              <option value="" disabled selected>Sélectionnez (optionnel)</option>
-              <option value="< 1000€">Moins de 1 000€</option>
-              <option value="1000-2000€">1 000€ - 2 000€</option>
-              <option value="2000-5000€">2 000€ - 5 000€</option>
-              <option value="> 5000€">Plus de 5 000€</option>
-              <option value="a-definir">À définir ensemble</option>
-            </select>
-          </div>
+          <!-- Champs spécifiques pour Recherche personnalisée -->
+          @if (formData.projectType === 'recherche') {
+            <div class="form-section">
+              <h4 class="form-section-title">Critères de recherche</h4>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="brand" class="form-label">Marque *</label>
+                  <select 
+                    id="brand" 
+                    name="brand" 
+                    [(ngModel)]="formData.brand"
+                    required
+                    class="form-input form-select"
+                  >
+                    <option value="" disabled selected>Sélectionnez une marque</option>
+                    @for (brand of brands; track brand) {
+                      <option [value]="brand">{{ brand }}</option>
+                    }
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="model" class="form-label">Modèle *</label>
+                  <input 
+                    type="text" 
+                    id="model" 
+                    name="model" 
+                    [(ngModel)]="formData.model"
+                    required
+                    class="form-input"
+                    placeholder="Ex: Clio, 308, Golf..."
+                  >
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="budget" class="form-label">Budget (€) *</label>
+                  <input 
+                    type="text" 
+                    id="budget" 
+                    name="budget" 
+                    [(ngModel)]="formData.budget"
+                    required
+                    class="form-input"
+                    placeholder="Ex: 15000"
+                  >
+                </div>
+                
+                <div class="form-group">
+                  <label for="transmission" class="form-label">Transmission *</label>
+                  <select 
+                    id="transmission" 
+                    name="transmission" 
+                    [(ngModel)]="formData.transmission"
+                    required
+                    class="form-input form-select"
+                  >
+                    <option value="" disabled selected>Sélectionnez</option>
+                    @for (trans of transmissionTypes; track trans) {
+                      <option [value]="trans">{{ trans }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fuel" class="form-label">Énergie *</label>
+                  <select 
+                    id="fuel" 
+                    name="fuel" 
+                    [(ngModel)]="formData.fuel"
+                    required
+                    class="form-input form-select"
+                  >
+                    <option value="" disabled selected>Sélectionnez</option>
+                    @for (fuelType of fuelTypes; track fuelType) {
+                      <option [value]="fuelType">{{ fuelType }}</option>
+                    }
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="category" class="form-label">Catégorie *</label>
+                  <select 
+                    id="category" 
+                    name="category" 
+                    [(ngModel)]="formData.category"
+                    required
+                    class="form-input form-select"
+                  >
+                    <option value="" disabled selected>Sélectionnez</option>
+                    @for (cat of categories; track cat) {
+                      <option [value]="cat">{{ cat }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="mileage" class="form-label">Kilométrage max</label>
+                  <input 
+                    type="text" 
+                    id="mileage" 
+                    name="mileage" 
+                    [(ngModel)]="formData.mileage"
+                    class="form-input"
+                    placeholder="Ex: 50000"
+                  >
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Année</label>
+                  <div class="form-row-inline">
+                    <select 
+                      name="yearFrom" 
+                      [(ngModel)]="formData.yearFrom"
+                      class="form-input form-select"
+                    >
+                      <option value="">De</option>
+                      @for (year of years; track year) {
+                        <option [value]="year">{{ year }}</option>
+                      }
+                    </select>
+                    <select 
+                      name="yearTo" 
+                      [(ngModel)]="formData.yearTo"
+                      class="form-input form-select"
+                    >
+                      <option value="">À</option>
+                      @for (year of years; track year) {
+                        <option [value]="year">{{ year }}</option>
+                      }
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+          
+          <!-- Champs spécifiques pour Demande de reprise -->
+          @if (formData.projectType === 'reprise') {
+            <div class="form-section">
+              <h4 class="form-section-title">Informations sur votre véhicule</h4>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="repriseBrand" class="form-label">Marque *</label>
+                  <input 
+                    type="text" 
+                    id="repriseBrand" 
+                    name="repriseBrand" 
+                    [(ngModel)]="formData.repriseBrand"
+                    required
+                    class="form-input"
+                    placeholder="Marque du véhicule"
+                  >
+                </div>
+                
+                <div class="form-group">
+                  <label for="repriseModel" class="form-label">Modèle *</label>
+                  <input 
+                    type="text" 
+                    id="repriseModel" 
+                    name="repriseModel" 
+                    [(ngModel)]="formData.repriseModel"
+                    required
+                    class="form-input"
+                    placeholder="Modèle du véhicule"
+                  >
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="repriseYear" class="form-label">Année *</label>
+                  <select 
+                    id="repriseYear" 
+                    name="repriseYear" 
+                    [(ngModel)]="formData.repriseYear"
+                    required
+                    class="form-input form-select"
+                  >
+                    <option value="" disabled selected>Année</option>
+                    @for (year of years; track year) {
+                      <option [value]="year">{{ year }}</option>
+                    }
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="repriseMileage" class="form-label">Kilométrage *</label>
+                  <input 
+                    type="text" 
+                    id="repriseMileage" 
+                    name="repriseMileage" 
+                    [(ngModel)]="formData.repriseMileage"
+                    required
+                    class="form-input"
+                    placeholder="Ex: 75000 km"
+                  >
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="repriseCondition" class="form-label">État général *</label>
+                <select 
+                  id="repriseCondition" 
+                  name="repriseCondition" 
+                  [(ngModel)]="formData.repriseCondition"
+                  required
+                  class="form-input form-select"
+                >
+                  <option value="" disabled selected>Sélectionnez</option>
+                  <option value="excellent">Excellent état</option>
+                  <option value="tres-bon">Très bon état</option>
+                  <option value="bon">Bon état</option>
+                  <option value="moyen">État moyen</option>
+                </select>
+              </div>
+            </div>
+          }
           
           <div class="form-group">
-            <label for="message" class="form-label">Décrivez votre projet *</label>
+            <label for="message" class="form-label">Votre message *</label>
             <textarea 
               id="message" 
               name="message" 
@@ -115,7 +326,7 @@
               required
               rows="5"
               class="form-textarea"
-              placeholder="Parlez-moi de votre projet, vos besoins, vos attentes..."
+              placeholder="Décrivez-nous votre demande, le véhicule qui vous intéresse, vos critères de recherche..."
             ></textarea>
           </div>
           
@@ -126,7 +337,7 @@
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                 <polyline points="22,4 12,14.01 9,11.01"/>
               </svg>
-              <span>Merci pour votre message ! Je vous répondrai dans les plus brefs délais.</span>
+              <span>Merci pour votre message ! Nous vous répondrons dans les plus brefs délais.</span>
             </div>
           }
           
@@ -170,15 +381,33 @@
         <div class="info-card">
           <div class="info-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </div>
+          <div class="info-content info-content-phones">
+            <div class="phone-item">
+              <h4>Téléphone</h4>
+              <a href="tel:+33553016697">05.53.01.66.97</a>
+            </div>
+            <div class="phone-item">
+              <h4>Téléphone portable</h4>
+              <a href="tel:+33677277717">06.77.27.77.17</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
             </svg>
           </div>
           <div class="info-content">
             <h4>Email</h4>
-            <a href="mailto:pixel.creation33@gmail.com">pixel.creation33&#64;gmail.com</a>
+            <a href="mailto:contact@bmcautos47.fr">contact&#64;bmcautos47.fr</a>
           </div>
         </div>
+        
         <div class="info-card">
           <div class="info-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -187,8 +416,23 @@
             </svg>
           </div>
           <div class="info-content">
-            <h4>Localisation</h4>
-            <p>Lestiac-sur-Garonne<br><span class="text-muted">Gironde (33)</span></p>
+            <h4>Adresse</h4>
+            <p>578 Route d'Agen<br>47300 PUJOLS</p>
+            <p class="text-muted">À 1 km du rond-point Campanile</p>
+          </div>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+          </div>
+          <div class="info-content">
+            <h4>Horaires</h4>
+            <p><strong>Lun-Ven :</strong> 08h30-12h / 14h-18h30</p>
+            <p><strong>Samedi :</strong> 08h30-12h / 14h-18h</p>
           </div>
         </div>
         

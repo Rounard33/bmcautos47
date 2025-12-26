@@ -5,24 +5,13 @@
       <div class="logo">
         <a routerLink="/" class="logo-link" (click)="smoothScrollToSection('home', $event)">
           <div class="logo-container">
-            <div class="logo-hex">
-              <svg viewBox="0 0 44 50" width="36" height="40">
-                <polygon 
-                  points="22,0 44,12.7 44,38.2 22,50 0,38.2 0,12.7" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  stroke-width="1.5"
-                  class="hex-outer"
-                />
-                <polygon 
-                  points="22,8 34,15.6 34,34.4 22,42 10,34.4 10,15.6" 
-                  fill="currentColor"
-                  opacity="0.3"
-                  class="hex-inner"
-                />
-              </svg>
+            <div class="logo-icon">
+              <img src="assets/logo/logo.png" alt="BMC AUTOS 47 Logo">
             </div>
-            <span class="logo-text">PIXEL</span>
+            <div class="logo-text-wrapper">
+              <span class="logo-text">BMC AUTOS</span>
+              <span class="logo-subtext">47</span>
+            </div>
           </div>
         </a>
       </div>
@@ -48,6 +37,11 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="#vehicles" class="nav-link" (click)="smoothScrollToSection('vehicles', $event)">
+              <span class="nav-text">Nos véhicules</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="#about" class="nav-link" (click)="smoothScrollToSection('about', $event)">
               <span class="nav-text">À propos</span>
             </a>
@@ -57,26 +51,11 @@
               <span class="nav-text">Services</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="#portfolio" class="nav-link" (click)="smoothScrollToSection('portfolio', $event)">
-              <span class="nav-text">Réalisations</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#process" class="nav-link" (click)="smoothScrollToSection('process', $event)">
-              <span class="nav-text">Processus</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#faq" class="nav-link" (click)="smoothScrollToSection('faq', $event)">
-              <span class="nav-text">FAQ</span>
-            </a>
-          </li>
           <li class="nav-item nav-item-cta">
             <a href="#contact" class="nav-link nav-cta" (click)="smoothScrollToSection('contact', $event)">
-              <span class="nav-text">Contact</span>
+              <span class="nav-text">Nous contacter</span>
               <svg class="nav-cta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
+                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
             </a>
           </li>

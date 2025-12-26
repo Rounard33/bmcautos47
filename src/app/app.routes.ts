@@ -14,5 +14,9 @@ export const routes: Routes = [
     path: 'cgu', 
     loadComponent: () => import('./pages/cgu/cgu.component').then(m => m.CguComponent)
   },
+  { 
+    path: 'mentions-legales', 
+    loadComponent: () => import('./pages/legal/legal.component').then(m => m.LegalComponent)
+  },
   { path: '**', redirectTo: '/home' }
 ];

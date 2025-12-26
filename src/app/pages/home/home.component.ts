@@ -4,6 +4,7 @@ import {RouterModule} from '@angular/router';
 import {gsap} from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import {AboutComponent} from '../../components/about/about.component';
+import {BrandsCarouselComponent} from '../../components/brands-carousel/brands-carousel.component';
 import {CtaComponent} from '../../components/cta/cta.component';
 import {FaqComponent} from '../../components/faq/faq.component';
 import {PortfolioComponent} from '../../components/portfolio/portfolio.component';
@@ -22,6 +23,7 @@ gsap.registerPlugin(ScrollTrigger);
     RouterModule,
     WelcomeComponent,
     AboutComponent,
+    BrandsCarouselComponent,
     ServicesComponent,
     PortfolioComponent,
     ProcessComponent,

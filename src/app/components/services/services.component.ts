@@ -5,7 +5,7 @@ interface Service {
   id: string;
   title: string;
   description: string;
-  iconType: 'website' | 'webapp' | 'redesign' | 'maintenance';
+  iconType: 'sale' | 'search' | 'trade' | 'warranty';
   features: string[];
   featured?: boolean;
 }
@@ -21,44 +21,55 @@ export class ServicesComponent {
   
   services: Service[] = [
     {
-      id: 'website',
-      title: 'Site Vitrine',
-      description: 'Un site web professionnel pour présenter votre activité et attirer de nouveaux clients.',
-      iconType: 'website',
+      id: 'sale',
+      title: 'Vente de véhicules',
+      description: 'Un large choix de véhicules d\'occasion et neufs, sélectionnés avec soin pour leur qualité.',
+      iconType: 'sale',
       features: [
-        'Design moderne et responsive',
-        'Optimisé pour le référencement (SEO)',
-        'Formulaire de contact intégré',
-        'Compatible tous appareils',
-        'Formation à la gestion du site'
+        'Véhicules contrôlés',
+        'Historique transparent',
+        'Toutes marques disponibles',
+        'Stock régulièrement renouvelé',
+        'Financement possible'
       ],
       featured: true
     },
     {
-      id: 'webapp',
-      title: 'Application Web',
-      description: 'Des applications sur-mesure pour digitaliser et automatiser vos processus métier.',
-      iconType: 'webapp',
+      id: 'search',
+      title: 'Recherche personnalisée',
+      description: 'Vous cherchez un véhicule précis ? Confiez-nous votre recherche et nous le trouvons pour vous.',
+      iconType: 'search',
       features: [
-        'Développement sur-mesure',
-        'Interface intuitive',
-        'Base de données sécurisée',
-        'Évolutif selon vos besoins'
+        'Service gratuit',
+        'Recherche ciblée',
+        'Accompagnement personnalisé',
+        'Délai rapide'
       ]
     },
     {
-      id: 'redesign',
-      title: 'Refonte de Site',
-      description: 'Modernisez votre site existant avec un nouveau design et de meilleures performances.',
-      iconType: 'redesign',
+      id: 'trade',
+      title: 'Reprise de votre véhicule',
+      description: 'Nous reprenons votre ancien véhicule au meilleur prix pour faciliter votre achat.',
+      iconType: 'trade',
       features: [
-        'Analyse de l\'existant',
-        'Nouveau design moderne',
-        'Migration des contenus',
-        'Amélioration des performances',
-        'Optimisation SEO'
+        'Estimation gratuite',
+        'Reprise immédiate',
+        'Démarches simplifiées',
+        'Meilleur prix garanti'
       ]
     },
+    {
+      id: 'warranty',
+      title: 'Garantie disponible',
+      description: 'Roulez en toute sérénité avec nos garanties adaptées à vos besoins.',
+      iconType: 'warranty',
+      features: [
+        'Garantie 12 mois possible',
+        'Protection complète',
+        'Extension de garantie',
+        'Assistance 24h/24'
+      ]
+    }
   ];
 
   scrollToContact(event: Event): void {

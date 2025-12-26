@@ -80,6 +80,29 @@
   }
 }
 
+.form-row-inline {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+.form-section {
+  padding: var(--spacing-lg);
+  background: rgba(224, 176, 32, 0.05);
+  border: 1px solid rgba(224, 176, 32, 0.15);
+  border-radius: var(--radius-lg);
+  margin-top: var(--spacing-md);
+}
+
+.form-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-500);
+  margin: 0 0 var(--spacing-lg) 0;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid rgba(224, 176, 32, 0.2);
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
@@ -257,6 +280,22 @@
   .text-muted {
     color: var(--text-muted);
     font-size: 0.9rem;
+  }
+}
+
+.info-content-phones {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.phone-item {
+  h4 {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  a {
+    display: block;
   }
 }
 

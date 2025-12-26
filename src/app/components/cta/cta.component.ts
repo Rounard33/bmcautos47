@@ -8,8 +8,28 @@ interface ContactForm {
   name: string;
   email: string;
   phone: string;
+  phone2?: string;
+  department?: string;
   projectType: string;
-  budget: string;
+  
+  // Champs spécifiques recherche personnalisée
+  brand?: string;
+  model?: string;
+  budget?: string;
+  transmission?: string;
+  fuel?: string;
+  category?: string;
+  mileage?: string;
+  yearFrom?: string;
+  yearTo?: string;
+  
+  // Champs spécifiques reprise
+  repriseBrand?: string;
+  repriseModel?: string;
+  repriseYear?: string;
+  repriseMileage?: string;
+  repriseCondition?: string;
+  
   message: string;
 }
 
@@ -39,9 +59,32 @@ export class CtaComponent {
     email: '',
     phone: '',
     projectType: '',
-    budget: '',
     message: ''
   };
+  
+  // Liste des marques disponibles
+  brands = [
+    'Alfa Romeo', 'BMW', 'Citroën', 'Fiat', 'Ford', 
+    'Hyundai', 'Jaguar', 'Jeep', 'Kia', 'Land Rover',
+    'Lexus', 'Mercedes', 'Mitsubishi', 'Peugeot', 'Renault'
+  ];
+  
+  transmissionTypes = ['Mécanique', 'Automatique'];
+  fuelTypes = ['Essence', 'Diesel', 'Électrique', 'Hybride', 'Gaz Naturel', 'GPL'];
+  categories = [
+    'Berline', 'Break', 'Cabriolet', 'Citadine', 'Coupé',
+    'Monospace', 'Pick-Up', 'SUV / 4x4', 'Utilitaire'
+  ];
+  
+  years: number[] = [];
+  
+  constructor() {
+    // Générer les années de 2005 à année actuelle + 1
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear + 1; year >= 2005; year--) {
+      this.years.push(year);
+    }
+  }
 
   async onSubmit(): Promise<void> {
     if (this.isSubmitting) return;
@@ -115,7 +158,6 @@ export class CtaComponent {
       email: '',
       phone: '',
       projectType: '',
-      budget: '',
       message: ''
     };
   }

@@ -1,0 +1,47 @@
+<!-- Brands Carousel Section -->
+<section class="brands-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        Nos marques
+      </div>
+      <h2 class="section-title">Des marques de <span class="highlight">confiance</span></h2>
+      <p class="section-description">
+        Nous travaillons avec les plus grandes marques automobiles
+      </p>
+    </div>
+    
+    <div class="brands-carousel-wrapper">
+      <div class="brands-carousel">
+        <!-- Première série de logos -->
+        <div class="brands-track">
+          @for (brand of brands; track brand.name) {
+            <div class="brand-card">
+              <div class="brand-logo">
+                <img [src]="brand.logo" [alt]="brand.name">
+              </div>
+            </div>
+          }
+          <!-- Duplication pour effet infini -->
+          @for (brand of brands; track brand.name + '-duplicate') {
+            <div class="brand-card">
+              <div class="brand-logo">
+                <img [src]="brand.logo" [alt]="brand.name">
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+      
+      <!-- Gradient overlays pour effet de fondu -->
+      <div class="carousel-gradient carousel-gradient-left"></div>
+      <div class="carousel-gradient carousel-gradient-right"></div>
+    </div>
+  </div>
+</section>

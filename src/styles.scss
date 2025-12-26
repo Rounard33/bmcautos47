@@ -1,51 +1,51 @@
 /* ========================================
-   PIXEL - Développeur Web Freelance
-   Theme: Dark Tech with Gold Accents
+   BMC AUTOS 47 - Garage Automobile
+   Theme: Professional Auto Dealership
    ======================================== */
 
-// Import Google Fonts - Modern & Tech
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+// Import Google Fonts - Modern & Professional
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
 
 // CSS Variables for Theme Customization
 :root {
-  // Primary Colors - Deep Blue-Gray (from business card)
-  --primary-50: #f0f4f7;
-  --primary-100: #dce4eb;
-  --primary-200: #b9c9d7;
-  --primary-300: #8fa8be;
-  --primary-400: #6687a5;
-  --primary-500: #4a6b8a;
-  --primary-600: #3a5570;
-  --primary-700: #2d4358;
-  --primary-800: #243648;
-  --primary-900: #1a2832;
-  --primary-950: #0f171d;
+  // Primary Colors - Black (Professional automotive)
+  --primary-50: #fafafa;
+  --primary-100: #f5f5f5;
+  --primary-200: #e5e5e5;
+  --primary-300: #d4d4d4;
+  --primary-400: #a3a3a3;
+  --primary-500: #737373;
+  --primary-600: #525252;
+  --primary-700: #404040;
+  --primary-800: #262626;
+  --primary-900: #171717;
+  --primary-950: #0a0a0a;
 
-  // Accent Colors - Gold/Yellow (from business card)
+  // Accent Colors - Gold/Yellow (like the logo)
   --accent-50: #fefbeb;
   --accent-100: #fcf3c8;
   --accent-200: #f9e68d;
   --accent-300: #f5d451;
   --accent-400: #f1c222;
-  --accent-500: #c9a227;
-  --accent-600: #a67c1a;
-  --accent-700: #855a18;
-  --accent-800: #6e481b;
-  --accent-900: #5d3c1c;
+  --accent-500: #e0b020;
+  --accent-600: #c9a227;
+  --accent-700: #a67c1a;
+  --accent-800: #855a18;
+  --accent-900: #6e481b;
   --accent-950: #361f0c;
 
   // Background Colors
-  --bg-primary: #1a2832;
-  --bg-secondary: #243648;
-  --bg-tertiary: #2d4358;
-  --bg-card: rgba(45, 67, 88, 0.6);
-  --bg-card-hover: rgba(45, 67, 88, 0.8);
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #171717;
+  --bg-card: rgba(23, 23, 23, 0.8);
+  --bg-card-hover: rgba(23, 23, 23, 0.95);
 
   // Text Colors
   --text-primary: #ffffff;
-  --text-secondary: #b9c9d7;
-  --text-muted: #8fa8be;
-  --text-accent: #c9a227;
+  --text-secondary: #d4d4d4;
+  --text-muted: #a3a3a3;
+  --text-accent: #e0b020;
 
   // Neutral Colors
   --gray-50: #f8fafc;
@@ -73,9 +73,9 @@
   --error-600: #dc2626;
 
   // Typography
-  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-primary: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
 
   // Spacing
   --spacing-xs: 0.25rem;
@@ -96,12 +96,12 @@
   --radius-full: 9999px;
 
   // Shadows
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.2);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.2);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.2);
-  --shadow-glow: 0 0 20px rgba(201, 162, 39, 0.3);
-  --shadow-glow-strong: 0 0 40px rgba(201, 162, 39, 0.5);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.6), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+  --shadow-glow: 0 0 20px rgba(224, 176, 32, 0.4);
+  --shadow-glow-strong: 0 0 40px rgba(224, 176, 32, 0.6);
 
   // Transitions
   --transition-fast: 150ms ease-in-out;
@@ -121,9 +121,9 @@
   --container-width: 1200px;
   --container-narrow: 900px;
 
-  // Hexagon Pattern
-  --hex-color: rgba(201, 162, 39, 0.1);
-  --hex-stroke: rgba(201, 162, 39, 0.2);
+  // Pattern
+  --pattern-color: rgba(224, 176, 32, 0.03);
+  --pattern-stroke: rgba(224, 176, 32, 0.1);
 }
 
 // Light Theme Override (optional)
@@ -256,8 +256,8 @@ a {
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-xs) var(--spacing-md);
-  background: rgba(201, 162, 39, 0.15);
-  border: 1px solid rgba(201, 162, 39, 0.3);
+  background: rgba(224, 176, 32, 0.15);
+  border: 1px solid rgba(224, 176, 32, 0.3);
   border-radius: var(--radius-full);
   font-size: 0.875rem;
   font-weight: 500;
@@ -353,7 +353,7 @@ a {
 
     &:hover:not(:disabled) {
       color: var(--accent-500);
-      background: rgba(201, 162, 39, 0.1);
+      background: rgba(224, 176, 32, 0.1);
     }
   }
 
@@ -372,14 +372,14 @@ a {
 .card {
   background: var(--bg-card);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(201, 162, 39, 0.1);
+  border: 1px solid rgba(224, 176, 32, 0.15);
   border-radius: var(--radius-xl);
   overflow: hidden;
   transition: all var(--transition-normal);
 
   &:hover {
     background: var(--bg-card-hover);
-    border-color: rgba(201, 162, 39, 0.3);
+    border-color: rgba(224, 176, 32, 0.4);
     box-shadow: var(--shadow-lg);
     transform: translateY(-4px);
   }
@@ -390,13 +390,13 @@ a {
 
   .card-header {
     padding: var(--spacing-lg);
-    border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+    border-bottom: 1px solid rgba(224, 176, 32, 0.15);
   }
 
   .card-footer {
     padding: var(--spacing-lg);
-    border-top: 1px solid rgba(201, 162, 39, 0.1);
-    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(224, 176, 32, 0.15);
+    background: rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -431,7 +431,7 @@ a {
   &:focus {
     outline: none;
     border-color: var(--accent-500);
-    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
+    box-shadow: 0 0 0 3px rgba(224, 176, 32, 0.2);
   }
 
   &::placeholder {
@@ -446,7 +446,7 @@ a {
 
 .form-select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23c9a227' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6,9 12,15 18,9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23e0b020' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6,9 12,15 18,9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right var(--spacing-md) center;
   background-size: 1rem;
@@ -500,20 +500,19 @@ a {
   }
 }
 
-// Hexagon Background Pattern
-.hex-pattern {
+// Background Pattern
+.bg-pattern {
   position: absolute;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
-  opacity: 0.5;
+  opacity: 0.15;
   
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='115' viewBox='0 0 100 115'%3E%3Cpath d='M50 0L100 28.867v57.735L50 115 0 86.603V28.867z' fill='none' stroke='%23c9a227' stroke-width='0.5' stroke-opacity='0.15'/%3E%3C/svg%3E");
-    background-size: 60px 69px;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e0b020' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 }
 
@@ -569,10 +568,10 @@ a {
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 5px rgba(201, 162, 39, 0.4);
+    box-shadow: 0 0 5px rgba(224, 176, 32, 0.4);
   }
   50% {
-    box-shadow: 0 0 25px rgba(201, 162, 39, 0.8), 0 0 40px rgba(201, 162, 39, 0.4);
+    box-shadow: 0 0 25px rgba(224, 176, 32, 0.8), 0 0 40px rgba(224, 176, 32, 0.4);
   }
 }
 
@@ -704,7 +703,7 @@ a {
 
 // Selection
 ::selection {
-  background: rgba(201, 162, 39, 0.3);
+  background: rgba(224, 176, 32, 0.3);
   color: var(--text-primary);
 }
 

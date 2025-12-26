@@ -4,46 +4,32 @@
       <!-- Company Info -->
       <div class="footer-section footer-brand">
         <div class="footer-logo">
-          <div class="logo-hex">
-            <svg viewBox="0 0 44 50" width="32" height="36">
-              <polygon 
-                points="22,0 44,12.7 44,38.2 22,50 0,38.2 0,12.7" 
-                fill="none" 
-                stroke="currentColor" 
-                stroke-width="1.5"
-              />
-              <polygon 
-                points="22,8 34,15.6 34,34.4 22,42 10,34.4 10,15.6" 
-                fill="currentColor"
-                opacity="0.3"
-              />
-            </svg>
-          </div>
-          <span class="logo-text">PIXEL</span>
+          <img src="../../../assets/logo/logo.png" alt="BMC AUTOS 47 - Logo">
         </div>
         <p class="footer-description">
-          Développeur web freelance basé en Gironde. Je crée des sites web 
-          professionnels et sur-mesure pour les entrepreneurs et petites entreprises.
+          Entreprise familiale spécialisée dans la vente de véhicules d'occasion et neufs.
+          Situés à Pujols, nous vous accueillons avec passion et professionnalisme.
         </p>
         <div class="footer-contact">
-          <a href="mailto:pixel.creation33@gmail.com" class="contact-link">
+          <a href="tel:+33553016697" class="contact-link">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
             </svg>
-            pixel.creation33&#64;gmail.com
+            05.53.01.66.97
+          </a>
+          <a href="tel:+33677277717" class="contact-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            06.77.27.77.17
+          </a>
+          <a href="mailto:contact@bmcautos47.fr" class="contact-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            contact&#64;bmcautos47.fr
           </a>
         </div>
-      </div>
-
-      <!-- Services -->
-      <div class="footer-section">
-        <h4 class="footer-title">Services</h4>
-        <ul class="footer-links">
-          <li><a href="#services" class="footer-link" (click)="scrollToSection('services', $event)">Sites vitrines</a></li>
-          <li><a href="#services" class="footer-link" (click)="scrollToSection('services', $event)">Applications web</a></li>
-          <li><a href="#services" class="footer-link" (click)="scrollToSection('services', $event)">Refonte de sites</a></li>
-        </ul>
       </div>
 
       <!-- Navigation -->
@@ -51,24 +37,46 @@
         <h4 class="footer-title">Navigation</h4>
         <ul class="footer-links">
           <li><a href="#home" class="footer-link" (click)="scrollToSection('home', $event)">Accueil</a></li>
+          <li><a href="#vehicles" class="footer-link" (click)="scrollToSection('vehicles', $event)">Nos véhicules</a></li>
           <li><a href="#about" class="footer-link" (click)="scrollToSection('about', $event)">À propos</a></li>
-          <li><a href="#portfolio" class="footer-link" (click)="scrollToSection('portfolio', $event)">Réalisations</a></li>
+          <li><a href="#services" class="footer-link" (click)="scrollToSection('services', $event)">Services</a></li>
           <li><a href="#contact" class="footer-link" (click)="scrollToSection('contact', $event)">Contact</a></li>
         </ul>
       </div>
 
-      <!-- Legal -->
+      <!-- Services -->
       <div class="footer-section">
-        <h4 class="footer-title">Légal</h4>
+        <h4 class="footer-title">Nos Services</h4>
         <ul class="footer-links">
-          <li><a routerLink="/cgu" class="footer-link">Mentions légales</a></li>
+          <li><a href="#vehicles" class="footer-link" (click)="scrollToSection('vehicles', $event)">Vente de véhicules</a></li>
+          <li><a href="#services" class="footer-link" (click)="scrollToSection('services', $event)">Recherche personnalisée</a></li>
+          <li><a href="#services" class="footer-link" (click)="scrollToSection('services', $event)">Reprise véhicule</a></li>
+          <li><a href="#services" class="footer-link" (click)="scrollToSection('services', $event)">Garantie 12 mois</a></li>
         </ul>
+      </div>
+
+      <!-- Localisation & Horaires -->
+      <div class="footer-section">
+        <h4 class="footer-title">Nous trouver</h4>
         <div class="footer-location">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
             <circle cx="12" cy="10" r="3"/>
           </svg>
-          <span>Lestiac-sur-Garonne (33)</span>
+          <div>
+            <p>578 Route d'Agen</p>
+            <p>47300 PUJOLS</p>
+          </div>
+        </div>
+        <div class="footer-hours">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+          <div>
+            <p><strong>Lun-Ven :</strong> 08h30-12h / 14h-18h30</p>
+            <p><strong>Samedi :</strong> 08h30-12h / 14h-18h</p>
+          </div>
         </div>
       </div>
     </div>
@@ -77,14 +85,13 @@
     <div class="footer-bottom">
       <div class="footer-bottom-content">
         <p class="copyright">
-          &copy; {{ currentYear }} Pixel - Mathieu Ehrsam. Tous droits réservés.
+          &copy; {{ currentYear }} BMC AUTOS 47 - Tous droits réservés.
         </p>
-        <p class="made-with">
-          Fait avec 
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="heart-icon">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-          en Gironde
+        <div class="footer-legal">
+          <a routerLink="/mentions-legales" class="footer-link">Mentions légales</a>
+        </div>
+        <p class="made-by">
+          Bernard & Matthieu Bonachera - Entreprise familiale
         </p>
       </div>
     </div>

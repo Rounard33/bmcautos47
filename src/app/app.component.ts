@@ -11,13 +11,13 @@ import {HeaderComponent} from './components/header/header.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  title = 'Pixel - Développeur Web Freelance';
+  title = 'BMC AUTOS 47 - Vente de véhicules d\'occasion et neufs';
 
   ngOnInit(): void {
     // Mark app as loaded for CSS fallback
     this.markAppAsLoaded();
     
-    // Force dark theme for Pixel
+    // Force dark theme for BMC AUTOS 47
     document.documentElement.classList.add('dark');
     document.documentElement.setAttribute('data-theme', 'dark');
   }

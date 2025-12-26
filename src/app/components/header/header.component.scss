@@ -4,15 +4,15 @@
   left: 0;
   right: 0;
   z-index: var(--z-fixed);
-  background: rgba(26, 40, 50, 0.85);
+  background: rgba(0, 0, 0, 0.90);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+  border-bottom: 1px solid rgba(224, 176, 32, 0.15);
   transition: all var(--transition-normal);
 
   &.scrolled {
-    background: rgba(26, 40, 50, 0.98);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-    border-bottom-color: rgba(201, 162, 39, 0.2);
+    background: rgba(0, 0, 0, 0.98);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+    border-bottom-color: rgba(224, 176, 32, 0.3);
   }
 }
 
@@ -35,12 +35,16 @@
   transition: all var(--transition-fast);
 
   &:hover {
-    .logo-hex {
+    .logo-icon {
       color: var(--accent-400);
-      transform: rotate(30deg);
+      transform: scale(1.1);
     }
     
     .logo-text {
+      color: var(--accent-500);
+    }
+    
+    .logo-subtext {
       color: var(--accent-400);
     }
   }
@@ -49,39 +53,50 @@
 .logo-container {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
 }
 
-.logo-hex {
-  color: var(--accent-500);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  .logo-icon {
+    color: var(--accent-500);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 100px;
+    }
+  }
+
+.logo-text-wrapper {
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  svg {
-  display: block;
-  }
-
-  .hex-outer {
-    opacity: 0.8;
-  }
-
-  .hex-inner {
-    opacity: 0.3;
-  }
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--spacing-xs);
 }
 
 .logo-text {
   font-family: var(--font-display);
-  color: var(--accent-500);
-  font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: 0.15em;
+  color: var(--text-primary);
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
   transition: color var(--transition-fast);
 
   @media (max-width: 768px) {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
+  }
+}
+
+.logo-subtext {
+  font-family: var(--font-display);
+  color: var(--accent-500);
+  font-weight: 900;
+  font-size: 1.6rem;
+  transition: color var(--transition-fast);
+
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
   }
 }
 
@@ -219,8 +234,8 @@
 
     &:hover,
     &.active {
-      background: rgba(201, 162, 39, 0.1);
-      border-color: rgba(201, 162, 39, 0.3);
+      background: rgba(224, 176, 32, 0.1);
+      border-color: rgba(224, 176, 32, 0.3);
       color: var(--accent-500);
 
       &::before {
@@ -243,11 +258,11 @@
 
 .nav-cta {
   background: linear-gradient(135deg, var(--accent-500), var(--accent-600));
-  color: var(--bg-primary) !important;
+  color: #000000 !important;
   padding: var(--spacing-sm) var(--spacing-lg) !important;
   border-radius: var(--radius-md) !important;
-  font-weight: 600;
-  box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(224, 176, 32, 0.4);
 
   &::after {
     display: none !important;
@@ -256,8 +271,8 @@
   &:hover {
     background: linear-gradient(135deg, var(--accent-400), var(--accent-500));
     transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(201, 162, 39, 0.4);
-    color: var(--bg-primary) !important;
+    box-shadow: 0 6px 25px rgba(224, 176, 32, 0.6);
+    color: #000000 !important;
   }
 
   .nav-cta-icon {
@@ -293,16 +308,16 @@
   align-items: center;
   width: 44px;
   height: 44px;
-  background: rgba(45, 67, 88, 0.5);
-  border: 1px solid rgba(201, 162, 39, 0.2);
+  background: rgba(23, 23, 23, 0.8);
+  border: 1px solid rgba(224, 176, 32, 0.3);
   border-radius: var(--radius-md);
   cursor: pointer;
   padding: 0;
   transition: all var(--transition-fast);
 
   &:hover {
-    background: rgba(201, 162, 39, 0.1);
-    border-color: rgba(201, 162, 39, 0.4);
+    background: rgba(224, 176, 32, 0.1);
+    border-color: rgba(224, 176, 32, 0.4);
   }
 
   @media (max-width: 1024px) {
@@ -342,9 +357,9 @@
   right: var(--spacing-lg);
   width: 48px;
   height: 48px;
-  background: rgba(45, 67, 88, 0.8);
+  background: rgba(23, 23, 23, 0.9);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(201, 162, 39, 0.3);
+  border: 1px solid rgba(224, 176, 32, 0.3);
   border-radius: 50%;
   color: var(--accent-500);
   cursor: pointer;
@@ -360,7 +375,7 @@
     color: var(--bg-primary);
     border-color: var(--accent-500);
     transform: rotate(90deg) scale(1.1);
-    box-shadow: 0 6px 30px rgba(201, 162, 39, 0.4);
+    box-shadow: 0 6px 30px rgba(224, 176, 32, 0.5);
   }
 
   svg {

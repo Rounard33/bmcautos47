@@ -1,19 +1,13 @@
-<!-- Hero Section - Pixel -->
+<!-- Hero Section - BMC AUTOS 47 -->
 <section class="hero" id="home">
-  <!-- Background with hexagon pattern -->
+  <!-- Background with pattern -->
   <div class="hero-bg">
-    <div class="hex-grid">
-      <div class="hex hex-1"></div>
-      <div class="hex hex-2"></div>
-      <div class="hex hex-3"></div>
-      <div class="hex hex-4"></div>
-      <div class="hex hex-5"></div>
-    </div>
+    <div class="bg-pattern"></div>
     <div class="gradient-overlay"></div>
-    <div class="code-lines">
-      <span class="code-line">&lt;div class="pixel"&gt;</span>
-      <span class="code-line">  &lt;web development /&gt;</span>
-      <span class="code-line">&lt;/div&gt;</span>
+    <div class="hero-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
     </div>
   </div>
   
@@ -23,68 +17,72 @@
         <!-- Badge -->
         <div class="badge">
           <span class="badge-dot"></span>
-          <span class="badge-text">Développeur Web Freelance</span>
+          <span class="badge-text">Entreprise Familiale • Lot-et-Garonne</span>
         </div>
         
         <!-- Title -->
         <h1 class="title" #title>
-          <span class="title-line">
-            <span class="logo-icon">
-              <svg viewBox="0 0 50 58" width="60" height="70">
-                <polygon 
-                  points="25,0 50,14.4 50,43.3 25,57.7 0,43.3 0,14.4" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  stroke-width="1.5"
-                  class="hex-stroke"
-                />
-                <polygon 
-                  points="25,10 40,18.6 40,39.1 25,47.7 10,39.1 10,18.6" 
-                  fill="currentColor"
-                  opacity="0.3"
-                  class="hex-fill"
-                />
-              </svg>
-            </span>
-            <span class="logo-text">PIXEL</span>
-          </span>
-          <span class="title-tagline">Créateur de sites web sur-mesure</span>
+          <span class="title-brand">BMC AUTOS 47</span>
+          <span class="title-tagline">Vente de véhicules d'occasion et neufs</span>
         </h1>
         
         <!-- Description -->
         <p class="description" #description>
-          Je conçois des <strong>sites web professionnels</strong> qui reflètent votre identité. Basé à <strong>Lestiac-sur-Garonne</strong>, 
-          j'accompagne les entrepreneurs et petites entreprises dans leur présence digitale.
+          Entreprise familiale, <strong>Monsieur Bonachera Bernard (père)</strong> et <strong>Matthieu (fils)</strong>,  vous accueillent 
+          dans leur garage familial à <strong>Pujols</strong>. Ils sont spécialisés dans la VENTE DE VEHICULES D'OCCASIONS ET NEUFS avec possibilité de REPRISE DE VOTRE ANCIEN VEHICULE.
+          
+          Nous prenons soins de sélectionner nos sources d'achat afin d'avoir des véhicules en bon état avec un <strong>historique clair et consultable</strong>, nous les préparons avec passion pour nos clients.
+         
         </p>
         
         <!-- Actions -->
         <div class="actions" #actions>
-          <a href="#contact" class="btn btn-primary btn-lg" (click)="scrollToSection('contact', $event)">
-            <span class="btn-text">Demander un devis</span>
-            <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
+          <a href="#vehicles" class="btn btn-primary btn-lg" (click)="scrollToSection('vehicles', $event)">
+            <svg class="btn-icon-left" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 17h-.8a2 2 0 01-2-2v-4a2 2 0 012-2h.8M19 17h.8a2 2 0 002-2v-4a2 2 0 00-2-2h-.8M5 17h14M5 17v-4M19 17v-4M8 7l4-4 4 4M12 3v10"/>
             </svg>
+            <span class="btn-text">Voir nos véhicules</span>
           </a>
-          <a href="#portfolio" class="btn btn-outline btn-lg" (click)="scrollToSection('portfolio', $event)">
-            <span class="btn-text">Voir mes réalisations</span>
+          <a href="#contact" class="btn btn-outline btn-lg" (click)="scrollToSection('contact', $event)">
+            <span class="btn-text">Nous contacter</span>
+            <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
           </a>
         </div>
         
         <!-- Stats -->
         <div class="hero-stats">
           <div class="stat">
-            <span class="stat-number">100%</span>
-            <span class="stat-label">Sites sur-mesure</span>
+            <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <div class="stat-content">
+              <span class="stat-number">Pujols (47)</span>
+              <span class="stat-label">Route d'Agen</span>
+            </div>
           </div>
           <div class="stat-divider"></div>
           <div class="stat">
-            <span class="stat-number">Gironde</span>
-            <span class="stat-label">Basé près de Bordeaux</span>
+            <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 11a3 3 0 106 0 3 3 0 00-6 0zM17 21v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2"/>
+            </svg>
+            <div class="stat-content">
+              <span class="stat-number">Familiale</span>
+              <span class="stat-label">Entreprise locale</span>
+            </div>
           </div>
           <div class="stat-divider"></div>
           <div class="stat">
-            <span class="stat-number">Pro</span>
-            <span class="stat-label">Accompagnement dédié</span>
+            <svg class="stat-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+            <div class="stat-content">
+              <span class="stat-number">Garantie</span>
+              <span class="stat-label">12 mois disponible</span>
+            </div>
           </div>
         </div>
       </div>

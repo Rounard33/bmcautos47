@@ -1,10 +1,25 @@
 .footer {
   background: var(--bg-secondary);
   padding: var(--spacing-3xl) 0 var(--spacing-lg);
-  border-top: 1px solid rgba(201, 162, 39, 0.1);
+  border-top: 1px solid rgba(224, 176, 32, 0.2);
   overflow-x: hidden;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent 0%,
+      rgba(224, 176, 32, 0.5) 50%,
+      transparent 100%
+    );
+  }
 }
 
 .footer-content {
@@ -40,23 +55,15 @@
 
 // Brand Section
 .footer-brand {
-.footer-logo {
+  .footer-logo {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-lg);
-}
-
-  .logo-hex {
-    color: var(--accent-500);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
   }
 
-.logo-text {
-  font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--accent-500);
-    letter-spacing: 0.1em;
+  img {
+    width: 100px;
   }
 }
 
@@ -65,9 +72,11 @@
   line-height: 1.7;
   margin-bottom: var(--spacing-lg);
   max-width: 350px;
+  font-size: 0.95rem;
   
   @media (max-width: 768px) {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    max-width: 100%;
   }
 }
 
@@ -75,7 +84,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-  }
+}
   
 .contact-link {
   display: inline-flex;
@@ -85,6 +94,7 @@
   text-decoration: none;
   font-size: 0.95rem;
   transition: all 0.3s ease;
+  padding: var(--spacing-xs) 0;
 
   svg {
     color: var(--accent-500);
@@ -102,10 +112,22 @@
   font-family: var(--font-display);
   color: var(--text-primary);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: var(--spacing-lg);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  position: relative;
+  padding-bottom: var(--spacing-sm);
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--accent-500);
+  }
   
   @media (max-width: 768px) {
     font-size: 0.9rem;
@@ -130,10 +152,24 @@
   font-size: 0.95rem;
   transition: all 0.3s ease;
   display: inline-block;
+  position: relative;
+
+  &::before {
+    content: '›';
+    position: absolute;
+    left: -12px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    color: var(--accent-500);
+  }
 
   &:hover {
     color: var(--accent-500);
-    transform: translateX(4px);
+    transform: translateX(12px);
+    
+    &::before {
+      opacity: 1;
+    }
   }
   
   @media (max-width: 768px) {
@@ -141,27 +177,47 @@
   }
 }
 
-// Location
-.footer-location {
+// Location & Hours
+.footer-location,
+.footer-hours {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--spacing-sm);
-  margin-top: var(--spacing-lg);
-  padding: var(--spacing-md);
-  background: rgba(201, 162, 39, 0.1);
-  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
   color: var(--text-secondary);
   font-size: 0.9rem;
+  line-height: 1.6;
 
   svg {
     color: var(--accent-500);
     flex-shrink: 0;
+    margin-top: 2px;
   }
+  
+  p {
+    margin: 0 0 var(--spacing-xs) 0;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+}
+
+.footer-location {
+  padding: var(--spacing-md);
+  background: rgba(224, 176, 32, 0.1);
+  border-left: 3px solid var(--accent-500);
+  border-radius: var(--radius-md);
 }
 
 // Footer Bottom
 .footer-bottom {
-  border-top: 1px solid rgba(201, 162, 39, 0.1);
+  border-top: 1px solid rgba(224, 176, 32, 0.2);
   padding-top: var(--spacing-lg);
   width: 100%;
   box-sizing: border-box;
@@ -186,23 +242,38 @@
   color: var(--text-muted);
   font-size: 0.875rem;
   margin: 0;
-}
-
-.made-with {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  color: var(--text-muted);
-  font-size: 0.875rem;
-  margin: 0;
-
-  .heart-icon {
-    color: var(--accent-500);
-    animation: heart-beat 1.5s ease-in-out infinite;
+  
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
   }
 }
 
-@keyframes heart-beat {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+.footer-legal {
+  display: flex;
+  gap: var(--spacing-md);
+  
+  .footer-link {
+    font-size: 0.875rem;
+    
+    &::before {
+      display: none;
+    }
+    
+    &:hover {
+      transform: translateX(0);
+    }
+  }
+}
+
+.made-by {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
 }
