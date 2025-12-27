@@ -111,22 +111,20 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      135deg,
-      var(--bg-primary) 0%,
-      var(--bg-secondary) 50%,
-      var(--bg-tertiary) 100%
-    );
+    background: rgba(0, 0, 0, 0.98);
     backdrop-filter: blur(20px);
     z-index: var(--z-modal);
     transform: translateX(100%);
     opacity: 0;
     visibility: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
     padding-top: 80px;
+    padding-bottom: env(safe-area-inset-bottom, 0);
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
 
     &.nav-open {
       transform: translateX(0);
@@ -146,13 +144,15 @@
 
   @media (max-width: 1024px) {
     flex-direction: column;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-xl);
+    gap: var(--spacing-xs);
+    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-xl);
     width: 100%;
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     justify-content: flex-start;
     align-items: stretch;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -206,41 +206,26 @@
   }
 
   @media (max-width: 1024px) {
-    padding: var(--spacing-lg) var(--spacing-xl);
-    border-radius: var(--radius-lg);
-    background: rgba(45, 67, 88, 0.4);
-    backdrop-filter: blur(10px);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    background: transparent;
     color: var(--text-primary);
-    font-size: 1.1rem;
+    font-size: 1rem;
     justify-content: flex-start;
-    border: 1px solid rgba(201, 162, 39, 0.1);
+    border: none;
     
     &::after {
       display: none;
     }
 
     &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: var(--accent-500);
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      transform: scaleY(0);
-      transition: transform 0.3s ease;
+      display: none;
     }
 
     &:hover,
     &.active {
-      background: rgba(224, 176, 32, 0.1);
-      border-color: rgba(224, 176, 32, 0.3);
+      background: rgba(224, 176, 32, 0.08);
       color: var(--accent-500);
-
-      &::before {
-        transform: scaleY(1);
-      }
     }
   }
 }
@@ -251,8 +236,9 @@
 
   @media (max-width: 1024px) {
     margin-left: 0;
-    margin-top: auto;
-    padding-bottom: var(--spacing-xl);
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    padding-bottom: max(var(--spacing-lg), env(safe-area-inset-bottom, 20px));
   }
 }
 
@@ -285,11 +271,19 @@
 
   @media (max-width: 1024px) {
     justify-content: center;
-    padding: var(--spacing-lg) var(--spacing-xl) !important;
-    font-size: 1.1rem;
+    padding: var(--spacing-md) var(--spacing-lg) !important;
+    font-size: 1rem;
+    font-weight: 700;
+    min-height: 48px;
+    box-shadow: 0 4px 15px rgba(224, 176, 32, 0.3) !important;
+    border: none !important;
 
     &::before {
       display: none;
+    }
+
+    &:active {
+      transform: scale(0.98);
     }
   }
 }
@@ -353,33 +347,35 @@
 // Close Button
 .nav-close {
   position: fixed;
-  top: var(--spacing-lg);
-  right: var(--spacing-lg);
-  width: 48px;
-  height: 48px;
-  background: rgba(23, 23, 23, 0.9);
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(224, 176, 32, 0.3);
+  border: 1px solid rgba(224, 176, 32, 0.2);
   border-radius: 50%;
   color: var(--accent-500);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   z-index: calc(var(--z-modal) + 1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 
   &:hover {
     background: var(--accent-500);
     color: var(--bg-primary);
     border-color: var(--accent-500);
-    transform: rotate(90deg) scale(1.1);
-    box-shadow: 0 6px 30px rgba(224, 176, 32, 0.5);
+    transform: rotate(90deg);
+  }
+
+  &:active {
+    transform: rotate(90deg) scale(0.95);
   }
 
   svg {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
 }
