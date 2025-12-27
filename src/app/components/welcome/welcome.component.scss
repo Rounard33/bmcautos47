@@ -27,6 +27,7 @@
     height: 100%;
     object-fit: cover;
     object-position: 70%;
+    animation: fadeInImage 1.5s ease-in-out;
 
     @media (max-width: 768px) {
       object-position: 42% 40%;
@@ -444,5 +445,14 @@
   }
   50% {
     transform: translateY(8px);
+  }
+}
+
+@keyframes fadeInImage {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
