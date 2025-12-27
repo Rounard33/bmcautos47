@@ -132,6 +132,12 @@
   border-radius: var(--radius-md);
   color: var(--accent-500);
 
+  svg {
+    width: 28px;
+    height: 28px;
+    display: block;
+  }
+
   @media (max-width: 640px) {
     width: 40px;
     height: 40px;
@@ -258,8 +264,8 @@
 .photo-frame {
   position: relative;
   width: 100%;
-  max-width: 550px;
-  aspect-ratio: 16/10;
+  max-width: 420px;
+  aspect-ratio: 3/4;
   border-radius: var(--radius-xl);
   overflow: hidden;
   border: 3px solid rgba(201, 162, 39, 0.4);
@@ -288,7 +294,7 @@
   }
 
   @media (max-width: 768px) {
-    aspect-ratio: 3/2;
+    aspect-ratio: 3/4;
     border-width: 2px;
     
     &::before {
@@ -297,7 +303,7 @@
   }
 
   @media (max-width: 480px) {
-    aspect-ratio: 4/3;
+    aspect-ratio: 3/4;
     border-radius: var(--radius-lg);
   }
 }

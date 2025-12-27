@@ -259,7 +259,7 @@
     border: none;
   }
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
     min-height: 300px;
   }
 }
@@ -268,7 +268,7 @@
 .info-pratiques {
   padding: var(--spacing-xl) var(--spacing-lg);
   display: flex;
-  flex-direction: column;
+    flex-direction: column;
   gap: var(--spacing-md);
 
   h3 {
@@ -304,7 +304,7 @@
     background: rgba(0, 0, 0, 0.4);
     transform: translateX(4px);
   }
-}
+  }
 
 .info-item-icon {
   flex-shrink: 0;
@@ -321,7 +321,7 @@
     width: 20px;
     height: 20px;
   }
-}
+  }
 
 .info-item-content {
   flex: 1;
@@ -368,8 +368,8 @@
   &:hover {
     color: var(--accent-400);
   }
-}
-
+  }
+  
 .contact-link-form {
   display: inline-flex;
   align-items: center;

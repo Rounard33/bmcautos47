@@ -133,6 +133,7 @@
     font-weight: 500;
     transition: all 0.3s ease;
     border-left: 3px solid transparent;
+    cursor: pointer;
 
     &:hover {
       color: var(--accent-500);
@@ -140,8 +141,16 @@
       border-left-color: var(--accent-500);
       padding-left: calc(var(--spacing-md) + 4px);
     }
+
+    &.active {
+      color: var(--accent-500);
+      background: rgba(224, 176, 32, 0.12);
+      border-left-color: var(--accent-500);
+      font-weight: 600;
+    }
   }
 }
+
 
 // Main Content
 .legal-main {

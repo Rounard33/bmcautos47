@@ -21,17 +21,17 @@
         <div class="sidebar-sticky">
           <h3>Sommaire</h3>
           <nav class="legal-nav">
-            <a href="#definitions">Définitions</a>
-            <a href="#presentation">1. Présentation du site</a>
-            <a href="#cgu">2. Conditions d'utilisation</a>
-            <a href="#services">3. Services fournis</a>
-            <a href="#limitations">4. Limitations techniques</a>
-            <a href="#propriete">5. Propriété intellectuelle</a>
-            <a href="#responsabilite">6. Responsabilité</a>
-            <a href="#donnees">7. Données personnelles</a>
-            <a href="#incident">8. Notification d'incident</a>
-            <a href="#cookies">9. Cookies et balises</a>
-            <a href="#juridiction">10. Droit applicable</a>
+            <a (click)="scrollToSection('definitions', $event)" class="nav-link">Définitions</a>
+            <a (click)="scrollToSection('presentation', $event)" class="nav-link">1. Présentation du site</a>
+            <a (click)="scrollToSection('cgu', $event)" class="nav-link">2. Conditions d'utilisation</a>
+            <a (click)="scrollToSection('services', $event)" class="nav-link">3. Services fournis</a>
+            <a (click)="scrollToSection('limitations', $event)" class="nav-link">4. Limitations techniques</a>
+            <a (click)="scrollToSection('propriete', $event)" class="nav-link">5. Propriété intellectuelle</a>
+            <a (click)="scrollToSection('responsabilite', $event)" class="nav-link">6. Responsabilité</a>
+            <a (click)="scrollToSection('donnees', $event)" class="nav-link">7. Données personnelles</a>
+            <a (click)="scrollToSection('incident', $event)" class="nav-link">8. Notification d'incident</a>
+            <a (click)="scrollToSection('cookies', $event)" class="nav-link">9. Cookies et balises</a>
+            <a (click)="scrollToSection('juridiction', $event)" class="nav-link">10. Droit applicable</a>
           </nav>
         </div>
       </aside>
