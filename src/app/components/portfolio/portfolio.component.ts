@@ -38,7 +38,7 @@ interface Vehicle {
   standalone: true,
   imports: [CommonModule, FormsModule], // Ajout de FormsModule
   templateUrl: './portfolio.component.html',
-  styleUrl: './portfolio.component.scss'
+  styleUrls: ['./portfolio.component.scss', './portfolio-modal.styles.scss']
 })
 export class PortfolioComponent {
   
