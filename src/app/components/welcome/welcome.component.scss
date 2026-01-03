@@ -11,7 +11,17 @@
   @media (max-width: 768px) {
     min-height: 100dvh; // Dynamic viewport height for mobile
     padding-top: 70px;
-    padding-bottom: 2rem;
+    padding-bottom: var(--spacing-xl);
+    align-items: flex-start; // Aligne le contenu en haut pour mobile
+  }
+  
+  // Décaler le container sous la photo sur mobile
+  > .container {
+    @media (max-width: 768px) {
+      margin-top: 200px;
+      padding: var(--spacing-xl);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
   }
 }
 
@@ -21,6 +31,12 @@
   inset: 0;
   z-index: 1;
   overflow: hidden;
+  
+  @media (max-width: 768px) {
+    height: 200px;
+    top: 70px;
+    bottom: auto;
+  }
 }
 
 // Carrousel d'images
@@ -171,9 +187,9 @@
     radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.6) 0%, transparent 70%);
 
   @media (max-width: 768px) {
+    // Dégradé du bas vers le haut pour voir l'image en haut
     background: 
-      linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%),
-      radial-gradient(ellipse at 50% 30%, rgba(224, 176, 32, 0.08) 0%, transparent 60%);
+      linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 70%);
   }
 }
 
@@ -345,7 +361,11 @@
 }
 
 .badge-text {
-  color: rgba(23, 23, 23, 0.6);;
+  color: rgba(23, 23, 23, 0.6);
+
+  @media (max-width: 768px) {
+    color: var(--text-primary);
+  }
 }
 
 @keyframes pulse-dot {

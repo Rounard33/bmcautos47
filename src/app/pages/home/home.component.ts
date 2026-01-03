@@ -10,6 +10,7 @@ import {FaqComponent} from '../../components/faq/faq.component';
 import {PortfolioComponent} from '../../components/portfolio/portfolio.component';
 import {ProcessComponent} from '../../components/process/process.component';
 import {ScrollToTopComponent} from '../../components/scroll-to-top/scroll-to-top.component';
+import {SectionDividerComponent} from '../../components/section-divider/section-divider.component';
 import {ServicesComponent} from '../../components/services/services.component';
 import {WelcomeComponent} from '../../components/welcome/welcome.component';
 
@@ -29,7 +30,8 @@ gsap.registerPlugin(ScrollTrigger);
     ProcessComponent,
     FaqComponent,
     CtaComponent,
-    ScrollToTopComponent
+    ScrollToTopComponent,
+    SectionDividerComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -48,6 +50,24 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   }
 
   private initScrollAnimations(): void {
+    // Animate section dividers
+    gsap.utils.toArray('.section-divider').forEach((element: any) => {
+      gsap.fromTo(element, {
+        scaleX: 0,
+        opacity: 0
+      }, {
+        scaleX: 1,
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: element,
+          start: "top 90%",
+          toggleActions: "play none none reverse"
+        }
+      });
+    });
+
     // Animate section headers
     gsap.utils.toArray('.section-header').forEach((element: any) => {
       gsap.fromTo(element, {
