@@ -1,8 +1,50 @@
 <!-- Hero Section - BMC AUTOS 47 -->
 <section class="hero" id="home">
-  <!-- Background with pattern -->
+  <!-- Background with carousel -->
   <div class="hero-bg">
-    <img src="../../../assets/img/presentation/facade.png" alt="BMC AUTOS 47 - Équipe familiale" class="photo">
+    <!-- Carrousel d'images -->
+    <div class="carousel">
+      @for (image of carouselImages; track image.src; let i = $index) {
+        <img 
+          [src]="image.src" 
+          [alt]="image.alt" 
+          class="carousel-image"
+          [class.active]="i === currentImageIndex">
+      }
+      
+      <!-- Contrôles du carrousel -->
+      <div class="carousel-controls">
+        <button 
+          class="carousel-btn carousel-btn-prev" 
+          (click)="previousImage()"
+          aria-label="Image précédente">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+        <button 
+          class="carousel-btn carousel-btn-next" 
+          (click)="nextImage()"
+          aria-label="Image suivante">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Indicateurs (dots) -->
+      <div class="carousel-indicators">
+        @for (image of carouselImages; track image.src; let i = $index) {
+          <button 
+            class="carousel-dot"
+            [class.active]="i === currentImageIndex"
+            (click)="goToImage(i)"
+            [attr.aria-label]="'Aller à l\'image ' + (i + 1)">
+          </button>
+        }
+      </div>
+    </div>
+    
     <div class="bg-pattern"></div>
     <div class="gradient-overlay"></div>
     <div class="hero-shapes">

@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {gsap} from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
@@ -13,10 +13,37 @@ gsap.registerPlugin(ScrollTrigger);
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.scss'
 })
-export class WelcomeComponent implements AfterViewInit {
+export class WelcomeComponent implements AfterViewInit, OnDestroy {
   @ViewChild('title') title!: ElementRef;
   @ViewChild('description') description!: ElementRef;
   @ViewChild('actions') actions!: ElementRef;
+
+  // Carrousel d'images
+  carouselImages = [
+    {
+      src: '../../../assets/img/presentation/facade garage.jpg',
+      alt: 'Façade du garage BMC AUTOS 47'
+    },
+    {
+      src: '../../../assets/img/presentation/facade garage 2.jpg',
+      alt: 'Façade du garage BMC AUTOS 47 - Vue 2'
+    },
+    {
+      src: '../../../assets/img/presentation/intérieur.jpg',
+      alt: 'Intérieur du garage BMC AUTOS 47'
+    },
+    {
+      src: '../../../assets/img/presentation/panorama.jpg',
+      alt: 'Vue panoramique du garage BMC AUTOS 47'
+    },
+    {
+      src: '../../../assets/img/presentation/facade.png',
+      alt: 'BMC AUTOS 47 - Équipe familiale'
+    }
+  ];
+
+  currentImageIndex = 0;
+  private carouselInterval: any;
 
   scrollToSection(sectionId: string, event?: Event): void {
     if (event) {
@@ -38,6 +65,52 @@ export class WelcomeComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.initWelcomeAnimations();
+    this.startCarousel();
+  }
+
+  ngOnDestroy() {
+    // Nettoyer l'interval du carrousel
+    if (this.carouselInterval) {
+      clearInterval(this.carouselInterval);
+    }
+  }
+
+  /**
+   * Démarre le carrousel automatique
+   */
+  private startCarousel() {
+    // Changer d'image toutes les 5 secondes
+    this.carouselInterval = setInterval(() => {
+      this.nextImage();
+    }, 5000);
+  }
+
+  /**
+   * Passe à l'image suivante
+   */
+  nextImage() {
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.carouselImages.length;
+  }
+
+  /**
+   * Passe à l'image précédente
+   */
+  previousImage() {
+    this.currentImageIndex = this.currentImageIndex === 0 
+      ? this.carouselImages.length - 1 
+      : this.currentImageIndex - 1;
+  }
+
+  /**
+   * Va à une image spécifique
+   */
+  goToImage(index: number) {
+    this.currentImageIndex = index;
+    // Réinitialiser le timer du carrousel
+    if (this.carouselInterval) {
+      clearInterval(this.carouselInterval);
+      this.startCarousel();
+    }
   }
 
   private initWelcomeAnimations() {

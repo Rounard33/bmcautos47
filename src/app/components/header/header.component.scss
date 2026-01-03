@@ -9,6 +9,11 @@
   border-bottom: 1px solid rgba(224, 176, 32, 0.15);
   transition: all var(--transition-normal);
 
+  .container {
+    max-width: 100%;
+    padding: 0 var(--spacing-xl);
+  }
+
   &.scrolled {
     background: rgba(0, 0, 0, 0.98);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
@@ -64,7 +69,7 @@
     justify-content: center;
 
     img {
-      width: 100px;
+      width: 150px;
     }
   }
 

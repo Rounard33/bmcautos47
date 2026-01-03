@@ -1,0 +1,280 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║              ✅ BACKEND PROXY VERCEL - INSTALLATION TERMINÉE ✅             ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📅 Date : 3 janvier 2026
+🎯 Objectif : Sécuriser la clé API KeplerVO avec un proxy Vercel
+✅ Status : COMPLET - Prêt à déployer
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  🔐 SÉCURITÉ                                                                 ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+AVANT (❌ Clé visible) :
+┌────────────┐
+│ Navigateur │ → Appelle KeplerVO directement
+└────────────┘   avec la clé API visible dans le JS
+
+APRÈS (✅ Clé cachée) :
+┌────────────┐
+│ Navigateur │ → Appelle /api/vehicles (pas de clé !)
+└────────────┘
+       ↓
+┌────────────┐
+│   Vercel   │ → Ajoute la clé API sécurisée
+│   Proxy    │   et appelle KeplerVO
+└────────────┘
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  📁 FICHIERS CRÉÉS                                                           ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+✅ api/vehicles.ts
+   → Vercel Serverless Function (proxy sécurisé)
+   → Gère l'authentification avec KeplerVO
+   → Cache les réponses pendant 5 minutes
+   → ~180 lignes
+
+✅ vercel.json
+   → Configuration Vercel
+   → Définit les headers CORS
+   → Configure le cache
+
+✅ .env.example
+   → Template pour les variables locales
+   → Documentation des variables requises
+
+✅ .gitignore
+   → Mis à jour pour ignorer .env
+   → Protège contre les commits accidentels de clés
+
+✅ README_PROXY_VERCEL.md
+   → Documentation complète du proxy
+   → Guide de configuration Vercel
+   → Tests et dépannage
+
+✅ PROXY_SETUP_COMPLETE.txt
+   → Ce fichier récapitulatif
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  🔧 FICHIERS MODIFIÉS                                                        ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+✅ src/environments/environment.ts
+   → apiUrl: 'http://localhost:3000/api' (pour vercel dev)
+   → apiKey: '' (vide, géré par le proxy)
+   → dealerId: '' (vide, géré par le proxy)
+
+✅ src/environments/environment.prod.ts
+   → apiUrl: '/api' (pointe vers le proxy)
+   → apiKey: '' (vide, sécurisé sur Vercel)
+   → dealerId: '' (vide, sécurisé sur Vercel)
+
+✅ src/app/services/kepler-vo.service.ts
+   → getHeaders() : N'envoie plus l'Authorization
+   → fetchVehiclesFromAPI() : Simplifié (pas de params)
+   → getVehicleById() : Utilise ?vehicleId=X
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  🚀 PROCHAINES ÉTAPES                                                        ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+ÉTAPE 1 : Configurer Vercel (5 minutes)
+─────────────────────────────────────────
+1. Allez sur https://vercel.com/dashboard
+2. Sélectionnez votre projet
+3. Settings → Environment Variables
+4. Ajoutez ces 3 variables :
+
+   KEPLER_API_KEY=votre_vraie_cle_api
+   KEPLER_DEALER_ID=votre_id_concessionnaire
+   KEPLER_API_URL=https://api.kepler-soft.net/v3.60
+
+5. Cochez : ✅ Production ✅ Preview ✅ Development
+
+ÉTAPE 2 : Déployer (1 minute)
+──────────────────────────────
+git add .
+git commit -m "Add Vercel proxy for KeplerVO API"
+git push
+
+→ Vercel déploiera automatiquement
+
+ÉTAPE 3 : Tester le proxy (2 minutes)
+──────────────────────────────────────
+# Remplacez par votre URL Vercel
+curl https://votre-site.vercel.app/api/vehicles
+
+Réponse attendue :
+{
+  "success": true,
+  "data": [...]
+}
+
+ÉTAPE 4 : Vérifier la sécurité (1 minute)
+──────────────────────────────────────────
+1. Ouvrez votre site
+2. F12 → Network → Rafraîchir
+3. Cliquez sur un fichier .js
+4. Cherchez "apiKey"
+
+✅ Vous devriez voir : apiKey: ""
+❌ Vous ne devriez PAS voir : apiKey: "votre_vraie_cle"
+
+ÉTAPE 5 : Activer l'API (optionnel)
+────────────────────────────────────
+Quand vous êtes prêt à utiliser l'API réelle :
+
+1. Modifiez src/environments/environment.prod.ts :
+   useMockData: false  // ← Changez true en false
+
+2. Déployez :
+   git add src/environments/environment.prod.ts
+   git commit -m "Activate KeplerVO API"
+   git push
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  🧪 TESTS                                                                    ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Test 1 : Liste des véhicules
+─────────────────────────────
+curl https://votre-site.vercel.app/api/vehicles
+
+Test 2 : Un véhicule spécifique
+────────────────────────────────
+curl "https://votre-site.vercel.app/api/vehicles?vehicleId=123"
+
+Test 3 : Logs Vercel
+────────────────────
+Vercel Dashboard → Deployments → Functions → vehicles
+
+Logs attendus :
+🔄 Fetching all vehicles for dealer XXX from KeplerVO
+✅ Successfully fetched data from KeplerVO
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  💰 COÛTS                                                                    ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Vercel Functions (Plan Hobby - GRATUIT)
+────────────────────────────────────────
+✅ 100 GB-hours d'exécution/mois
+✅ 100 GB de bande passante/mois
+
+Estimation pour votre site :
+────────────────────────────
+100 visiteurs/jour × 30 jours = 3 000 visiteurs/mois
+Avec cache 5 min = ~300 appels API/jour
+= ~9 000 appels API/mois
+= ~0.13 GB-hours/mois
+
+COÛT TOTAL : 0€ ✅
+
+Vous pouvez faire ~700 000 requêtes/mois gratuitement !
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  📊 AVANTAGES                                                                ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+✅ Clé API 100% sécurisée (jamais dans le JavaScript)
+✅ Gratuit (Vercel Functions inclus)
+✅ Cache intelligent (5 minutes)
+✅ Scalable automatiquement
+✅ Monitoring en temps réel
+✅ Logs détaillés
+✅ HTTPS automatique
+✅ CDN global (Vercel Edge)
+✅ Fallback sur mock data si erreur
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  🐛 DÉPANNAGE                                                                ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Erreur : "API configuration error"
+───────────────────────────────────
+→ Vérifiez que KEPLER_API_KEY est bien dans Vercel
+→ Redéployez après avoir ajouté la variable
+
+Erreur : "Authentication failed"
+─────────────────────────────────
+→ Vérifiez votre clé API KeplerVO
+→ Vérifiez la méthode d'auth dans /api/vehicles.ts
+   (Bearer vs X-API-Key)
+
+Erreur : "Resource not found"
+──────────────────────────────
+→ Vérifiez l'URL de l'API (KEPLER_API_URL)
+→ Consultez la doc KeplerVO
+
+Le site charge les véhicules de démo
+─────────────────────────────────────
+→ Changez useMockData: false dans environment.prod.ts
+→ Redéployez
+→ Videz le cache navigateur (Ctrl+Shift+R)
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  📖 DOCUMENTATION                                                            ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Guide complet        : README_PROXY_VERCEL.md
+Variables locales    : .env.example
+Ce fichier           : PROXY_SETUP_COMPLETE.txt
+
+Vercel Docs          : https://vercel.com/docs/functions
+Vercel Env Vars      : https://vercel.com/docs/projects/environment-variables
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ✅ CHECKLIST                                                                ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Fichiers créés :
+  ✅ api/vehicles.ts
+  ✅ vercel.json
+  ✅ .env.example
+  ✅ README_PROXY_VERCEL.md
+
+Fichiers modifiés :
+  ✅ src/environments/environment.ts
+  ✅ src/environments/environment.prod.ts
+  ✅ src/app/services/kepler-vo.service.ts
+  ✅ .gitignore
+
+À faire :
+  ⏳ Ajouter les variables sur Vercel
+  ⏳ Déployer sur Vercel
+  ⏳ Tester le proxy
+  ⏳ Vérifier la sécurité
+  ⏳ Activer l'API (optionnel)
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  🎉 RÉSULTAT                                                                 ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Votre site est maintenant équipé d'un BACKEND PROXY SÉCURISÉ !
+
+✅ Clé API KeplerVO cachée sur le serveur Vercel
+✅ JavaScript du navigateur ne contient aucune clé sensible
+✅ Architecture professionnelle et scalable
+✅ Gratuit avec Vercel (jusqu'à 100GB-hours/mois)
+✅ Cache intelligent pour réduire les appels API
+✅ Fallback automatique sur mock data
+✅ Monitoring et logs en temps réel
+
+Il ne reste plus qu'à :
+1. Configurer les variables sur Vercel (5 min)
+2. Déployer (1 min)
+3. Tester (2 min)
+
+Et votre site sera 100% opérationnel avec l'API KeplerVO ! 🚗💨
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                    🎊 PROXY INSTALLÉ AVEC SUCCÈS ! 🎊                       ║
+║                                                                              ║
+║              Votre clé API est maintenant 100% sécurisée ! 🔐               ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+

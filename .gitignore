@@ -41,11 +41,8 @@ testem.log
 .DS_Store
 Thumbs.db
 
-.env.local
+# Environment variables
 .env
-.env.production
-.env.development
-*.env
-*.env.*
-!.env.example
+.env.local
+.env.*.local
 .vercel

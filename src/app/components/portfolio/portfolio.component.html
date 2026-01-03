@@ -17,9 +17,50 @@
       <p class="section-description">
         Véhicules sélectionnés avec soin • Historique transparent • Garantie disponible
       </p>
+      
+      <!-- Badge Mode Fallback (si données locales) -->
+      @if (isMockMode()) {
+        <div class="info-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+          <span>Mode démonstration - Véhicules d'exemple</span>
+        </div>
+      }
     </div>
+
+    <!-- État de chargement -->
+    @if (isLoading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Chargement des véhicules...</p>
+      </div>
+    }
+
+    <!-- État d'erreur -->
+    @if (errorMessage() && !isLoading()) {
+      <div class="error-state">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="15" y1="9" x2="9" y2="15"/>
+          <line x1="9" y1="9" x2="15" y2="15"/>
+        </svg>
+        <h3>Erreur de chargement</h3>
+        <p>{{ errorMessage() }}</p>
+        <button class="btn btn-primary" (click)="refreshVehicles()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+          Réessayer
+        </button>
+      </div>
+    }
     
     <!-- Filtres -->
+    @if (!isLoading() && !errorMessage()) {
     <div class="filters-container">
       <div class="filters-grid">
         <div class="filter-group">
@@ -269,6 +310,7 @@
         </div>
       </div>
     </div>
+    }
   </div>
   
   <!-- Modal Carousel -->
