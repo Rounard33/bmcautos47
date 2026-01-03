@@ -7,6 +7,7 @@ import {AboutComponent} from '../../components/about/about.component';
 import {BrandsCarouselComponent} from '../../components/brands-carousel/brands-carousel.component';
 import {CtaComponent} from '../../components/cta/cta.component';
 import {FaqComponent} from '../../components/faq/faq.component';
+import {GalleryComponent} from '../../components/gallery/gallery.component';
 import {PortfolioComponent} from '../../components/portfolio/portfolio.component';
 import {ProcessComponent} from '../../components/process/process.component';
 import {ScrollToTopComponent} from '../../components/scroll-to-top/scroll-to-top.component';
@@ -31,7 +32,8 @@ gsap.registerPlugin(ScrollTrigger);
     FaqComponent,
     CtaComponent,
     ScrollToTopComponent,
-    SectionDividerComponent
+    SectionDividerComponent,
+    GalleryComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -77,6 +79,27 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
         y: 0,
         opacity: 1,
         duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: element,
+          start: "top 85%",
+          toggleActions: "play none none reverse"
+        }
+      });
+    });
+
+    // Animate gallery items
+    gsap.utils.toArray('.gallery-item').forEach((element: any, index: number) => {
+      gsap.fromTo(element, {
+        y: 40,
+        opacity: 0,
+        scale: 0.9
+      }, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.6,
+        delay: index * 0.08,
         ease: "power2.out",
         scrollTrigger: {
           trigger: element,

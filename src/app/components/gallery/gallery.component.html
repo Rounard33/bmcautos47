@@ -1,0 +1,103 @@
+<!-- Gallery Section - Carrousel Full Width -->
+<section class="gallery-section" id="gallery">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header">
+      <span class="section-label">Notre Établissement</span>
+      <h2 class="section-title">
+        Découvrez <span class="highlight">notre garage</span>
+      </h2>
+      <p class="section-description">
+        Un garage familial moderne et bien équipé à Pujols, avec une équipe passionnée à votre service
+      </p>
+    </div>
+  </div>
+
+  <!-- Carrousel -->
+  <div class="carousel-container" 
+       (mouseenter)="pauseAutoPlay()" 
+       (mouseleave)="resumeAutoPlay()">
+    
+    <!-- Slides -->
+    <div class="carousel-slides">
+      @for (image of images; track image.src; let i = $index) {
+        <div 
+          class="carousel-slide"
+          [class.active]="currentSlide() === i">
+          
+          <div class="slide-image-wrapper">
+            <img 
+              [src]="image.src" 
+              [alt]="image.alt"
+              loading="lazy">
+          </div>
+          
+          <div class="slide-content">
+            <div class="slide-category">
+              @if (image.category === 'equipe') {
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+                </svg>
+              } @else if (image.category === 'exterieur') {
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              } @else {
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                  <line x1="8" y1="21" x2="16" y2="21"/>
+                  <line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+              }
+              <span>{{ image.title }}</span>
+            </div>
+            <p class="slide-description">{{ image.description }}</p>
+          </div>
+          
+          <div class="slide-separator"></div>
+          
+          <div class="carousel-dots">
+            @for (img of images; track img.src; let j = $index) {
+              <button 
+                class="carousel-dot"
+                [class.active]="currentSlide() === j"
+                (click)="goToSlide(j)"
+                [attr.aria-label]="'Aller à l\'image ' + (j + 1)">
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Navigation Arrows -->
+    <button 
+      class="carousel-arrow carousel-arrow-prev" 
+      (click)="previousSlide()"
+      aria-label="Image précédente">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    
+    <button 
+      class="carousel-arrow carousel-arrow-next" 
+      (click)="nextSlide()"
+      aria-label="Image suivante">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+    </button>
+
+    <!-- Counter -->
+    <div class="carousel-counter">
+      <span class="current">{{ currentSlide() + 1 }}</span>
+      <span class="separator">/</span>
+      <span class="total">{{ images.length }}</span>
+    </div>
+  </div>
+</section>
+
