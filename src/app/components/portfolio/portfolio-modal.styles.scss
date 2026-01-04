@@ -7,12 +7,23 @@
   bottom: 0;
   background: rgba(0, 0, 0, 0.96);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 1000;
   padding: 2rem;
+  padding-top: calc(70px + 3rem);
   overflow-y: auto;
   animation: fadeIn 0.3s ease;
+  
+  @media (max-width: 1024px) {
+    padding: 1rem;
+    padding-top: calc(70px + 2rem);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+    padding-top: calc(70px + 1.5rem);
+  }
 }
 
 .modal-container {
@@ -20,20 +31,40 @@
   position: relative;
   background: var(--background);
   border-radius: var(--radius-2xl);
-  margin-top: 80px;
+  margin-top: 0;
   width: 100%;
   max-width: 900px;
-  max-height: 85vh;
+  max-height: calc(100vh - 70px - 6rem);
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
   animation: slideUp 0.3s ease;
   border: 1px solid rgba(224, 176, 32, 0.2);
+  
+  @media (max-width: 1024px) {
+    max-height: calc(100vh - 70px - 4rem);
+  }
+  
+  @media (max-width: 768px) {
+    max-height: calc(100vh - 70px - 3rem);
+    border-radius: var(--radius-lg);
+    margin-top: 30px;
+  }
 }
 
-.modal-close {
+.modal-close-wrapper {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
+  z-index: 1002;
+  
+  @media (max-width: 768px) {
+    top: 0.375rem;
+    right: 0.375rem;
+  }
+}
+
+.modal-close {
+  position: relative;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -45,7 +76,6 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 1002;
   box-shadow: 0 4px 12px rgba(224, 176, 32, 0.5);
 
   svg {
@@ -64,8 +94,6 @@
   @media (max-width: 768px) {
     width: 36px;
     height: 36px;
-    top: 0.375rem;
-    right: 0.375rem;
 
     svg {
       width: 18px;
@@ -97,6 +125,63 @@
     gap: 0.75rem;
     padding-right: 3rem;
     padding-bottom: 1rem;
+  }
+}
+
+.modal-warranty-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  background: linear-gradient(135deg, rgba(224, 176, 32, 0.1) 0%, rgba(224, 176, 32, 0.05) 100%);
+  border: 1px solid rgba(224, 176, 32, 0.3);
+  border-radius: var(--radius-lg);
+  border-left: 3px solid var(--accent-500);
+  
+  svg {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    color: var(--accent-500);
+  }
+  
+  .warranty-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--text-primary);
+    
+    strong {
+      color: var(--accent-500);
+      font-weight: 600;
+    }
+    
+    .warranty-extension {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-sm);
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .warranty-text {
+      font-size: 0.85rem;
+      
+      .warranty-extension {
+        font-size: 0.8rem;
+      }
+    }
   }
 
   .modal-vehicle-info {
@@ -224,6 +309,13 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+    cursor: pointer;
+  }
 }
 
 .carousel-nav {
@@ -746,5 +838,273 @@
 @keyframes slideUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+// Lightbox Styles
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.98);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+  
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.lightbox-container {
+  position: relative;
+  width: 100%;
+  max-width: 95vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+  
+  @media (max-width: 768px) {
+    max-height: 85vh;
+    margin-top: 30px;
+  }
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent-500);
+  border: 2px solid var(--accent-500);
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2001;
+  box-shadow: 0 4px 12px rgba(224, 176, 32, 0.5);
+  
+  svg {
+    stroke-width: 3;
+    width: 24px;
+    height: 24px;
+  }
+  
+  &:hover {
+    background: var(--accent-600);
+    border-color: var(--accent-600);
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 6px 20px rgba(224, 176, 32, 0.6);
+  }
+  
+  @media (max-width: 768px) {
+    top: 1rem;
+    right: 1rem;
+    width: 48px;
+    height: 48px;
+    
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 48px;
+    height: 48px;
+    
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.lightbox-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  animation: fadeIn 0.4s ease;
+  
+  @media (max-width: 768px) {
+    max-height: 60vh;
+  }
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(224, 176, 32, 0.4);
+  color: var(--accent-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2002;
+  
+  svg {
+    stroke: var(--accent-500);
+  }
+  
+  &:hover {
+    background: var(--accent-500);
+    border-color: var(--accent-500);
+    transform: translateY(-50%) scale(1.1);
+    
+    svg {
+      stroke: #000000;
+    }
+  }
+  
+  &.lightbox-prev {
+    left: var(--spacing-xl);
+    
+    @media (max-width: 768px) {
+      left: var(--spacing-md);
+      width: 48px;
+      height: 48px;
+    }
+  }
+  
+  &.lightbox-next {
+    right: var(--spacing-xl);
+    
+    @media (max-width: 768px) {
+      right: var(--spacing-md);
+      width: 48px;
+      height: 48px;
+    }
+  }
+}
+
+.lightbox-counter {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: white;
+  font-size: 1rem;
+  z-index: 2001;
+  
+  @media (max-width: 768px) {
+    top: 0.75rem;
+    left: 0.75rem;
+    font-size: 0.9rem;
+    padding: var(--spacing-xs) var(--spacing-md);
+  }
+  
+  @media (max-width: 480px) {
+    top: 0.5rem;
+    left: 0.5rem;
+    font-size: 0.85rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+}
+
+.lightbox-thumbnails {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+  max-width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-500) rgba(0, 0, 0, 0.3);
+  
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--accent-500);
+    border-radius: 3px;
+  }
+  
+  @media (max-width: 768px) {
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+  }
+}
+
+.lightbox-thumbnail {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  opacity: 0.6;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  &:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    border-color: rgba(224, 176, 32, 0.5);
+  }
+  
+  &.active {
+    opacity: 1;
+    border-color: var(--accent-500);
+    box-shadow: 0 0 0 2px rgba(224, 176, 32, 0.3);
+  }
+  
+  @media (max-width: 768px) {
+    width: 60px;
+    height: 60px;
+  }
 }
 

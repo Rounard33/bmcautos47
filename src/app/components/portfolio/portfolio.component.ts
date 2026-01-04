@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, computed, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, computed, HostListener, OnDestroy, OnInit, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Vehicle} from '../../models/vehicle.model';
@@ -143,6 +143,10 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   showModal = false;
   currentImageIndex = signal<number>(0);
   activeTab = signal<'overview' | 'equipment' | 'options'>('overview');
+  
+  // Lightbox
+  showLightbox = signal<boolean>(false);
+  lightboxImageIndex = signal<number>(0);
 
   openVehicle(vehicle: Vehicle): void {
     this.selectedVehicle.set(vehicle);
@@ -157,6 +161,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.selectedVehicle.set(null);
     this.currentImageIndex.set(0);
     this.activeTab.set('overview');
+    this.closeLightbox(); // Ferme aussi la lightbox si elle est ouverte
     document.body.style.overflow = ''; // Réactive le scroll
   }
 
@@ -180,6 +185,53 @@ export class PortfolioComponent implements OnInit, OnDestroy {
 
   goToImage(index: number): void {
     this.currentImageIndex.set(index);
+  }
+  
+  // Lightbox methods
+  openLightbox(index: number): void {
+    this.lightboxImageIndex.set(index);
+    this.showLightbox.set(true);
+    document.body.style.overflow = 'hidden';
+  }
+  
+  closeLightbox(): void {
+    this.showLightbox.set(false);
+    document.body.style.overflow = '';
+  }
+  
+  nextLightboxImage(): void {
+    const vehicle = this.selectedVehicle();
+    if (vehicle && vehicle.images) {
+      const newIndex = (this.lightboxImageIndex() + 1) % vehicle.images.length;
+      this.lightboxImageIndex.set(newIndex);
+    }
+  }
+  
+  previousLightboxImage(): void {
+    const vehicle = this.selectedVehicle();
+    if (vehicle && vehicle.images) {
+      const newIndex = this.lightboxImageIndex() === 0 
+        ? vehicle.images.length - 1 
+        : this.lightboxImageIndex() - 1;
+      this.lightboxImageIndex.set(newIndex);
+    }
+  }
+  
+  goToLightboxImage(index: number): void {
+    this.lightboxImageIndex.set(index);
+  }
+  
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboard(event: KeyboardEvent): void {
+    if (this.showLightbox()) {
+      if (event.key === 'Escape') {
+        this.closeLightbox();
+      } else if (event.key === 'ArrowLeft') {
+        this.previousLightboxImage();
+      } else if (event.key === 'ArrowRight') {
+        this.nextLightboxImage();
+      }
+    }
   }
 
   applyFilters(): void {

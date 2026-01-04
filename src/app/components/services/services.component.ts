@@ -60,13 +60,13 @@ export class ServicesComponent {
     },
     {
       id: 'warranty',
-      title: 'Garantie disponible',
-      description: 'Roulez en toute sérénité avec nos garanties adaptées à vos besoins.',
+      title: 'Garantie 12 mois',
+      description: 'Tous nos véhicules sont garantis 12 mois. Extension possible jusqu\'à 24 mois pour votre tranquillité.',
       iconType: 'warranty',
       features: [
-        'Garantie 12 mois possible',
+        'Garantie 12 mois incluse',
+        'Extension jusqu\'à 24 mois',
         'Protection complète',
-        'Extension de garantie',
         'Assistance 24h/24'
       ]
     }

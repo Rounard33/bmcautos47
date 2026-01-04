@@ -276,7 +276,7 @@
             <button class="btn-contact" (click)="scrollToContact($event)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-              </svg>
+                </svg>
               <span>Contact</span>
             </button>
           </div>
@@ -317,12 +317,14 @@
   @if (showModal && selectedVehicle()) {
     <div class="modal-overlay" (click)="closeModal()">
       <div class="modal-container" (click)="$event.stopPropagation()">
-        <button class="modal-close" (click)="closeModal()">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
+        <div class="modal-close-wrapper">
+          <button class="modal-close" (click)="closeModal()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
         
         <div class="modal-content">
           <!-- Vehicle Info Header -->
@@ -370,13 +372,27 @@
             <div class="modal-price">{{ selectedVehicle()!.price }}</div>
           </div>
           
+          <!-- Garantie Badge -->
+          <div class="modal-warranty-badge">
+            <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 4 L40 10 L40 22 C40 32 24 42 24 42 C24 42 8 32 8 22 L8 10 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M16 24 L22 30 L34 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="warranty-text">
+              <strong>Garantie 12 mois</strong> incluse
+              <span class="warranty-extension">Extension jusqu'à 24 mois disponible</span>
+            </div>
+          </div>
+          
           <!-- Carousel -->
           <div class="carousel">
             <div class="carousel-main">
               <img 
                 [src]="selectedVehicle()!.images[currentImageIndex()]" 
                 [alt]="selectedVehicle()!.brand + ' ' + selectedVehicle()!.model"
-                class="carousel-image">
+                class="carousel-image"
+                (click)="openLightbox(currentImageIndex())"
+                style="cursor: pointer;">
               
               @if (selectedVehicle()!.images.length > 1) {
                 <button class="carousel-nav carousel-prev" (click)="previousImage()">
@@ -405,7 +421,7 @@
                     class="thumbnail" 
                     [class.active]="i === currentImageIndex()"
                     (click)="goToImage(i)">
-                    <img [src]="image" [alt]="'Photo ' + (i + 1)">
+                    <img [src]="image" [alt]="'Photo ' + (i + 1)" (click)="openLightbox(i); $event.stopPropagation()" style="cursor: pointer;">
                   </div>
                 }
               </div>
@@ -593,6 +609,59 @@
               <span>Nous contacter pour ce véhicule</span>
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+  }
+  
+  <!-- Lightbox -->
+  @if (showLightbox() && selectedVehicle()) {
+    <div class="lightbox-overlay" (click)="closeLightbox()">
+      <!-- Compteur et croix sur l'overlay -->
+      <button class="lightbox-close" (click)="closeLightbox()" aria-label="Fermer">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      
+      @if (selectedVehicle()!.images.length > 1) {
+        <div class="lightbox-counter">
+          {{ lightboxImageIndex() + 1 }} / {{ selectedVehicle()!.images.length }}
+        </div>
+      }
+      
+      <div class="lightbox-container" (click)="$event.stopPropagation()">
+        <div class="lightbox-content">
+          <img 
+            [src]="selectedVehicle()!.images[lightboxImageIndex()]" 
+            [alt]="selectedVehicle()!.brand + ' ' + selectedVehicle()!.model + ' - Photo ' + (lightboxImageIndex() + 1)"
+            class="lightbox-image">
+          
+          @if (selectedVehicle()!.images.length > 1) {
+            <button class="lightbox-nav lightbox-prev" (click)="previousLightboxImage()" aria-label="Image précédente">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            
+            <button class="lightbox-nav lightbox-next" (click)="nextLightboxImage()" aria-label="Image suivante">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+            
+            <div class="lightbox-thumbnails">
+              @for (image of selectedVehicle()!.images; track image; let i = $index) {
+                <div 
+                  class="lightbox-thumbnail" 
+                  [class.active]="i === lightboxImageIndex()"
+                  (click)="goToLightboxImage(i)">
+                  <img [src]="image" [alt]="'Photo ' + (i + 1)">
+                </div>
+              }
+            </div>
+          }
         </div>
       </div>
     </div>

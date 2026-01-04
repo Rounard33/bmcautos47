@@ -236,7 +236,6 @@ export class KeplerVOService {
       'manual': 'Manuelle',
       'automatique': 'Automatique',
       'manuelle': 'Manuelle',
-      'mécanique': 'Mécanique'
     };
     return mapping[transmission?.toLowerCase()] || transmission;
   }

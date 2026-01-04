@@ -55,6 +55,7 @@
   width: 100%;
   height: 600px;
   background: var(--bg-secondary);
+  overflow: hidden;
   
   @media (max-width: 1024px) {
     height: 500px;
@@ -62,6 +63,8 @@
   
   @media (max-width: 768px) {
     height: 400px;
+    min-height: 400px;
+    max-height: 400px;
   }
   
   img {
@@ -69,6 +72,7 @@
     height: 100%;
     object-fit: contain;
     object-position: center;
+    display: block;
   }
 }
 
@@ -127,16 +131,13 @@
   margin: 0;
 }
 
-// Navigation Arrows - Positionnées sur l'image uniquement
-.carousel-container {
-  position: relative;
-}
-
+// Navigation Arrows - Positionnées au niveau du conteneur, toujours visibles
 .carousel-arrow {
   position: absolute;
-  top: 50%;
+  // Centrer verticalement sur la zone d'image (600px / 2 = 300px)
+  top: 300px;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: 20;
   width: 56px;
   height: 56px;
   display: flex;
@@ -147,14 +148,19 @@
   border: 2px solid rgba(224, 176, 32, 0.3);
   border-radius: 50%;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  will-change: auto;
   
-  // Limiter la position aux 600px de l'image
+  // Toujours visibles
+  opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   
   svg {
     stroke: var(--accent-500);
-    transition: all 0.3s ease;
+    transition: stroke 0.3s ease;
+    width: 28px;
+    height: 28px;
   }
   
   &:hover {
@@ -164,8 +170,11 @@
     
     svg {
       stroke: var(--bg-primary);
-      transform: translateX(0);
     }
+  }
+  
+  &:active {
+    transform: translateY(-50%) scale(0.95);
   }
   
   &-prev {
@@ -184,9 +193,17 @@
     }
   }
   
+  @media (max-width: 1024px) {
+    // Centrer sur 500px / 2 = 250px
+    top: 250px;
+  }
+  
   @media (max-width: 768px) {
     width: 48px;
     height: 48px;
+    // Centrer sur 400px / 2 = 200px
+    top: 200px;
+    transform: translateY(-50%);
     
     svg {
       width: 24px;
@@ -199,6 +216,14 @@
     
     &-next {
       right: var(--spacing-md);
+    }
+    
+    &:hover {
+      transform: translateY(-50%) scale(1.05);
+    }
+    
+    &:active {
+      transform: translateY(-50%) scale(0.95);
     }
   }
 }

@@ -69,7 +69,7 @@ export class CtaComponent {
     'Lexus', 'Mercedes', 'Mitsubishi', 'Peugeot', 'Renault'
   ];
   
-  transmissionTypes = ['Mécanique', 'Automatique'];
+  transmissionTypes = ['Manuelle', 'Automatique'];
   fuelTypes = ['Essence', 'Diesel', 'Électrique', 'Hybride', 'Gaz Naturel', 'GPL'];
   categories = [
     'Berline', 'Break', 'Cabriolet', 'Citadine', 'Coupé',
