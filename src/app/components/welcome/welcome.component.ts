@@ -101,18 +101,6 @@ export class WelcomeComponent implements AfterViewInit, OnDestroy {
       : this.currentImageIndex - 1;
   }
 
-  /**
-   * Va à une image spécifique
-   */
-  goToImage(index: number) {
-    this.currentImageIndex = index;
-    // Réinitialiser le timer du carrousel
-    if (this.carouselInterval) {
-      clearInterval(this.carouselInterval);
-      this.startCarousel();
-    }
-  }
-
   private initWelcomeAnimations() {
     if (!this.title || !this.description || !this.actions) return;
 

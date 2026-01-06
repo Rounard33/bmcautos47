@@ -31,18 +31,6 @@
           </svg>
         </button>
       </div>
-      
-      <!-- Indicateurs (dots) -->
-      <div class="carousel-indicators">
-        @for (image of carouselImages; track image.src; let i = $index) {
-          <button 
-            class="carousel-dot"
-            [class.active]="i === currentImageIndex"
-            (click)="goToImage(i)"
-            [attr.aria-label]="'Aller à l\'image ' + (i + 1)">
-          </button>
-        }
-      </div>
     </div>
     
     <div class="bg-pattern"></div>
