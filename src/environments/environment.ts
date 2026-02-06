@@ -1,6 +1,9 @@
 export const environment = {
   production: false,
   
+  // Coming Soon Mode - Changez à false pour afficher le site complet
+  comingSoon: true, // En dev, on peut voir le site complet
+  
   // Configuration API KeplerVO (via proxy Vercel)
   keplerVO: {
     // En dev : peut tester le proxy local avec 'vercel dev'

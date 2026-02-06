@@ -1,13 +1,18 @@
 <!-- Loader -->
 <app-loader/>
 
-<!-- BMC AUTOS 47 - Garage Automobile -->
-<div class="app-layout">
-  <app-header/>
-  
-  <main class="main-content">
-    <router-outlet></router-outlet>
-  </main>
-  
-  <app-footer/>
-</div>
+<!-- Coming Soon Mode -->
+@if (comingSoon) {
+  <app-coming-soon/>
+} @else {
+  <!-- BMC AUTOS 47 - Garage Automobile -->
+  <div class="app-layout">
+    <app-header/>
+    
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+    
+    <app-footer/>
+  </div>
+}
