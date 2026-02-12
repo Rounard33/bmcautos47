@@ -1,10 +1,10 @@
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, of, throwError} from 'rxjs';
-import {catchError, delay, map, retry, timeout} from 'rxjs/operators';
-import {environment} from '../../environments/environment';
-import {MOCK_VEHICLES} from '../models/mock-vehicles';
-import {KeplerResponse, KeplerVehicle, Vehicle} from '../models/vehicle.model';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, delay, map, retry, timeout } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+import { MOCK_VEHICLES } from '../models/mock-vehicles';
+import { KeplerResponse, KeplerVehicle, Vehicle } from '../models/vehicle.model';
 
 /**
  * Service de gestion de l'API KeplerVO
@@ -164,41 +164,112 @@ export class KeplerVOService {
 
   /**
    * Transforme un véhicule KeplerVO en format interne
+   * Supporte à la fois l'ancien format et le nouveau format de l'API v3.8
    */
-  private transformKeplerVehicle(kv: KeplerVehicle): Vehicle {
-    // Trier et extraire les images
-    const photos = (kv.photos || [])
-      .sort((a, b) => (a.ordre || 0) - (b.ordre || 0));
+  private transformKeplerVehicle(kv: any): Vehicle {
+    // Log pour déboguer la structure des données
+    console.log('🔍 Vehicle data from API:', JSON.stringify({
+      uuid: kv.uuid,
+      reference: kv.reference,
+      brand: kv.brand?.name,
+      model: kv.model?.name,
+      hasGallery: !!kv.gallery,
+      galleryLength: kv.gallery?.length,
+      firstGalleryItem: kv.gallery?.[0],
+      allKeys: Object.keys(kv)
+    }, null, 2));
     
-    const images = photos.map(p => p.url);
-    const mainImage = photos.find(p => p.principal)?.url || images[0] || 'assets/img/placeholder.jpg';
+    // Détection du format de l'API
+    const isNewFormat = kv.brand && typeof kv.brand === 'object';
+    
+    // Extraction des images selon le format
+    let images: string[] = [];
+    let mainImage = 'assets/img/placeholder.jpg';
+    
+    if (isNewFormat && kv.gallery) {
+      // Nouveau format : gallery array
+      const sortedGallery = [...(kv.gallery || [])]
+        .sort((a, b) => (a.position || 0) - (b.position || 0));
+      
+      // Utiliser le champ 'photo' qui pointe vers S3 (public)
+      // Les champs 'large', 'big', 'thumb' nécessitent une authentification
+      images = sortedGallery.map((g: any) => g.photo).filter(Boolean);
+      mainImage = images[0] || mainImage;
+      
+      console.log('📸 Images extracted:', images.length, 'images found');
+      console.log('📸 First image URL:', mainImage);
+    } else if (kv.photos) {
+      // Ancien format : photos array
+      const photos = [...(kv.photos || [])]
+        .sort((a, b) => (a.ordre || 0) - (b.ordre || 0));
+      
+      images = photos.map((p: any) => p.url).filter(Boolean);
+      mainImage = photos.find((p: any) => p.principal)?.url || images[0] || mainImage;
+      
+      console.log('📸 Images extracted (old format):', images.length, 'images found');
+    } else {
+      console.warn('⚠️ No gallery or photos found for vehicle:', kv.uuid || kv.id);
+    }
 
     // Construire les features principales
     const features: string[] = [];
-    if (kv.caracteristiques?.garantie) {
-      features.push(kv.caracteristiques.garantie);
-    }
-    if (kv.caracteristiques?.nbPortes) {
-      features.push(`${kv.caracteristiques.nbPortes} portes`);
-    }
-    if (kv.caracteristiques?.nbPlaces) {
-      features.push(`${kv.caracteristiques.nbPlaces} places`);
+    
+    if (isNewFormat) {
+      if (kv.warrantyLabel?.name) {
+        features.push(kv.warrantyLabel.name);
+      }
+      if (kv.doors) {
+        features.push(`${kv.doors} portes`);
+      }
+      if (kv.seats) {
+        features.push(`${kv.seats} places`);
+      }
+    } else {
+      if (kv.caracteristiques?.garantie) {
+        features.push(kv.caracteristiques.garantie);
+      }
+      if (kv.caracteristiques?.nbPortes) {
+        features.push(`${kv.caracteristiques.nbPortes} portes`);
+      }
+      if (kv.caracteristiques?.nbPlaces) {
+        features.push(`${kv.caracteristiques.nbPlaces} places`);
+      }
     }
 
+    // Construire l'objet Vehicle
     return {
-      id: kv.id || kv.reference || `kepler-${Date.now()}`,
-      brand: kv.marque,
-      model: kv.modele,
-      year: kv.annee,
-      mileage: this.formatMileage(kv.kilometrage),
-      transmission: this.formatTransmission(kv.boite),
-      fuel: this.formatFuel(kv.carburant),
-      price: this.formatPrice(kv.prix),
+      id: kv.uuid || kv.id || kv.reference || `kepler-${Date.now()}`,
+      brand: isNewFormat ? kv.brand.name : kv.marque,
+      model: isNewFormat ? kv.model.name : kv.modele,
+      year: kv.year || kv.annee,
+      mileage: this.formatMileage(kv.distanceTraveled || kv.kilometrage || 0),
+      transmission: this.formatTransmission(
+        isNewFormat ? kv.gearbox?.name : kv.boite
+      ),
+      fuel: this.formatFuel(
+        isNewFormat ? kv.energy?.name : kv.carburant
+      ),
+      price: this.formatPrice(kv.pricePublic || kv.prix || 0),
       image: mainImage,
       images: images.length > 0 ? images : [mainImage],
       features,
-      status: this.mapStatus(kv.statut),
-      details: kv.caracteristiques ? {
+      status: this.mapStatus(kv.state || kv.statut),
+      details: isNewFormat ? {
+        finition: kv.version?.name,
+        category: undefined,
+        firstRegistration: kv.dateOfDistribution,
+        warranty: kv.warrantyLabel?.name,
+        exteriorColor: kv.color?.name,
+        interiorColor: kv.insideColor?.name,
+        fiscalPower: kv.taxHorsepower ? `${kv.taxHorsepower} CV` : undefined,
+        power: kv.horsepower ? `${kv.horsepower} ch` : undefined,
+        co2Emission: undefined,
+        doors: kv.doors,
+        reference: kv.reference,
+        description: undefined,
+        standardEquipment: kv.equipmentStandard?.map((e: any) => e.name),
+        optionalEquipment: kv.equipmentOptional?.map((e: any) => e.name)
+      } : (kv.caracteristiques ? {
         finition: kv.caracteristiques.finition,
         category: kv.caracteristiques.categorie,
         firstRegistration: kv.caracteristiques.dateCirculation,
@@ -215,7 +286,7 @@ export class KeplerVOService {
         description: kv.caracteristiques.description,
         standardEquipment: kv.caracteristiques.equipementsStandard,
         optionalEquipment: kv.caracteristiques.equipementsOption
-      } : undefined
+      } : undefined)
     };
   }
 

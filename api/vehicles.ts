@@ -1,55 +1,97 @@
-import type {VercelRequest, VercelResponse} from '@vercel/node';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-interface KeplerPhoto {
-  url: string;
-  ordre?: number;
-  principal?: boolean;
+// ============================================
+// INTERFACES KEPLER API
+// ============================================
+
+interface KeplerTokenResponse {
+  value: string;
+  createdAt: string;
 }
 
-interface KeplerCaracteristiques {
-  finition?: string;
-  categorie?: string;
-  dateCirculation?: string;
-  garantie?: string;
-  couleurExterieure?: string;
-  couleurInterieure?: string;
-  puissanceFiscale?: number;
-  puissanceReelle?: string;
-  emissionCO2?: number;
-  nbPortes?: number;
-  nbPlaces?: number;
-  description?: string;
-  equipementsStandard?: string[];
-  equipementsOption?: string[];
+interface KeplerVehicleAPI {
+  uuid: string;
+  reference: string;
+  brand: { name: string };
+  model: { name: string };
+  version?: { name: string };
+  year: number;
+  distanceTraveled?: number;
+  pricePublic?: number;
+  energy?: { name: string };
+  gearbox?: { name: string };
+  state?: string;
+  gallery?: Array<{
+    photo: string;
+    large?: string;
+    big?: string;
+    thumb?: string;
+    position?: number;
+  }>;
+  color?: { name: string };
+  insideColor?: { name: string };
+  taxHorsepower?: number;
+  horsepower?: number;
+  doors?: number;
+  seats?: number;
+  warrantyLabel?: { name: string };
+  warrantyDuration?: number;
+  equipmentStandard?: Array<{ name: string; reference: string }>;
+  equipmentOptional?: Array<{ name: string; reference: string; price?: number }>;
+  vin?: string;
+  licenseNumber?: string;
+  dateOfDistribution?: string;
 }
 
-interface KeplerVehicle {
-  id: string;
-  reference?: string;
-  marque: string;
-  modele: string;
-  annee: number;
-  kilometrage: number;
-  boite: string;
-  carburant: string;
-  prix: number;
-  photos: KeplerPhoto[];
-  caracteristiques?: KeplerCaracteristiques;
-  statut?: string;
-}
+// Cache du token en mémoire (valide 30 minutes)
+let tokenCache: { token: string; expiresAt: number } | null = null;
 
-interface KeplerResponse<T> {
-  success: boolean;
-  data: T;
-  message?: string;
-  total?: number;
+/**
+ * Génère et met en cache un token d'authentification KeplerVO
+ * Le token est valide pendant 30 minutes
+ */
+async function getAuthToken(apiKey: string): Promise<string> {
+  // Vérifier si le token en cache est encore valide
+  if (tokenCache && tokenCache.expiresAt > Date.now()) {
+    console.log('🔑 Using cached KeplerVO token');
+    return tokenCache.token;
+  }
+
+  console.log('🔑 Generating new KeplerVO token...');
+
+  // Générer un nouveau token
+  const tokenResponse = await fetch('https://app.keplervo-uat.com/api/v3.0/auth-token/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ apiKey }),
+  });
+
+  if (!tokenResponse.ok) {
+    const errorText = await tokenResponse.text();
+    console.error(`❌ Failed to generate token: ${tokenResponse.status} ${tokenResponse.statusText}`);
+    console.error('Response:', errorText);
+    throw new Error(`Authentication failed: ${tokenResponse.status}`);
+  }
+
+  const tokenData: KeplerTokenResponse = await tokenResponse.json();
+
+  // Mettre en cache le token (expire dans 29 minutes pour avoir une marge)
+  tokenCache = {
+    token: tokenData.value,
+    expiresAt: Date.now() + 29 * 60 * 1000, // 29 minutes
+  };
+
+  console.log('✅ New token generated and cached');
+  return tokenData.value;
 }
 
 /**
  * Vercel Serverless Function - Proxy pour l'API KeplerVO
  * 
- * Cette fonction sécurise votre clé API KeplerVO en la gardant côté serveur.
- * Le JavaScript du site n'a jamais accès à la clé réelle.
+ * Cette fonction sécurise votre clé API KeplerVO en la gardant côté serveur
+ * et gère l'authentification par token (valide 30 minutes).
  * 
  * Endpoints :
  * - GET /api/vehicles          → Liste de tous les véhicules
@@ -87,11 +129,10 @@ export default async function handler(
   // ============================================
   // Configuration depuis les variables d'environnement Vercel
   // ============================================
-  const apiUrl = process.env.KEPLER_API_URL || 'https://api.kepler-soft.net/v3.60';
-  const apiKey = process.env.KEPLER_API_KEY;
-  const dealerId = process.env.KEPLER_DEALER_ID;
+  const apiUrl = process.env['KEPLER_API_URL'] || 'https://app.keplervo-uat.com/api';
+  const apiKey = process.env['KEPLER_API_KEY'];
 
-  // Vérifier que les variables sont configurées
+  // Vérifier que la clé API est configurée
   if (!apiKey) {
     console.error('❌ KEPLER_API_KEY not configured in Vercel environment variables');
     return response.status(500).json({ 
@@ -101,45 +142,35 @@ export default async function handler(
     });
   }
 
-  if (!dealerId) {
-    console.error('❌ KEPLER_DEALER_ID not configured in Vercel environment variables');
-    return response.status(500).json({ 
-      success: false,
-      error: 'Configuration error',
-      message: 'KEPLER_DEALER_ID not configured. Please add it in Vercel Dashboard → Settings → Environment Variables'
-    });
-  }
-
   // ============================================
   // Gérer les différentes routes
   // ============================================
   const { vehicleId } = request.query;
 
   try {
-    let url = `${apiUrl}/vehicles`;
+    // Générer ou récupérer le token d'authentification
+    const authToken = await getAuthToken(apiKey);
+
+    let url: string;
     
     // Si un ID de véhicule est demandé
     if (vehicleId && typeof vehicleId === 'string') {
-      url = `${apiUrl}/vehicles/${vehicleId}`;
+      url = `${apiUrl}/v3.8/vehicles/${vehicleId}/`;
       console.log(`🔄 Fetching vehicle ${vehicleId} from KeplerVO`);
     } else {
-      // Sinon, liste avec le dealerId
-      url = `${url}?dealerId=${dealerId}&status=available`;
-      console.log(`🔄 Fetching all vehicles for dealer ${dealerId} from KeplerVO`);
+      // Sinon, liste de tous les véhicules
+      url = `${apiUrl}/v3.8/vehicles/`;
+      console.log(`🔄 Fetching all vehicles from KeplerVO`);
     }
 
     // ============================================
-    // Appel à l'API KeplerVO
+    // Appel à l'API KeplerVO avec le token
     // ============================================
     const apiResponse = await fetch(url, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
+        'X-Auth-Token': authToken,
         'Content-Type': 'application/json',
-        // 🔧 À AJUSTER selon la vraie documentation KeplerVO
-        // Peut-être plutôt :
-        // 'X-API-Key': apiKey,
-        // ou autre format
       },
     });
 
@@ -162,9 +193,9 @@ export default async function handler(
     }
 
     // Parser la réponse JSON
-    const data: KeplerResponse<KeplerVehicle | KeplerVehicle[]> = await apiResponse.json();
+    const data: KeplerVehicleAPI | KeplerVehicleAPI[] = await apiResponse.json();
     
-    console.log(`✅ Successfully fetched data from KeplerVO`);
+    console.log(`✅ Successfully fetched ${Array.isArray(data) ? data.length : 1} vehicle(s) from KeplerVO`);
     
     // ============================================
     // Cache la réponse
@@ -174,7 +205,11 @@ export default async function handler(
     response.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
     
     // Retourner les données
-    return response.status(200).json(data);
+    return response.status(200).json({
+      success: true,
+      data: data,
+      total: Array.isArray(data) ? data.length : 1
+    });
 
   } catch (error) {
     // Gérer les erreurs réseau ou autres

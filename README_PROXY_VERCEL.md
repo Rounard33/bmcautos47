@@ -1,8 +1,14 @@
-# 🔐 Backend Proxy Vercel - Documentation
+# 🔐 Backend Proxy Vercel - Documentation KeplerVO API v3.8
 
 ## 📋 Vue d'ensemble
 
 Votre site utilise maintenant un **backend proxy sécurisé** via Vercel Serverless Functions pour communiquer avec l'API KeplerVO. Votre clé API reste **100% cachée** sur le serveur et n'est jamais exposée dans le JavaScript du navigateur.
+
+Le proxy gère automatiquement :
+- ✅ **Génération de token** (authentification 2-étapes)
+- ✅ **Cache du token** (30 minutes de validité)
+- ✅ **Sécurité de la clé API** (jamais exposée au client)
+- ✅ **Cache des réponses** (5 minutes)
 
 ## 🏗️ Architecture
 
@@ -15,18 +21,29 @@ Votre site utilise maintenant un **backend proxy sécurisé** via Vercel Serverl
          │ GET /api/vehicles
          │ (Pas de clé API !)
          ↓
-┌────────────────┐
-│     Vercel     │
-│   Functions    │  ← Votre proxy sécurisé
-│  (Serverless)  │     Clé API stockée ici
-└────────┬───────┘
+┌────────────────────────┐
+│     Vercel Functions   │  ← Votre proxy sécurisé
+│    (Serverless)        │
+│                        │
+│ 1. Génère token si     │
+│    expiré (POST        │
+│    /v3.0/auth-token/)  │
+│                        │
+│ 2. Cache token         │
+│    (29 min)            │
+│                        │
+│ 3. Utilise X-Auth-     │
+│    Token pour appels   │
+│    API                 │
+└────────┬───────────────┘
          │
-         │ Authorization: Bearer SECRET_KEY
-         │ (Clé API sécurisée)
+         │ X-Auth-Token: GENERATED_TOKEN
+         │ (Token valide 30 min)
          ↓
 ┌────────────────┐
 │   KeplerVO     │
-│      API       │  ← API de KeplerVO
+│   API v3.8     │  ← API UAT de KeplerVO
+│   (UAT)        │
 └────────────────┘
 ```
 
@@ -53,37 +70,59 @@ bmcAutos47/
 1. Allez sur **[Vercel Dashboard](https://vercel.com/dashboard)**
 2. Sélectionnez votre projet (bmcAutos47)
 3. Allez dans **Settings** → **Environment Variables**
-4. Ajoutez ces 3 variables :
+4. Ajoutez ces variables :
 
-#### KEPLER_API_KEY
+#### KEPLER_API_KEY (Obligatoire)
 ```
 Name: KEPLER_API_KEY
-Value: votre_vraie_cle_api_keplervo
-Environments: ✅ Production, ✅ Preview, ✅ Development
-```
-
-#### KEPLER_DEALER_ID
-```
-Name: KEPLER_DEALER_ID
-Value: votre_id_concessionnaire
+Value: b61b638add395629388673f4c82608a9d0f3c231bf52cae67c61ef79a549d96cf1559165593681f93a71b8843f982e18a0e4e91ba4849fe0294935003206f4de
 Environments: ✅ Production, ✅ Preview, ✅ Development
 ```
 
 #### KEPLER_API_URL (Optionnel)
 ```
 Name: KEPLER_API_URL
-Value: https://api.kepler-soft.net/v3.60
+Value: https://app.keplervo-uat.com/api
 Environments: ✅ Production, ✅ Preview, ✅ Development
 ```
 
-### Étape 2 : Redéployer
+> **Note :** Le `KEPLER_DEALER_ID` n'est plus nécessaire avec l'API v3.8. Le proxy récupère automatiquement tous les véhicules associés à votre clé API.
 
-Une fois les variables ajoutées :
+### Étape 2 : Configuration locale (Développement)
+
+Pour tester le proxy localement, créez un fichier `.env` à la racine du projet :
+
+```bash
+# .env (ne sera jamais commité grâce au .gitignore)
+KEPLER_API_KEY=b61b638add395629388673f4c82608a9d0f3c231bf52cae67c61ef79a549d96cf1559165593681f93a71b8843f982e18a0e4e91ba4849fe0294935003206f4de
+KEPLER_API_URL=https://app.keplervo-uat.com/api
+```
+
+### Étape 3 : Tester localement avec Vercel Dev
+
+```bash
+# Installer Vercel CLI si pas déjà fait
+npm install -g vercel
+
+# Lancer le serveur de développement avec le proxy
+vercel dev
+
+# Le serveur démarre sur http://localhost:3000
+# Le proxy sera accessible sur http://localhost:3000/api/vehicles
+```
+
+**Important :** Avec `vercel dev`, vous devez :
+1. Ouvrir votre site sur `http://localhost:3000` (pas `http://localhost:4200`)
+2. OU modifier `src/environments/environment.ts` pour mettre `useMockData: false`
+
+### Étape 4 : Redéployer en production
+
+Une fois les variables ajoutées sur Vercel :
 
 ```bash
 # Option 1 : Push un commit pour déclencher un déploiement
 git add .
-git commit -m "Configure environment variables"
+git commit -m "Configure KeplerVO API v3.8 with token authentication"
 git push
 
 # Option 2 : Redéploiement manuel depuis le Dashboard Vercel
@@ -266,14 +305,16 @@ Logs utiles :
 ```
 
 **Solution :**
-1. Vérifiez que votre clé API KeplerVO est correcte
-2. Vérifiez la méthode d'authentification dans `/api/vehicles.ts` :
-   ```typescript
-   // Peut-être que KeplerVO utilise :
-   'X-API-Key': apiKey,
-   // au lieu de :
-   'Authorization': `Bearer ${apiKey}`,
+1. Vérifiez que votre clé API KeplerVO est correcte dans les variables Vercel
+2. Vérifiez que le token est bien généré dans les logs :
    ```
+   🔑 Generating new KeplerVO token...
+   ✅ New token generated and cached
+   ```
+3. La génération de token utilise :
+   - **Endpoint :** `POST https://app.keplervo-uat.com/api/v3.0/auth-token/`
+   - **Body :** `{ "apiKey": "votre_cle" }`
+   - **Header pour requêtes :** `X-Auth-Token: token_généré`
 
 ### Erreur : "Resource not found"
 
@@ -337,27 +378,65 @@ Logs utiles :
 - ❌ Partager vos variables d'environnement Vercel
 - ❌ Utiliser la même clé en dev et prod
 
+## 🔑 Fonctionnement de l'authentification par token
+
+L'API KeplerVO v3.8 utilise une **authentification en 2 étapes** :
+
+### Étape 1 : Génération du token
+```bash
+POST https://app.keplervo-uat.com/api/v3.0/auth-token/
+Content-Type: application/json
+
+{ "apiKey": "votre_cle_api" }
+```
+
+**Réponse :**
+```json
+{
+  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "createdAt": "2026-02-11T10:30:00Z"
+}
+```
+
+### Étape 2 : Utilisation du token
+```bash
+GET https://app.keplervo-uat.com/api/v3.8/vehicles/
+X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+### Cache du token
+- ✅ Le token est **valide 30 minutes**
+- ✅ Le proxy le met en cache pendant **29 minutes** (marge de sécurité)
+- ✅ Un nouveau token est automatiquement généré quand le cache expire
+- ✅ Pas besoin de regénérer à chaque requête
+
 ## 📝 Checklist de mise en production
 
 - [ ] Variables d'environnement ajoutées sur Vercel
   - [ ] KEPLER_API_KEY
-  - [ ] KEPLER_DEALER_ID
   - [ ] KEPLER_API_URL (optionnel)
 - [ ] Fichiers créés et déployés
-  - [ ] `/api/vehicles.ts`
+  - [ ] `/api/vehicles.ts` (avec authentification par token)
   - [ ] `vercel.json`
 - [ ] Fichiers modifiés
-  - [ ] `environment.ts`
-  - [ ] `environment.prod.ts`
-  - [ ] `kepler-vo.service.ts`
-- [ ] Tests effectués
-  - [ ] Proxy fonctionne : `curl https://site.vercel.app/api/vehicles`
+  - [ ] `environment.ts` (useMockData: true pour dev local)
+  - [ ] `environment.prod.ts` (useMockData: false pour prod)
+  - [ ] `kepler-vo.service.ts` (transformation des données v3.8)
+  - [ ] `src/index.html` (CSP avec app.keplervo-uat.com)
+- [ ] Tests locaux
+  - [ ] Créer fichier `.env` avec KEPLER_API_KEY
+  - [ ] Lancer `vercel dev`
+  - [ ] Tester http://localhost:3000/api/vehicles
+  - [ ] Vérifier génération token dans logs
+- [ ] Tests en production
+  - [ ] Déployer sur Vercel
+  - [ ] Tester `curl https://site.vercel.app/api/vehicles`
   - [ ] Clé API invisible dans le JavaScript
-  - [ ] Logs Vercel OK
+  - [ ] Logs Vercel OK (token généré et caché)
 - [ ] Production
   - [ ] `useMockData: false` dans `environment.prod.ts`
   - [ ] Site déployé
-  - [ ] Véhicules KeplerVO affichés
+  - [ ] Véhicules KeplerVO affichés avec vraies images
 
 ## 🎉 Résultat
 
