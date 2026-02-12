@@ -167,18 +167,6 @@ export class KeplerVOService {
    * Supporte à la fois l'ancien format et le nouveau format de l'API v3.8
    */
   private transformKeplerVehicle(kv: any): Vehicle {
-    // Log pour déboguer la structure des données
-    console.log('🔍 Vehicle data from API:', JSON.stringify({
-      uuid: kv.uuid,
-      reference: kv.reference,
-      brand: kv.brand?.name,
-      model: kv.model?.name,
-      hasGallery: !!kv.gallery,
-      galleryLength: kv.gallery?.length,
-      firstGalleryItem: kv.gallery?.[0],
-      allKeys: Object.keys(kv)
-    }, null, 2));
-    
     // Détection du format de l'API
     const isNewFormat = kv.brand && typeof kv.brand === 'object';
     
@@ -195,9 +183,6 @@ export class KeplerVOService {
       // Les champs 'large', 'big', 'thumb' nécessitent une authentification
       images = sortedGallery.map((g: any) => g.photo).filter(Boolean);
       mainImage = images[0] || mainImage;
-      
-      console.log('📸 Images extracted:', images.length, 'images found');
-      console.log('📸 First image URL:', mainImage);
     } else if (kv.photos) {
       // Ancien format : photos array
       const photos = [...(kv.photos || [])]
@@ -205,10 +190,6 @@ export class KeplerVOService {
       
       images = photos.map((p: any) => p.url).filter(Boolean);
       mainImage = photos.find((p: any) => p.principal)?.url || images[0] || mainImage;
-      
-      console.log('📸 Images extracted (old format):', images.length, 'images found');
-    } else {
-      console.warn('⚠️ No gallery or photos found for vehicle:', kv.uuid || kv.id);
     }
 
     // Construire les features principales

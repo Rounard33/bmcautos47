@@ -57,10 +57,11 @@ async function getAuthToken(apiKey: string): Promise<string> {
     return tokenCache.token;
   }
 
-  console.log('🔑 Generating new KeplerVO token...');
+  console.log('🔑 Generating new KEPLER token...');
 
-  // Générer un nouveau token
-  const tokenResponse = await fetch('https://app.keplervo-uat.com/api/v3.0/auth-token/', {
+  // Générer un nouveau token (utilise l'URL de base configurée)
+  const baseUrl = process.env['KEPLER_API_URL'] || 'https://www.kepler-soft.net/api';
+  const tokenResponse = await fetch(`${baseUrl}/v3.0/auth-token/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -129,7 +130,7 @@ export default async function handler(
   // ============================================
   // Configuration depuis les variables d'environnement Vercel
   // ============================================
-  const apiUrl = process.env['KEPLER_API_URL'] || 'https://app.keplervo-uat.com/api';
+  const apiUrl = process.env['KEPLER_API_URL'] || 'https://www.kepler-soft.net/api';
   const apiKey = process.env['KEPLER_API_KEY'];
 
   // Vérifier que la clé API est configurée
