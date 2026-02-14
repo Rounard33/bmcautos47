@@ -1,4 +1,4 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import type {VercelRequest, VercelResponse} from '@vercel/node';
 
 // ============================================
 // INTERFACES KEPLER API
@@ -106,7 +106,7 @@ export default async function handler(
   // CORS Headers
   // ============================================
   response.setHeader('Access-Control-Allow-Credentials', 'true');
-  response.setHeader('Access-Control-Allow-Origin', '*'); // En prod, remplacez par votre domaine
+  response.setHeader('Access-Control-Allow-Origin', 'https://www.bmcautos47.com');
   response.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
   response.setHeader(
     'Access-Control-Allow-Headers',
