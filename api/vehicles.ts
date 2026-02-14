@@ -106,7 +106,6 @@ export default async function handler(
   // CORS Headers
   // ============================================
   response.setHeader('Access-Control-Allow-Credentials', 'true');
-  response.setHeader('Access-Control-Allow-Origin', 'https://www.bmcautos47.com');
   response.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
   response.setHeader(
     'Access-Control-Allow-Headers',
