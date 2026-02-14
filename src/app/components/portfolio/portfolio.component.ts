@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Vehicle } from '../../models/vehicle.model';
 import { KeplerVOService } from '../../services/kepler-vo.service';
+import { PreloadService } from '../../services/preload.service';
 
 @Component({
   selector: 'app-portfolio',
@@ -31,10 +32,25 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   selectedFuel = signal<string>('');
   maxPrice = signal<number | null>(null);
 
-  constructor(private keplerService: KeplerVOService) {}
+  constructor(
+    private keplerService: KeplerVOService,
+    private preloadService: PreloadService
+  ) {}
 
   ngOnInit(): void {
-    this.loadVehicles();
+    // Vérifier si les véhicules ont déjà été préchargés
+    const preloadedVehicles = this.preloadService.getPreloadedVehicles();
+    
+    if (preloadedVehicles.length > 0) {
+      // Utiliser les véhicules préchargés (évite une double requête API)
+      this.vehicles.set(preloadedVehicles);
+      this.isLoading.set(false);
+      console.log('✅ Véhicules préchargés utilisés:', preloadedVehicles.length);
+    } else {
+      // Fallback : charger normalement si pas de préchargement
+      console.log('⚠️ Pas de préchargement, chargement normal...');
+      this.loadVehicles();
+    }
   }
 
   ngOnDestroy(): void {
