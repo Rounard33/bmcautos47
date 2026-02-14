@@ -145,6 +145,89 @@
   }
 }
 
+// Warning banner pour données dégradées
+.degraded-data-warning {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 152, 0, 0.15) 100%);
+  border: 2px solid rgba(255, 193, 7, 0.4);
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.1);
+  animation: slideDown 0.4s ease-out;
+
+  .warning-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .warning-content {
+    flex: 1;
+  }
+
+  .warning-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #ffc107;
+    margin-bottom: 0.4rem;
+    font-family: var(--font-display);
+  }
+
+  .warning-text {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.5;
+  }
+
+  .warning-phone {
+    color: #ffc107;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+
+    &:hover {
+      border-bottom-color: #ffc107;
+    }
+  }
+
+  @media (max-width: 768px) {
+    margin: 1.5rem 1rem;
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+
+    .warning-icon {
+      font-size: 2rem;
+    }
+
+    .warning-title {
+      font-size: 1rem;
+    }
+
+    .warning-text {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 // Vehicles Grid
 .vehicles-grid {
   display: grid;

@@ -36,10 +36,6 @@ export class WelcomeComponent implements AfterViewInit, OnDestroy {
       src: '../../../assets/img/presentation/panorama.jpg',
       alt: 'Vue panoramique du garage BMC AUTOS 47'
     },
-    {
-      src: '../../../assets/img/presentation/facade.png',
-      alt: 'BMC AUTOS 47 - Équipe familiale'
-    }
   ];
 
   currentImageIndex = 0;

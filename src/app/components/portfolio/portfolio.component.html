@@ -157,6 +157,21 @@
         <span>{{ filteredVehicles().length }} véhicule{{ filteredVehicles().length > 1 ? 's' : '' }} trouvé{{ filteredVehicles().length > 1 ? 's' : '' }}</span>
       </div>
     </div>
+
+    <!-- Warning banner si données dégradées (cache ou mock) -->
+    @if (isUsingDegradedData()) {
+      <div class="degraded-data-warning">
+        <div class="warning-icon">⚠️</div>
+        <div class="warning-content">
+          <div class="warning-title">Informations en cours de mise à jour</div>
+          <div class="warning-text">
+            Les véhicules affichés peuvent ne pas refléter notre stock actuel.
+            Pour une information en temps réel, contactez-nous au 
+            <a href="tel:+33553016697" class="warning-phone">05 53 01 66 97</a>
+          </div>
+        </div>
+      </div>
+    }
     
     <div class="vehicles-grid">
       @for (vehicle of filteredVehicles(); track vehicle.id) {

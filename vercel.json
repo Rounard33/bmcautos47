@@ -1,4 +1,5 @@
 {
+  "buildCommand": "npm run build:prod",
   "functions": {
     "api/vehicles.ts": {
       "memory": 1024,

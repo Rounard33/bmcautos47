@@ -6,10 +6,8 @@ import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import {AboutComponent} from '../../components/about/about.component';
 import {BrandsCarouselComponent} from '../../components/brands-carousel/brands-carousel.component';
 import {CtaComponent} from '../../components/cta/cta.component';
-import {FaqComponent} from '../../components/faq/faq.component';
 import {GalleryComponent} from '../../components/gallery/gallery.component';
 import {PortfolioComponent} from '../../components/portfolio/portfolio.component';
-import {ProcessComponent} from '../../components/process/process.component';
 import {ScrollToTopComponent} from '../../components/scroll-to-top/scroll-to-top.component';
 import {SectionDividerComponent} from '../../components/section-divider/section-divider.component';
 import {ServicesComponent} from '../../components/services/services.component';
@@ -28,8 +26,6 @@ gsap.registerPlugin(ScrollTrigger);
     BrandsCarouselComponent,
     ServicesComponent,
     PortfolioComponent,
-    ProcessComponent,
-    FaqComponent,
     CtaComponent,
     ScrollToTopComponent,
     SectionDividerComponent,

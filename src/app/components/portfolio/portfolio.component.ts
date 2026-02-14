@@ -1,9 +1,9 @@
-import {CommonModule} from '@angular/common';
-import {Component, computed, HostListener, OnDestroy, OnInit, signal} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {Subscription} from 'rxjs';
-import {Vehicle} from '../../models/vehicle.model';
-import {KeplerVOService} from '../../services/kepler-vo.service';
+import { CommonModule } from '@angular/common';
+import { Component, computed, HostListener, OnDestroy, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { Vehicle } from '../../models/vehicle.model';
+import { KeplerVOService } from '../../services/kepler-vo.service';
 
 @Component({
   selector: 'app-portfolio',
@@ -46,6 +46,13 @@ export class PortfolioComponent implements OnInit, OnDestroy {
    * Charge les véhicules depuis le service KeplerVO
    * @param forceRefresh Force le rechargement depuis l'API (ignore le cache)
    */
+  /**
+   * Vérifie si on utilise des données dégradées (cache ou mock)
+   */
+  isUsingDegradedData(): boolean {
+    return this.keplerService.isUsingDegradedData();
+  }
+
   loadVehicles(forceRefresh: boolean = false): void {
     this.isLoading.set(true);
     this.errorMessage.set(null);

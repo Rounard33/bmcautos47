@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" preserveAspectRatio="xMidYMid slice">
+  <!-- Fond dégradé subtil -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Fond -->
+  <rect width="800" height="600" fill="url(#bgGradient)"/>
+  
+  <!-- Logo BMC AUTOS (silhouette de voiture) -->
+  <g transform="translate(400, 120)">
+    <!-- Texte BMC AUTOS 47 -->
+    <text 
+        font-family="'Montserrat', 'Arial', sans-serif" 
+        font-size="32" 
+        font-weight="700" 
+        fill="#d4af37" 
+        text-anchor="middle"
+        letter-spacing="3">
+      BMC AUTOS 47
+    </text>
+  </g>
+  
+  <!-- Ligne décorative -->
+  <line x1="300" y1="175" x2="500" y2="175" stroke="#d4af37" stroke-width="2" opacity="0.3"/>
+  
+  <!-- Icône caméra stylée -->
+  <g transform="translate(400, 260)" filter="url(#shadow)">
+    <!-- Corps de la caméra -->
+    <rect x="-50" y="-25" width="100" height="60" rx="8" fill="#d4af37" opacity="0.9"/>
+    <!-- Objectif -->
+    <circle cx="0" cy="5" r="25" fill="#1a1a1a" opacity="0.9"/>
+    <circle cx="0" cy="5" r="18" fill="#d4af37" opacity="0.3"/>
+    <circle cx="0" cy="5" r="10" fill="#1a1a1a" opacity="0.5"/>
+    <!-- Viseur -->
+    <rect x="-15" y="-35" width="30" height="15" rx="3" fill="#d4af37" opacity="0.9"/>
+    <!-- Flash -->
+    <circle cx="25" cy="-10" r="6" fill="#fff" opacity="0.7"/>
+    <!-- Bouton -->
+    <circle cx="30" cy="5" r="4" fill="#1a1a1a" opacity="0.7"/>
+  </g>
+  
+  <!-- Texte principal -->
+  <text x="400" y="370" 
+        font-family="'Montserrat', 'Arial', sans-serif" 
+        font-size="26" 
+        font-weight="600" 
+        fill="#d4af37" 
+        text-anchor="middle">
+    Photos à venir prochainement
+  </text>
+  
+  <!-- Sous-texte -->
+  <text x="400" y="410" 
+        font-family="'Montserrat', 'Arial', sans-serif" 
+        font-size="16" 
+        font-weight="400" 
+        fill="#cccccc" 
+        text-anchor="middle">
+    Contactez-nous pour plus d'informations
+  </text>
+  
+  <!-- Téléphone avec icône -->
+  <g transform="translate(400, 460)">
+    <!-- Icône téléphone -->
+    <g transform="translate(-90, -10)">
+      <rect x="0" y="0" width="16" height="16" rx="2" fill="none" stroke="#d4af37" stroke-width="1.5"/>
+      <path d="M3,5 Q3,3 5,3 L11,3 Q13,3 13,5 L13,11 Q13,13 11,13 L5,13 Q3,13 3,11 Z" 
+            fill="none" stroke="#d4af37" stroke-width="1.5"/>
+      <circle cx="8" cy="10" r="1" fill="#d4af37"/>
+    </g>
+    
+    <!-- Numéro -->
+    <text x="0" y="5" 
+          font-family="'Montserrat', 'Arial', sans-serif" 
+          font-size="22" 
+          font-weight="600" 
+          fill="#d4af37" 
+          text-anchor="middle">
+      ☎ 05 53 01 66 97
+    </text>
+  </g>
+</svg>
+
