@@ -30,32 +30,34 @@ export class PreloadService {
    * Retourne une Promise qui se résout quand les VRAIES données sont chargées
    */
   async preloadVehicles(): Promise<void> {
-    try {
-      // Charger les véhicules
-      const vehicles = await firstValueFrom(
-        this.keplerService.getVehicles(true) // Force refresh = bypass cache
-      );
+  try {
+    // OPTIMISATION : Ne pas forcer le refresh si le cache est encore valide
+    // On utilise le cache localStorage (valide 48h) pour éviter les appels API inutiles
+    // Si le cache est expiré, l'API sera appelée automatiquement
+    const vehicles = await firstValueFrom(
+      this.keplerService.getVehicles(false) // Utilise le cache si valide
+    );
 
-      // Vérifier si ce sont de vraies données ou du fallback
-      const isRealData = !this.keplerService.isUsingDegradedData();
+    // Vérifier si ce sont de vraies données ou du fallback
+    const isRealData = !this.keplerService.isUsingDegradedData();
 
-      this.state.next({
-        isLoading: false,
-        vehicles,
-        isRealData,
-        error: isRealData ? null : 'Données de secours utilisées'
-      });
+    this.state.next({
+      isLoading: false,
+      vehicles,
+      isRealData,
+      error: isRealData ? null : 'Données de secours utilisées'
+    });
 
-    } catch (error) {
-      console.error('❌ Erreur préchargement:', error);
-      this.state.next({
-        isLoading: false,
-        vehicles: [],
-        isRealData: false,
-        error: 'Erreur de chargement'
-      });
-    }
+  } catch (error) {
+    console.error('❌ Erreur préchargement:', error);
+    this.state.next({
+      isLoading: false,
+      vehicles: [],
+      isRealData: false,
+      error: 'Erreur de chargement'
+    });
   }
+}
 
   /**
    * Retourne les véhicules préchargés (pour éviter de recharger)

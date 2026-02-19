@@ -46,6 +46,15 @@ interface KeplerVehicleAPI {
 // Cache du token en mémoire (valide 30 minutes)
 let tokenCache: { token: string; expiresAt: number } | null = null;
 
+// Cache des réponses API côté serveur (valide 5 minutes, même que s-maxage)
+const serverCache: Map<string, { data: any; timestamp: number }> = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+// Verrou (mutex) pour éviter les appels API simultanés multiples pour la même ressource
+// Si plusieurs utilisateurs demandent la même page en même temps, seul le 1er fait l'appel API
+// Les autres attendent le résultat du 1er
+const pendingRequests: Map<string, Promise<any>> = new Map();
+
 /**
  * Génère et met en cache un token d'authentification KeplerVO
  * Le token est valide pendant 30 minutes
@@ -147,70 +156,138 @@ export default async function handler(
   // ============================================
   const { vehicleId, page } = request.query;
 
+  // Créer une clé de cache unique pour cette requête
+  const cacheKey = vehicleId 
+    ? `vehicle-${vehicleId}` 
+    : `vehicles-page-${page || 1}`;
+
   try {
-    // Générer ou récupérer le token d'authentification
-    const authToken = await getAuthToken(apiKey);
-
-    let url: string;
-    
-    // Si un ID de véhicule est demandé
-    if (vehicleId && typeof vehicleId === 'string') {
-      url = `${apiUrl}/v3.8/vehicles/${vehicleId}/`;
-      console.log(`🔄 Fetching vehicle ${vehicleId} from KeplerVO`);
-    } else {
-      // Sinon, liste de tous les véhicules avec pagination
-      const pageParam = page && typeof page === 'string' ? `?page=${page}` : '';
-      url = `${apiUrl}/v3.8/vehicles/${pageParam}`;
-      console.log(`🔄 Fetching vehicles from KeplerVO (page: ${page || 1})`);
-    }
-
     // ============================================
-    // Appel à l'API KeplerVO avec le token
+    // Vérifier le cache serveur en premier
     // ============================================
-    const apiResponse = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'X-Auth-Token': authToken,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    // Gérer les erreurs HTTP
-    if (!apiResponse.ok) {
-      const errorText = await apiResponse.text();
-      console.error(`❌ KeplerVO API error: ${apiResponse.status} ${apiResponse.statusText}`);
-      console.error('Response body:', errorText);
-      
-      // Retourner l'erreur au client (sans exposer des détails sensibles)
-      return response.status(apiResponse.status).json({
-        success: false,
-        error: `KeplerVO API error: ${apiResponse.status}`,
-        message: apiResponse.status === 401 
-          ? 'Authentication failed - check your API key'
-          : apiResponse.status === 404
-          ? 'Resource not found'
-          : 'API request failed'
+    const cached = serverCache.get(cacheKey);
+    if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+      console.log(`✅ Cache serveur hit pour ${cacheKey}`);
+      response.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
+      return response.status(200).json({
+        success: true,
+        data: cached.data,
+        total: Array.isArray(cached.data) ? cached.data.length : 1,
+        cached: true
       });
     }
 
-    // Parser la réponse JSON
-    const data: KeplerVehicleAPI | KeplerVehicleAPI[] = await apiResponse.json();
-    
-    console.log(`✅ Successfully fetched ${Array.isArray(data) ? data.length : 1} vehicle(s) from KeplerVO`);
-    
     // ============================================
-    // Cache la réponse
+    // PROTECTION : Vérifier si une requête est déjà en cours (verrou)
     // ============================================
-    // s-maxage=300 : Cache sur le CDN Vercel pendant 5 minutes
-    // stale-while-revalidate : Sert une version en cache pendant la revalidation
-    response.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
-    
-    // Retourner les données
-    return response.status(200).json({
-      success: true,
-      data: data,
-      total: Array.isArray(data) ? data.length : 1
-    });
+    // Si plusieurs utilisateurs demandent la même ressource en même temps,
+    // seul le 1er fait l'appel API, les autres attendent le résultat
+    const pendingRequest = pendingRequests.get(cacheKey);
+    if (pendingRequest) {
+      console.log(`⏳ Requête en cours pour ${cacheKey}, attente du résultat...`);
+      try {
+        const data = await pendingRequest;
+        response.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
+        return response.status(200).json({
+          success: true,
+          data: data,
+          total: Array.isArray(data) ? data.length : 1,
+          cached: false,
+          shared: true // Indique que la requête a été partagée
+        });
+      } catch (error) {
+        // Si la requête en cours échoue, on continue avec une nouvelle requête
+        console.warn(`⚠️ Requête partagée échouée pour ${cacheKey}, nouvelle tentative...`);
+        pendingRequests.delete(cacheKey);
+      }
+    }
+
+    // ============================================
+    // Créer la requête API et la stocker dans le verrou
+    // ============================================
+    const requestPromise = (async () => {
+      // Générer ou récupérer le token d'authentification
+      const authToken = await getAuthToken(apiKey);
+
+      let url: string;
+      
+      // Si un ID de véhicule est demandé
+      if (vehicleId && typeof vehicleId === 'string') {
+        url = `${apiUrl}/v3.8/vehicles/${vehicleId}/`;
+        console.log(`🔄 Fetching vehicle ${vehicleId} from KeplerVO`);
+      } else {
+        // Sinon, liste de tous les véhicules avec pagination
+        const pageParam = page && typeof page === 'string' ? `?page=${page}` : '';
+        url = `${apiUrl}/v3.8/vehicles/${pageParam}`;
+        console.log(`🔄 Fetching vehicles from KeplerVO (page: ${page || 1})`);
+      }
+
+      // Appel à l'API KeplerVO avec le token
+      const apiResponse = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'X-Auth-Token': authToken,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Gérer les erreurs HTTP
+      if (!apiResponse.ok) {
+        const errorText = await apiResponse.text();
+        console.error(`❌ KeplerVO API error: ${apiResponse.status} ${apiResponse.statusText}`);
+        console.error('Response body:', errorText);
+        throw new Error(`API error: ${apiResponse.status}`);
+      }
+
+      // Parser la réponse JSON
+      const data: KeplerVehicleAPI | KeplerVehicleAPI[] = await apiResponse.json();
+      
+      console.log(`✅ Successfully fetched ${Array.isArray(data) ? data.length : 1} vehicle(s) from KeplerVO`);
+      
+      // Mettre en cache serveur
+      serverCache.set(cacheKey, {
+        data: data,
+        timestamp: Date.now()
+      });
+
+      // Limiter la taille du cache (garder max 100 entrées)
+      if (serverCache.size > 100) {
+        const firstKey = serverCache.keys().next().value;
+        serverCache.delete(firstKey);
+      }
+
+      return data;
+    })();
+
+    // Stocker la Promise dans le verrou AVANT de l'exécuter
+    pendingRequests.set(cacheKey, requestPromise);
+
+    try {
+      // Attendre le résultat de la requête
+      const data = await requestPromise;
+      
+      // Retirer le verrou après succès
+      pendingRequests.delete(cacheKey);
+
+      // ============================================
+      // Cache la réponse
+      // ============================================
+      // s-maxage=300 : Cache sur le CDN Vercel pendant 5 minutes
+      // stale-while-revalidate : Sert une version en cache pendant la revalidation
+      response.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
+      
+      // Retourner les données
+      return response.status(200).json({
+        success: true,
+        data: data,
+        total: Array.isArray(data) ? data.length : 1,
+        cached: false
+      });
+    } catch (error) {
+      // Retirer le verrou en cas d'erreur
+      pendingRequests.delete(cacheKey);
+      throw error; // Relancer l'erreur pour le catch global
+    }
 
   } catch (error) {
     // Gérer les erreurs réseau ou autres

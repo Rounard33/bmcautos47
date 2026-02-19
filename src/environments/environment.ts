@@ -10,7 +10,7 @@ export const environment = {
     // ou garder useMockData: true pour développer sans API
     apiUrl: 'http://localhost:3000/api',  // Proxy local (avec vercel dev)
     timeout: 10000,
-    cacheDuration: 300000,  // 5 minutes
+    cacheDuration: 1800000,  // 30 minutes (pour réduire les appels API)
     useMockData: false  // false = utilise l'API KEPLER (nécessite vercel dev)
   }
 };

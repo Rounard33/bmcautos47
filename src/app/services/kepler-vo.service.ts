@@ -1,7 +1,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable, of, forkJoin} from 'rxjs';
-import {catchError, delay, map, retry, timeout, switchMap} from 'rxjs/operators';
+import {forkJoin, Observable, of} from 'rxjs';
+import {catchError, delay, map, retry, switchMap, timeout} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
 import {VehicleMapper} from '../mappers/vehicle.mapper';
 import {MOCK_VEHICLES} from '../models/mock-vehicles';
@@ -48,16 +48,31 @@ export class KeplerVOService {
       );
     }
 
-    if (!forceRefresh && this.cache.vehicles) {
-      const cacheAge = Date.now() - this.cache.vehicles.timestamp;
-      if (cacheAge < environment.keplerVO.cacheDuration) {
-        if (!environment.production) {
-          console.log('📦 Véhicules chargés depuis le cache local');
+    // OPTIMISATION : Vérifier d'abord le localStorage (plus persistant que le cache mémoire)
+    if (!forceRefresh) {
+      // 1. Vérifier le cache localStorage en premier (valide 48h)
+      const cachedVehicles = this.getFromLocalStorage();
+      if (cachedVehicles && cachedVehicles.length > 0) {
+        // Mettre aussi en cache mémoire pour les prochains appels
+        this.cache.vehicles = {
+          data: cachedVehicles,
+          timestamp: Date.now()
+        };
+        this.usingDegradedData = false; // Cache valide = données fraîches
+        return of(cachedVehicles); // ✅ Pas d'appel API !
+      }
+
+      // 2. Ensuite vérifier le cache mémoire (plus rapide mais moins persistant)
+      if (this.cache.vehicles) {
+        const cacheAge = Date.now() - this.cache.vehicles.timestamp;
+        if (cacheAge < environment.keplerVO.cacheDuration) {
+          this.usingDegradedData = false; // Cache valide
+          return of(this.cache.vehicles.data);
         }
-        return of(this.cache.vehicles.data);
       }
     }
 
+    // 3. Si aucun cache valide, récupérer depuis l'API
     return this.fetchVehiclesFromAPI();
   }
 
@@ -126,9 +141,9 @@ export class KeplerVOService {
     const fetchPage = (pageNumber: number): Observable<KeplerResponse<any[]>> => {
       return this.http.get<KeplerResponse<any[]>>(
         `${this.apiUrl}/vehicles?page=${pageNumber}`,
-        { headers }
-      ).pipe(
-        timeout(environment.keplerVO.timeout),
+      { headers }
+    ).pipe(
+      timeout(environment.keplerVO.timeout),
         retry(2)
       );
     };
@@ -139,7 +154,7 @@ export class KeplerVOService {
         if (!firstPageResponse.success || !firstPageResponse.data || firstPageResponse.data.length === 0) {
           throw new Error('Réponse invalide de l\'API KEPLER');
         }
-
+        
         const firstVehicle = firstPageResponse.data[0];
         const totalPages = parseInt(firstVehicle.nbPageList || '1', 10);
 

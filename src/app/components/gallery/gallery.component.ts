@@ -57,6 +57,20 @@ export class GalleryComponent implements OnInit, OnDestroy {
       title: 'Notre Atelier',
       description: 'Un atelier moderne et bien équipé pour la préparation'
     },
+    { 
+      src: 'assets/img/presentation/exterieur occasion 1.jpg', 
+      alt: 'Extérieur', 
+      category: 'exterieur',
+      title: 'Notre Atelier',
+      description: 'Un atelier moderne et bien équipé pour la préparation'
+    },
+    { 
+      src: 'assets/img/presentation/exterieur occasion 2.jpg', 
+      alt: 'Extérieur', 
+      category: 'exterieur',
+      title: 'Notre Atelier',
+      description: 'Un atelier moderne et bien équipé pour la préparation'
+    },
   ];
 
   ngOnInit() {

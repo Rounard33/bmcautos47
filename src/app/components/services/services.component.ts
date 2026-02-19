@@ -54,8 +54,7 @@ export class ServicesComponent {
       features: [
         'Estimation gratuite',
         'Reprise immédiate',
-        'Démarches simplifiées',
-        'Meilleur prix garanti'
+        'Démarches simplifiées'
       ]
     },
     {

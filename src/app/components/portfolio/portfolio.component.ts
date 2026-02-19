@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, HostListener, OnDestroy, OnInit, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { Vehicle } from '../../models/vehicle.model';
-import { KeplerVOService } from '../../services/kepler-vo.service';
-import { PreloadService } from '../../services/preload.service';
+import {CommonModule} from '@angular/common';
+import {Component, computed, HostListener, OnDestroy, OnInit, signal} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {Subscription} from 'rxjs';
+import {Vehicle} from '../../models/vehicle.model';
+import {KeplerVOService} from '../../services/kepler-vo.service';
+import {PreloadService} from '../../services/preload.service';
 
 @Component({
   selector: 'app-portfolio',
@@ -19,8 +19,9 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   isLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
   
-  // Subscription pour nettoyer à la destruction du composant
+  // Subscriptions pour nettoyer à la destruction du composant
   private vehiclesSubscription?: Subscription;
+  private preloadSubscription?: Subscription;
   
   // Liste des véhicules (chargée depuis le service)
   vehicles = signal<Vehicle[]>([]);
@@ -38,22 +39,27 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Vérifier si les véhicules ont déjà été préchargés
-    const preloadedVehicles = this.preloadService.getPreloadedVehicles();
-    
-    if (preloadedVehicles.length > 0) {
-      // Utiliser les véhicules préchargés (évite une double requête API)
-      this.vehicles.set(preloadedVehicles);
-      this.isLoading.set(false);
-    } else {
-      // Fallback : charger normalement si pas de préchargement
-      this.loadVehicles();
-    }
+    // S'abonner à l'état du preload pour éviter les appels API en double
+    this.preloadSubscription = this.preloadService.state$.subscribe(state => {
+      if (!state.isLoading) {
+        // Le preload est terminé
+        if (state.vehicles.length > 0) {
+          // Utiliser les véhicules préchargés (évite une double requête API)
+          this.vehicles.set(state.vehicles);
+          this.isLoading.set(false);
+        } else {
+          // Pas de véhicules préchargés, charger normalement
+          this.loadVehicles();
+        }
+      }
+      // Si isLoading = true, on attend que le preload se termine
+    });
   }
 
   ngOnDestroy(): void {
-    // Nettoyer la subscription pour éviter les fuites mémoire
+    // Nettoyer les subscriptions pour éviter les fuites mémoire
     this.vehiclesSubscription?.unsubscribe();
+    this.preloadSubscription?.unsubscribe();
   }
 
   /**
