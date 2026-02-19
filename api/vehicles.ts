@@ -236,6 +236,19 @@ export default async function handler(
         const errorText = await apiResponse.text();
         console.error(`❌ KeplerVO API error: ${apiResponse.status} ${apiResponse.statusText}`);
         console.error('Response body:', errorText);
+        
+        // Gérer spécifiquement l'erreur 429 (quota dépassé)
+        if (apiResponse.status === 429) {
+          // Essayer de servir le cache stale si disponible
+          const staleCache = serverCache.get(cacheKey);
+          if (staleCache) {
+            console.warn(`⚠️ Erreur 429 - Utilisation du cache stale pour ${cacheKey}`);
+            return staleCache.data; // Retourner le cache même s'il est expiré
+          }
+          // Si pas de cache, lancer une erreur spécifique
+          throw new Error('RATE_LIMIT_EXCEEDED');
+        }
+        
         throw new Error(`API error: ${apiResponse.status}`);
       }
 
@@ -292,6 +305,31 @@ export default async function handler(
   } catch (error) {
     // Gérer les erreurs réseau ou autres
     console.error('❌ Error in vehicles proxy API:', error);
+    
+    // Gérer spécifiquement l'erreur 429
+    if (error instanceof Error && error.message === 'RATE_LIMIT_EXCEEDED') {
+      // Essayer de servir le cache stale si disponible
+      const staleCache = serverCache.get(cacheKey);
+      if (staleCache) {
+        console.warn(`⚠️ Erreur 429 - Utilisation du cache stale pour ${cacheKey}`);
+        response.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
+        return response.status(200).json({
+          success: true,
+          data: staleCache.data,
+          total: Array.isArray(staleCache.data) ? staleCache.data.length : 1,
+          cached: true,
+          rateLimited: true // Indique que c'est du cache à cause du quota
+        });
+      }
+      
+      // Retourner une erreur 429 propre
+      return response.status(429).json({
+        success: false,
+        error: 'Rate limit exceeded',
+        message: 'Quota API dépassé. Veuillez réessayer plus tard.',
+        retryAfter: 3600 // 1 heure en secondes
+      });
+    }
     
     return response.status(500).json({
       success: false,

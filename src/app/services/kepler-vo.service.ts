@@ -1,7 +1,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {forkJoin, Observable, of} from 'rxjs';
-import {catchError, delay, map, retry, switchMap, timeout} from 'rxjs/operators';
+import {from, Observable, of, throwError} from 'rxjs';
+import {catchError, concatMap, delay, map, retry, switchMap, timeout, toArray} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
 import {VehicleMapper} from '../mappers/vehicle.mapper';
 import {MOCK_VEHICLES} from '../models/mock-vehicles';
@@ -141,10 +141,22 @@ export class KeplerVOService {
     const fetchPage = (pageNumber: number): Observable<KeplerResponse<any[]>> => {
       return this.http.get<KeplerResponse<any[]>>(
         `${this.apiUrl}/vehicles?page=${pageNumber}`,
-      { headers }
-    ).pipe(
-      timeout(environment.keplerVO.timeout),
-        retry(2)
+        { headers }
+      ).pipe(
+        timeout(environment.keplerVO.timeout),
+        retry({
+          count: 1,
+          delay: 3000, // 3 secondes avant retry
+          resetOnSuccess: true
+        }),
+        catchError(error => {
+          // Détecter l'erreur 429 (quota dépassé) - pas de retry pour cette erreur
+          if (error.status === 429) {
+            console.error(`❌ Quota API dépassé (429) pour la page ${pageNumber}`);
+            return throwError(() => new Error('RATE_LIMIT_EXCEEDED'));
+          }
+          return throwError(() => error);
+        })
       );
     };
 
@@ -158,17 +170,24 @@ export class KeplerVOService {
         const firstVehicle = firstPageResponse.data[0];
         const totalPages = parseInt(firstVehicle.nbPageList || '1', 10);
 
-        // 2. Si plusieurs pages, récupérer toutes les autres pages en parallèle
+        // 2. Si plusieurs pages, récupérer TOUTES les autres pages SÉQUENTIELLEMENT
         if (totalPages > 1) {
-          const otherPages$ = Array.from(
-            { length: totalPages - 1 }, 
-            (_, i) => fetchPage(i + 2) // Pages 2, 3, 4, 5...
-          );
-
-          // 3. Combiner la première page avec toutes les autres
-          return forkJoin([of(firstPageResponse), ...otherPages$]).pipe(
+          // Créer un tableau des numéros de pages restantes (2, 3, 4, 5...)
+          const pageNumbers = Array.from({ length: totalPages - 1 }, (_, i) => i + 2);
+          
+          // Récupérer chaque page SÉQUENTIELLEMENT avec un délai de 7 secondes
+          // 7 secondes = ~8.5 appels/minute (sous la limite de 10 appels/minute)
+          return from(pageNumbers).pipe(
+            concatMap((pageNum, index) => 
+              fetchPage(pageNum).pipe(
+                delay(7000) // 7 secondes entre chaque appel
+              )
+            ),
+            toArray(), // Collecter TOUTES les réponses dans un tableau
+            // Ajouter la première page au début
+            map(otherPages => [firstPageResponse, ...otherPages]),
+            // Fusionner TOUS les véhicules de TOUTES les pages
             map(allResponses => {
-              // Fusionner tous les véhicules de toutes les pages
               const allVehicles = allResponses.flatMap(response => response.data);
               return allVehicles;
             })
@@ -203,6 +222,17 @@ export class KeplerVOService {
       }),
       catchError(error => {
         console.error('❌ Erreur API KEPLER:', error);
+        
+        // Gérer spécifiquement l'erreur 429 (quota dépassé)
+        if (error.status === 429 || (error instanceof Error && error.message === 'RATE_LIMIT_EXCEEDED')) {
+          console.warn('⚠️ Quota API dépassé (429), utilisation du cache...');
+          const cachedVehicles = this.getFromLocalStorage();
+          if (cachedVehicles && cachedVehicles.length > 0) {
+            this.usingDegradedData = true;
+            return of(cachedVehicles);
+          }
+          // Si pas de cache, continuer avec le fallback normal
+        }
         
         // Stratégie de fallback en cascade
         
