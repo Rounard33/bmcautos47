@@ -145,7 +145,7 @@ export default async function handler(
   // ============================================
   // Gérer les différentes routes
   // ============================================
-  const { vehicleId } = request.query;
+  const { vehicleId, page } = request.query;
 
   try {
     // Générer ou récupérer le token d'authentification
@@ -158,9 +158,10 @@ export default async function handler(
       url = `${apiUrl}/v3.8/vehicles/${vehicleId}/`;
       console.log(`🔄 Fetching vehicle ${vehicleId} from KeplerVO`);
     } else {
-      // Sinon, liste de tous les véhicules
-      url = `${apiUrl}/v3.8/vehicles/`;
-      console.log(`🔄 Fetching all vehicles from KeplerVO`);
+      // Sinon, liste de tous les véhicules avec pagination
+      const pageParam = page && typeof page === 'string' ? `?page=${page}` : '';
+      url = `${apiUrl}/v3.8/vehicles/${pageParam}`;
+      console.log(`🔄 Fetching vehicles from KeplerVO (page: ${page || 1})`);
     }
 
     // ============================================

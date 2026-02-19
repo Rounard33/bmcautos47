@@ -45,10 +45,8 @@ export class PortfolioComponent implements OnInit, OnDestroy {
       // Utiliser les véhicules préchargés (évite une double requête API)
       this.vehicles.set(preloadedVehicles);
       this.isLoading.set(false);
-      console.log('✅ Véhicules préchargés utilisés:', preloadedVehicles.length);
     } else {
       // Fallback : charger normalement si pas de préchargement
-      console.log('⚠️ Pas de préchargement, chargement normal...');
       this.loadVehicles();
     }
   }
@@ -77,7 +75,6 @@ export class PortfolioComponent implements OnInit, OnDestroy {
       next: (vehicles) => {
         this.vehicles.set(vehicles);
         this.isLoading.set(false);
-        console.log('✅ Véhicules chargés avec succès:', vehicles.length);
       },
       error: (error) => {
         this.errorMessage.set(error.message || 'Erreur lors du chargement des véhicules');

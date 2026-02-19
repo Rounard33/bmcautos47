@@ -31,8 +31,6 @@ export class PreloadService {
    */
   async preloadVehicles(): Promise<void> {
     try {
-      console.log('🔄 Préchargement des véhicules...');
-      
       // Charger les véhicules
       const vehicles = await firstValueFrom(
         this.keplerService.getVehicles(true) // Force refresh = bypass cache
@@ -40,9 +38,6 @@ export class PreloadService {
 
       // Vérifier si ce sont de vraies données ou du fallback
       const isRealData = !this.keplerService.isUsingDegradedData();
-
-      console.log(`✅ Préchargement terminé: ${vehicles.length} véhicules`);
-      console.log(`📊 Type de données: ${isRealData ? 'API réelle' : 'Données de secours'}`);
 
       this.state.next({
         isLoading: false,
@@ -52,7 +47,7 @@ export class PreloadService {
       });
 
     } catch (error) {
-      console.error('❌ Erreur lors du préchargement:', error);
+      console.error('❌ Erreur préchargement:', error);
       this.state.next({
         isLoading: false,
         vehicles: [],
