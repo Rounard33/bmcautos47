@@ -24,8 +24,8 @@
 .header-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: var(--spacing-md) 0;
+  margin-left: 20px;
   min-height: 70px;
 }
 
@@ -109,8 +109,11 @@
 .nav {
   display: flex;
   align-items: center;
+  flex: 1; // Prend l'espace restant pour pousser le CTA à droite (desktop)
+  margin-left: 20px;
 
   @media (max-width: 1024px) {
+    flex: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -146,6 +149,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  flex: 1; // Occupe toute la largeur de .nav pour desktop
 
   @media (max-width: 1024px) {
     flex-direction: column;
@@ -237,7 +241,7 @@
 
 // CTA Button in Navigation
 .nav-item-cta {
-  margin-left: var(--spacing-md);
+  margin-left: auto; // Pousse le bouton tout à droite du header (desktop)
 
   @media (max-width: 1024px) {
     margin-left: 0;
@@ -321,6 +325,7 @@
 
   @media (max-width: 1024px) {
     display: flex;
+    margin-left: auto; // Reste à droite du header-content
   }
 }
 

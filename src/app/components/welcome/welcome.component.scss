@@ -3,7 +3,8 @@
   position: relative;
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start; // Aligné en haut pour desktop
+  justify-content: flex-end; // Aligné à droite pour desktop
   background: var(--bg-primary);
   overflow: hidden;
   padding-top: 80px;
@@ -13,11 +14,20 @@
     padding-top: 70px;
     padding-bottom: var(--spacing-xl);
     align-items: flex-start; // Aligne le contenu en haut pour mobile
+    justify-content: center; // Centré sur mobile
   }
   
   // Décaler le container sous la photo sur mobile
   > .container {
+    width: auto; // Largeur auto pour s'adapter au contenu
+    max-width: 100%;
+    margin-left: auto; // Aligne le container à droite
+    margin-right: var(--spacing-xl); // Marge à droite pour desktop
+    
     @media (max-width: 768px) {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
       margin-top: 200px;
       padding: var(--spacing-xl);
       border-radius: var(--radius-xl) var(--radius-xl) 0 0;
@@ -281,39 +291,25 @@
 .hero-content {
   position: relative;
   z-index: 10;
-  width: 100%;
-  max-width: 900px;
-  padding: var(--spacing-3xl) 0;
+  width: auto; // Largeur auto pour desktop
+  max-width: 500px; // Réduit de 900px à 500px pour desktop
+  padding: var(--spacing-xl) 0; // Réduit le padding pour desktop
   
   @media (max-width: 768px) {
+    width: 100%;
+    max-width: 100%;
     padding: var(--spacing-2xl) 0;
+    margin-top: 0;
   }
 }
 
 .hero-text {
-  text-align: center;
+  text-align: right; // Aligné à droite pour desktop
   position: relative;
   
-  // Fond subtil avec dégradé qui se fond
-  &::before {
-    content: '';
-    position: absolute;
-    top: -2rem;
-    left: -2rem;
-    right: -2rem;
-    bottom: -2rem;
-    background: radial-gradient(
-      ellipse at center,
-      rgba(0, 0, 0, 0.75) 0%,
-      rgba(0, 0, 0, 0.5) 40%,
-      transparent 70%
-    );
-    border-radius: var(--radius-2xl);
-    z-index: -1;
-    pointer-events: none;
-  }
-  
   @media (max-width: 768px) {
+    text-align: center; // Centré sur mobile
+    
     &::before {
       background: radial-gradient(
         ellipse at center,
@@ -380,39 +376,53 @@
 
 // Title
 .title {
-  font-size: 1rem;
+  font-size: 0.875rem; // Réduit pour desktop
   font-weight: 400;
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg); // Réduit pour desktop
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm); // Réduit pour desktop
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-xl);
+    gap: var(--spacing-md);
+  }
 }
 
 .title-brand {
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 7vw, 2.5rem);
+  font-size: clamp(1.25rem, 5vw, 1.75rem); // Réduit pour desktop
   font-weight: 900;
   letter-spacing: 0.02em;
   color: var(--text-primary);
   line-height: 1.1;
+  
+  @media (max-width: 768px) {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
 }
 
 .title-tagline {
   display: block;
   font-family: var(--font-display);
-  font-size: clamp(1.25rem, 3vw, 1.875rem);
+  font-size: clamp(0.875rem, 2.5vw, 1.25rem); // Réduit pour desktop
   font-weight: 500;
   color: var(--text-secondary);
   letter-spacing: 0.01em;
+  
+  @media (max-width: 768px) {
+    font-size: clamp(1.25rem, 3vw, 1.875rem);
+  }
 }
 
 // Description
 .description {
-  font-size: clamp(1rem, 2vw, 1.125rem);
-  line-height: 1.8;
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem); // Réduit pour desktop
+  line-height: 1.6; // Réduit pour desktop
   color: var(--text-muted);
-  margin-bottom: var(--spacing-2xl);
-  max-width: 650px;
+  margin-bottom: var(--spacing-xl); // Réduit pour desktop
+  max-width: 100%; // Pas de limite sur desktop
   
   strong {
     color: var(--accent-500);
@@ -420,6 +430,10 @@
   }
 
   @media (max-width: 768px) {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    line-height: 1.8;
+    margin-bottom: var(--spacing-2xl);
+    max-width: 650px;
     margin-left: auto;
     margin-right: auto;
   }
