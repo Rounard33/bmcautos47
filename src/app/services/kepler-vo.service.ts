@@ -140,7 +140,7 @@ export class KeplerVOService {
     // Fonction pour récupérer une page spécifique
     const fetchPage = (pageNumber: number): Observable<KeplerResponse<any[]>> => {
       return this.http.get<KeplerResponse<any[]>>(
-        `${this.apiUrl}/vehicles?page=${pageNumber}`,
+        `${this.apiUrl}/vehicles?page=${pageNumber}&count=100`,
         { headers }
       ).pipe(
         timeout(environment.keplerVO.timeout),
