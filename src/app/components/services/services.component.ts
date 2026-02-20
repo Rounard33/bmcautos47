@@ -65,8 +65,6 @@ export class ServicesComponent {
       features: [
         'Garantie 12 mois incluse',
         'Extension jusqu\'à 24 mois',
-        'Protection complète',
-        'Assistance 24h/24'
       ]
     }
   ];
