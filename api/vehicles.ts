@@ -154,12 +154,12 @@ export default async function handler(
   // ============================================
   // Gérer les différentes routes
   // ============================================
-  const { vehicleId, page } = request.query;
+  const { vehicleId, page, count } = request.query;
 
   // Créer une clé de cache unique pour cette requête
   const cacheKey = vehicleId 
     ? `vehicle-${vehicleId}` 
-    : `vehicles-page-${page || 1}`;
+    : `vehicles-page-${page || 1}-count-${count || 'default'}`;
 
   try {
     // ============================================
@@ -217,9 +217,15 @@ export default async function handler(
         console.log(`🔄 Fetching vehicle ${vehicleId} from KeplerVO`);
       } else {
         // Sinon, liste de tous les véhicules avec pagination
-        const pageParam = page && typeof page === 'string' ? `?page=${page}` : '';
-        url = `${apiUrl}/v3.8/vehicles/${pageParam}`;
-        console.log(`🔄 Fetching vehicles from KeplerVO (page: ${page || 1})`);
+        const pageParam = page && typeof page === 'string' ? `page=${page}` : '';
+        const countParam = count && typeof count === 'string' ? `count=${count}` : '';
+        
+        // Construire les paramètres de requête
+        const queryParams = [pageParam, countParam].filter(p => p !== '').join('&');
+        const urlSuffix = queryParams ? `?${queryParams}` : '';
+        
+        url = `${apiUrl}/v3.8/vehicles/${urlSuffix}`;
+        console.log(`🔄 Fetching vehicles from KeplerVO (page: ${page || 1}, count: ${count || 'default'})`);
       }
 
       // Appel à l'API KeplerVO avec le token
