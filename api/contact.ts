@@ -99,69 +99,54 @@ export default async function handler(
             <td style="padding:28px 32px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
                 <tr>
-                  <td style="padding:12px 0;border-bottom:1px solid rgba(224,176,32,0.1);">
-                    <span style="font-size:13px;color:#a3a3a3;">Nom</span><br>
-                    <span style="font-size:16px;color:#ffffff;font-weight:500;">${esc(name)}</span>
+                  <td width="48%" valign="top" style="padding:0 20px 0 0;border-right:1px solid rgba(224,176,32,0.2);">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+                      <tr>
+                        <td style="padding:0 0 16px 0;">
+                          <span style="font-size:12px;font-weight:600;color:#e0b020;text-transform:uppercase;letter-spacing:0.08em;">Informations client</span>
+                        </td>
+                      </tr>
+                      <tr><td style="padding:10px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="font-size:12px;color:#a3a3a3;">Nom</span><br><span style="font-size:15px;color:#ffffff;font-weight:500;">${esc(name)}</span></td></tr>
+                      <tr><td style="padding:10px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="font-size:12px;color:#a3a3a3;">Email</span><br><a href="mailto:${esc(email)}" style="font-size:15px;color:#e0b020;text-decoration:none;">${esc(email)}</a></td></tr>
+                      <tr><td style="padding:10px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="font-size:12px;color:#a3a3a3;">Téléphone</span><br><span style="font-size:15px;color:#ffffff;">${phone ? esc(phone) : 'Non renseigné'}</span></td></tr>
+                      <tr><td style="padding:10px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="font-size:12px;color:#a3a3a3;">Objet</span><br><span style="font-size:15px;color:#e0b020;font-weight:500;">${esc(projectTypeLabel)}</span></td></tr>
+                      <tr><td style="padding:10px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="font-size:12px;color:#a3a3a3;">Budget</span><br><span style="font-size:15px;color:#ffffff;">${esc(budget) || 'À définir'}</span></td></tr>
+                    </table>
                   </td>
-                </tr>
-                <tr>
-                  <td style="padding:12px 0;border-bottom:1px solid rgba(224,176,32,0.1);">
-                    <span style="font-size:13px;color:#a3a3a3;">Email</span><br>
-                    <a href="mailto:${esc(email)}" style="font-size:16px;color:#e0b020;text-decoration:none;">${esc(email)}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:12px 0;border-bottom:1px solid rgba(224,176,32,0.1);">
-                    <span style="font-size:13px;color:#a3a3a3;">Téléphone</span><br>
-                    <span style="font-size:16px;color:#ffffff;">${phone ? esc(phone) : 'Non renseigné'}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:12px 0;border-bottom:1px solid rgba(224,176,32,0.1);">
-                    <span style="font-size:13px;color:#a3a3a3;">Objet</span><br>
-                    <span style="font-size:16px;color:#e0b020;font-weight:500;">${esc(projectTypeLabel)}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:12px 0;border-bottom:1px solid rgba(224,176,32,0.1);">
-                    <span style="font-size:13px;color:#a3a3a3;">Budget</span><br>
-                    <span style="font-size:16px;color:#ffffff;">${esc(budget) || 'À définir'}</span>
-                  </td>
-                </tr>
-                ${projectType === 'recherche' ? `
-                <tr>
-                  <td style="padding:20px 0 8px 0;">
-                    <span style="font-size:14px;font-weight:600;color:#e0b020;text-transform:uppercase;letter-spacing:0.05em;">Critères de recherche</span>
-                  </td>
-                </tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="color:#a3a3a3;">Marque</span><br><span style="color:#ffffff;">${esc(brand)}</span></td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="color:#a3a3a3;">Modèle</span><br><span style="color:#ffffff;">${esc(model)}</span></td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="color:#a3a3a3;">Transmission</span><br><span style="color:#ffffff;">${esc(transmission)}</span></td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="color:#a3a3a3;">Énergie</span><br><span style="color:#ffffff;">${esc(fuel)}</span></td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="color:#a3a3a3;">Catégorie</span><br><span style="color:#ffffff;">${esc(category)}</span></td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="color:#a3a3a3;">Kilométrage max</span><br><span style="color:#ffffff;">${esc(mileage)}</span></td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="color:#a3a3a3;">Année</span><br><span style="color:#ffffff;">${esc(yearFrom)} - ${esc(yearTo)}</span></td></tr>
-                ` : ''}
-                ${projectType === 'reprise' ? `
-                <tr>
-                  <td style="padding:20px 0 8px 0;">
-                    <span style="font-size:14px;font-weight:600;color:#e0b020;text-transform:uppercase;letter-spacing:0.05em;">Informations véhicule à reprendre</span>
-                  </td>
-                </tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="color:#a3a3a3;">Marque</span><br><span style="color:#ffffff;">${esc(repriseBrand)}</span></td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="color:#a3a3a3;">Modèle</span><br><span style="color:#ffffff;">${esc(repriseModel)}</span></td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="color:#a3a3a3;">Année</span><br><span style="color:#ffffff;">${esc(repriseYear)}</span></td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="color:#a3a3a3;">Kilométrage</span><br><span style="color:#ffffff;">${esc(repriseMileage)}</span></td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="color:#a3a3a3;">État général</span><br><span style="color:#ffffff;">${esc(repriseConditionLabel)}</span></td></tr>
-                ` : ''}
-                <tr>
-                  <td style="padding:24px 0 8px 0;">
-                    <span style="font-size:14px;font-weight:600;color:#e0b020;text-transform:uppercase;letter-spacing:0.05em;">Message</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:16px;background:rgba(224,176,32,0.05);border:1px solid rgba(224,176,32,0.15);border-radius:8px;">
-                    <span style="font-size:15px;color:#ffffff;white-space:pre-wrap;">${esc(message)}</span>
+                  <td width="48%" valign="top" style="padding:0 0 0 20px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+                      <tr>
+                        <td style="padding:0 0 16px 0;">
+                          <span style="font-size:12px;font-weight:600;color:#e0b020;text-transform:uppercase;letter-spacing:0.08em;">Détails de la demande</span>
+                        </td>
+                      </tr>
+                      ${projectType === 'recherche' ? `
+                      <tr><td style="padding:8px 0;"><span style="font-size:13px;color:#a3a3a3;">Marque</span><br><span style="font-size:14px;color:#ffffff;">${esc(brand)}</span></td></tr>
+                      <tr><td style="padding:8px 0;"><span style="font-size:13px;color:#a3a3a3;">Modèle</span><br><span style="font-size:14px;color:#ffffff;">${esc(model)}</span></td></tr>
+                      <tr><td style="padding:8px 0;"><span style="font-size:13px;color:#a3a3a3;">Transmission</span><br><span style="font-size:14px;color:#ffffff;">${esc(transmission)}</span></td></tr>
+                      <tr><td style="padding:8px 0;"><span style="font-size:13px;color:#a3a3a3;">Énergie</span><br><span style="font-size:14px;color:#ffffff;">${esc(fuel)}</span></td></tr>
+                      <tr><td style="padding:8px 0;"><span style="font-size:13px;color:#a3a3a3;">Catégorie</span><br><span style="font-size:14px;color:#ffffff;">${esc(category)}</span></td></tr>
+                      <tr><td style="padding:8px 0;"><span style="font-size:13px;color:#a3a3a3;">Kilométrage max</span><br><span style="font-size:14px;color:#ffffff;">${esc(mileage)}</span></td></tr>
+                      <tr><td style="padding:8px 0 16px 0;"><span style="font-size:13px;color:#a3a3a3;">Année</span><br><span style="font-size:14px;color:#ffffff;">${esc(yearFrom)} - ${esc(yearTo)}</span></td></tr>
+                      ` : ''}
+                      ${projectType === 'reprise' ? `
+                      <tr><td style="padding:8px 0;"><span style="font-size:13px;color:#a3a3a3;">Marque</span><br><span style="font-size:14px;color:#ffffff;">${esc(repriseBrand)}</span></td></tr>
+                      <tr><td style="padding:8px 0;"><span style="font-size:13px;color:#a3a3a3;">Modèle</span><br><span style="font-size:14px;color:#ffffff;">${esc(repriseModel)}</span></td></tr>
+                      <tr><td style="padding:8px 0;"><span style="font-size:13px;color:#a3a3a3;">Année</span><br><span style="font-size:14px;color:#ffffff;">${esc(repriseYear)}</span></td></tr>
+                      <tr><td style="padding:8px 0;"><span style="font-size:13px;color:#a3a3a3;">Kilométrage</span><br><span style="font-size:14px;color:#ffffff;">${esc(repriseMileage)}</span></td></tr>
+                      <tr><td style="padding:8px 0 16px 0;"><span style="font-size:13px;color:#a3a3a3;">État général</span><br><span style="font-size:14px;color:#ffffff;">${esc(repriseConditionLabel)}</span></td></tr>
+                      ` : ''}
+                      <tr>
+                        <td style="padding:16px 0 0 0;border-top:1px solid rgba(224,176,32,0.15);">
+                          <span style="font-size:12px;font-weight:600;color:#e0b020;text-transform:uppercase;letter-spacing:0.05em;">Message</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:14px;background:rgba(224,176,32,0.05);border:1px solid rgba(224,176,32,0.15);border-radius:8px;">
+                          <span style="font-size:14px;color:#ffffff;white-space:pre-wrap;line-height:1.6;">${esc(message)}</span>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
