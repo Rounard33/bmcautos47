@@ -43,8 +43,8 @@ interface ContactForm {
 export class CtaComponent {
   private http = inject(HttpClient);
   
-  // Formspree endpoint
-  private readonly FORMSPREE_URL = 'https://formspree.io/f/mvgebplv';
+  // API contact (Resend via Vercel)
+  private readonly CONTACT_API_URL = '/api/contact';
   
   isSubmitting = false;
   submitSuccess = signal(false);
@@ -103,7 +103,7 @@ export class CtaComponent {
     this.submitSuccess.set(false);
     
     try {
-      await this.sendToFormspree();
+      await this.sendToContactApi();
       
       this.submitSuccess.set(true);
       this.resetForm();
@@ -127,27 +127,25 @@ export class CtaComponent {
     }
   }
 
-  private sendToFormspree(): Promise<void> {
+  private sendToContactApi(): Promise<void> {
     return new Promise((resolve, reject) => {
-      // Préparer les données pour Formspree
-      const formData = {
+      const payload = {
         name: this.formData.name,
         email: this.formData.email,
         phone: this.formData.phone || 'Non renseigné',
         projectType: this.formData.projectType,
         budget: this.formData.budget || 'À définir',
         message: this.formData.message,
-        // Champ spécial pour Formspree - sujet de l'email
-        _subject: `Nouveau contact Pixel - ${this.formData.projectType}`,
       };
 
-      this.http.post(this.FORMSPREE_URL, formData, {
+      this.http.post(this.CONTACT_API_URL, payload, {
         headers: {
-          'Accept': 'application/json'
-        }
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
       }).subscribe({
         next: () => resolve(),
-        error: (err) => reject(err)
+        error: (err) => reject(err),
       });
     });
   }
