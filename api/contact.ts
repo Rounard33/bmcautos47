@@ -58,8 +58,11 @@ export default async function handler(
   });
 
   if (error) {
+    const errMsg = typeof error === 'object' && error !== null && 'message' in error
+      ? (error as { message: string }).message
+      : 'Failed to send email';
     console.error('Resend error:', error);
-    return response.status(500).json({ error: 'Failed to send email' });
+    return response.status(500).json({ error: 'Failed to send email', details: errMsg });
   }
 
   return response.status(200).json({ success: true, id: data?.id });
