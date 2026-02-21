@@ -136,6 +136,21 @@ export class CtaComponent {
         projectType: this.formData.projectType,
         budget: this.formData.budget || 'À définir',
         message: this.formData.message,
+        // Recherche personnalisée
+        brand: this.formData.brand,
+        model: this.formData.model,
+        transmission: this.formData.transmission,
+        fuel: this.formData.fuel,
+        category: this.formData.category,
+        mileage: this.formData.mileage,
+        yearFrom: this.formData.yearFrom,
+        yearTo: this.formData.yearTo,
+        // Demande de reprise
+        repriseBrand: this.formData.repriseBrand,
+        repriseModel: this.formData.repriseModel,
+        repriseYear: this.formData.repriseYear,
+        repriseMileage: this.formData.repriseMileage,
+        repriseCondition: this.formData.repriseCondition,
       };
 
       this.http.post(this.CONTACT_API_URL, payload, {
@@ -156,7 +171,21 @@ export class CtaComponent {
       email: '',
       phone: '',
       projectType: '',
-      message: ''
+      message: '',
+      brand: '',
+      model: '',
+      budget: '',
+      transmission: '',
+      fuel: '',
+      category: '',
+      mileage: '',
+      yearFrom: '',
+      yearTo: '',
+      repriseBrand: '',
+      repriseModel: '',
+      repriseYear: '',
+      repriseMileage: '',
+      repriseCondition: '',
     };
   }
 }
