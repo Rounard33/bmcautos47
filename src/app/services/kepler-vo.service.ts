@@ -28,9 +28,7 @@ export class KeplerVOService {
   constructor(
     private http: HttpClient,
     private vehicleMapper: VehicleMapper
-  ) {
-    // Service initialisé
-  }
+  ) {}
 
   /**
    * Récupère tous les véhicules disponibles
@@ -38,9 +36,6 @@ export class KeplerVOService {
    */
   getVehicles(forceRefresh: boolean = false): Observable<Vehicle[]> {
     if (this.useMockData) {
-      if (!environment.production) {
-        console.log('📦 Utilisation des véhicules de fallback (mock data)');
-      }
       // En mode mock, on est toujours en mode dégradé
       this.usingDegradedData = true;
       return of(MOCK_VEHICLES).pipe(
@@ -50,7 +45,7 @@ export class KeplerVOService {
 
     // OPTIMISATION : Vérifier d'abord le localStorage (plus persistant que le cache mémoire)
     if (!forceRefresh) {
-      // 1. Vérifier le cache localStorage en premier (valide 48h)
+      // 1. Vérifier le cache localStorage en premier (valide 4h)
       const cachedVehicles = this.getFromLocalStorage();
       if (cachedVehicles && cachedVehicles.length > 0) {
         // Mettre aussi en cache mémoire pour les prochains appels
@@ -104,14 +99,6 @@ export class KeplerVOService {
         return of(null);
       })
     );
-  }
-
-  toggleMockMode(useMock: boolean): void {
-    this.useMockData = useMock;
-    this.clearCache();
-    if (!environment.production) {
-      console.log(`🔄 Mode basculé vers: ${useMock ? 'FALLBACK' : 'API'}`);
-    }
   }
 
   isMockMode(): boolean {
@@ -223,29 +210,24 @@ export class KeplerVOService {
       catchError(error => {
         console.error('❌ Erreur API KEPLER:', error);
         
-        // Gérer spécifiquement l'erreur 429 (quota dépassé)
-        if (error.status === 429 || (error instanceof Error && error.message === 'RATE_LIMIT_EXCEEDED')) {
-          console.warn('⚠️ Quota API dépassé (429), utilisation du cache...');
-          const cachedVehicles = this.getFromLocalStorage();
-          if (cachedVehicles && cachedVehicles.length > 0) {
-            this.usingDegradedData = true;
-            return of(cachedVehicles);
-          }
-          // Si pas de cache, continuer avec le fallback normal
-        }
+        // Stratégie de fallback en cascade (éviter le mock = plus pro)
         
-        // Stratégie de fallback en cascade
-        
-        // 1. Essayer le cache localStorage (vrais véhicules)
-        const cachedVehicles = this.getFromLocalStorage();
+        // 1. Cache frais (< 4h)
+        let cachedVehicles = this.getFromLocalStorage();
         if (cachedVehicles && cachedVehicles.length > 0) {
           this.usingDegradedData = true;
           return of(cachedVehicles);
         }
         
-        // 2. En dernier recours : mock data
-        this.usingDegradedData = true;
-        return of(MOCK_VEHICLES);
+        // 2. Cache stale (< 7 jours) - préférer d'anciennes vraies données au mock
+        cachedVehicles = this.getStaleFromLocalStorage();
+        if (cachedVehicles && cachedVehicles.length > 0) {
+          this.usingDegradedData = true;
+          return of(cachedVehicles);
+        }
+        
+        // 3. Pas de cache : on remonte l'erreur (plus de mock)
+        return throwError(() => new Error('VEHICLES_UNAVAILABLE'));
       })
     );
   }
@@ -266,21 +248,30 @@ export class KeplerVOService {
   }
 
   /**
-   * Récupère les véhicules depuis localStorage
-   * Retourne null si le cache est trop ancien (> 24h) ou invalide
+   * Récupère les véhicules depuis localStorage (cache frais < 4h)
+   * Retourne null si le cache est trop ancien ou invalide
    */
   private getFromLocalStorage(): Vehicle[] | null {
+    return this.getFromLocalStorageWithMaxAge(4 * 60 * 60 * 1000); // 4h
+  }
+
+  /**
+   * Récupère le cache stale (jusqu'à 7 jours) - fallback quand API échoue
+   * Évite d'afficher les véhicules mock (plus pro d'afficher d'anciennes vraies données)
+   */
+  private getStaleFromLocalStorage(): Vehicle[] | null {
+    return this.getFromLocalStorageWithMaxAge(7 * 24 * 60 * 60 * 1000); // 7 jours
+  }
+
+  private getFromLocalStorageWithMaxAge(maxAgeMs: number): Vehicle[] | null {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (!stored) return null;
       
       const { data, timestamp } = JSON.parse(stored);
-      
-      // Vérifier que le cache a moins de 24 heures
       const cacheAge = Date.now() - timestamp;
-      const maxAge = 24 * 60 * 60 * 1000; // 24 heures
       
-      if (cacheAge > maxAge) {
+      if (cacheAge > maxAgeMs || !data || !Array.isArray(data)) {
         return null;
       }
       
@@ -298,7 +289,6 @@ export class KeplerVOService {
   clearCache(): void {
     this.cache = {};
     localStorage.removeItem(this.STORAGE_KEY);
-    console.log('🗑️ Cache vidé (mémoire + localStorage)');
   }
 
   /**

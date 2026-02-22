@@ -46,9 +46,9 @@ interface KeplerVehicleAPI {
 // Cache du token en mémoire (valide 30 minutes)
 let tokenCache: { token: string; expiresAt: number } | null = null;
 
-// Cache des réponses API côté serveur (valide 5 minutes, même que s-maxage)
+// Cache des réponses API côté serveur (15 min = ~4 appels/h vers Kepler)
 const serverCache: Map<string, { data: any; timestamp: number }> = new Map();
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 
 // Verrou (mutex) pour éviter les appels API simultanés multiples pour la même ressource
 // Si plusieurs utilisateurs demandent la même page en même temps, seul le 1er fait l'appel API
@@ -168,7 +168,7 @@ export default async function handler(
     const cached = serverCache.get(cacheKey);
     if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
       console.log(`✅ Cache serveur hit pour ${cacheKey}`);
-      response.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
+      response.setHeader('Cache-Control', 's-maxage=900, stale-while-revalidate=1200');
       return response.status(200).json({
         success: true,
         data: cached.data,
@@ -187,7 +187,7 @@ export default async function handler(
       console.log(`⏳ Requête en cours pour ${cacheKey}, attente du résultat...`);
       try {
         const data = await pendingRequest;
-        response.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
+        response.setHeader('Cache-Control', 's-maxage=900, stale-while-revalidate=1200');
         return response.status(200).json({
           success: true,
           data: data,
@@ -291,9 +291,9 @@ export default async function handler(
       // ============================================
       // Cache la réponse
       // ============================================
-      // s-maxage=300 : Cache sur le CDN Vercel pendant 5 minutes
+      // s-maxage=900 : Cache sur le CDN Vercel pendant 15 minutes
       // stale-while-revalidate : Sert une version en cache pendant la revalidation
-      response.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
+      response.setHeader('Cache-Control', 's-maxage=900, stale-while-revalidate=1200');
       
       // Retourner les données
       return response.status(200).json({
@@ -318,7 +318,7 @@ export default async function handler(
       const staleCache = serverCache.get(cacheKey);
       if (staleCache) {
         console.warn(`⚠️ Erreur 429 - Utilisation du cache stale pour ${cacheKey}`);
-        response.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
+        response.setHeader('Cache-Control', 's-maxage=900, stale-while-revalidate=1200');
         return response.status(200).json({
           success: true,
           data: staleCache.data,

@@ -51,14 +51,13 @@ export default async function handler(
 
   const resend = new Resend(apiKey);
 
-  // Destinataire des messages contact (variable Vercel : ADMIN_EMAIL)
+  // Destinataire des messages contact
   const toEmail = process.env['ADMIN_EMAIL'];
   if (!toEmail) {
     return response.status(500).json({ error: 'ADMIN_EMAIL not configured' });
   }
 
-  // Expéditeur visible par les clients (variable Vercel : RESEND_FROM)
-  // Format : "Nom affiché <email@domaine.com>"
+  // Expéditeur visible par les clients
   const fromAddress = process.env['RESEND_FROM'] || 'BMC Autos 47 <onboarding@resend.dev>';
 
   const esc = (s: string | undefined) => (s ?? '-').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

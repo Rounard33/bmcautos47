@@ -728,6 +728,32 @@
   .btn {
     margin-top: var(--spacing-md);
   }
+
+  .error-contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+
+    a {
+      color: var(--accent-500);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s;
+
+      &:hover {
+        color: var(--accent-400);
+        text-decoration: underline;
+      }
+    }
+
+    .separator {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+  }
 }
 
 // Modal styles are in portfolio-modal.styles.scss

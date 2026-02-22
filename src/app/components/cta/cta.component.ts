@@ -2,7 +2,6 @@ import {CommonModule} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import {Component, inject, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {RouterModule} from '@angular/router';
 
 interface ContactForm {
   name: string;
@@ -36,7 +35,7 @@ interface ContactForm {
 @Component({
   selector: 'app-cta',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './cta.component.html',
   styleUrl: './cta.component.scss'
 })
@@ -91,7 +90,6 @@ export class CtaComponent {
     
     // Anti-spam : si le honeypot est rempli, c'est un bot
     if (this.honeypot) {
-      console.log('Bot détecté via honeypot');
       // On simule un succès pour ne pas alerter le bot
       this.submitSuccess.set(true);
       setTimeout(() => this.submitSuccess.set(false), 8000);
@@ -116,7 +114,12 @@ export class CtaComponent {
     } catch (error) {
       console.error('Erreur lors de l\'envoi:', error);
       this.submitError.set(true);
-      this.errorMessage.set('Une erreur est survenue. Veuillez réessayer ou me contacter directement par email.');
+      const status = (error as { status?: number })?.status;
+      this.errorMessage.set(
+        status === 429
+          ? 'Trop de tentatives. Veuillez patienter quelques minutes avant de réessayer.'
+          : 'Une erreur est survenue. Veuillez réessayer ou me contacter directement par email.'
+      );
       
       // Reset error message after 8 seconds
       setTimeout(() => {

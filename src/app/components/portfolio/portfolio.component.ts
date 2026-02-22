@@ -82,10 +82,10 @@ export class PortfolioComponent implements OnInit, OnDestroy {
         this.vehicles.set(vehicles);
         this.isLoading.set(false);
       },
-      error: (error) => {
-        this.errorMessage.set(error.message || 'Erreur lors du chargement des véhicules');
+      error: () => {
+        this.errorMessage.set('error');
         this.isLoading.set(false);
-        console.error('❌ Erreur lors du chargement:', error);
+        console.error('❌ Erreur lors du chargement des véhicules');
       }
     });
   }
@@ -258,11 +258,6 @@ export class PortfolioComponent implements OnInit, OnDestroy {
         this.nextLightboxImage();
       }
     }
-  }
-
-  applyFilters(): void {
-    // Le computed property se met à jour automatiquement
-    // Cette méthode peut être utilisée pour des actions supplémentaires si besoin
   }
 
   resetFilters(): void {

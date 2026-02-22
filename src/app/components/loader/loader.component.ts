@@ -90,7 +90,6 @@ export class LoaderComponent implements OnInit {
     // Timeout de sécurité : force la fermeture après 10s max
     setTimeout(() => {
       if (this.isLoading()) {
-        console.warn('⚠️ Loader timeout - fermeture forcée après 10s');
         this.hideLoader();
       }
     }, this.maxLoadTime);
