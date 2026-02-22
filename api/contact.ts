@@ -135,17 +135,19 @@ export default async function handler(
                       <tr><td style="padding:8px 0;"><span style="font-size:13px;color:#a3a3a3;">Kilométrage</span><br><span style="font-size:14px;color:#ffffff;">${esc(repriseMileage)}</span></td></tr>
                       <tr><td style="padding:8px 0 16px 0;"><span style="font-size:13px;color:#a3a3a3;">État général</span><br><span style="font-size:14px;color:#ffffff;">${esc(repriseConditionLabel)}</span></td></tr>
                       ` : ''}
-                      <tr>
-                        <td style="padding:16px 0 0 0;border-top:1px solid rgba(224,176,32,0.15);">
-                          <span style="font-size:12px;font-weight:600;color:#e0b020;text-transform:uppercase;letter-spacing:0.05em;">Message</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding:14px;background:rgba(224,176,32,0.05);border:1px solid rgba(224,176,32,0.15);border-radius:8px;">
-                          <span style="font-size:14px;color:#ffffff;white-space:pre-wrap;line-height:1.6;">${esc(message)}</span>
-                        </td>
-                      </tr>
                     </table>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+                <tr>
+                  <td style="padding:24px 0 8px 0;border-top:1px solid rgba(224,176,32,0.2);">
+                    <span style="font-size:12px;font-weight:600;color:#e0b020;text-transform:uppercase;letter-spacing:0.05em;">Message</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:14px;background:rgba(224,176,32,0.05);border:1px solid rgba(224,176,32,0.15);border-radius:8px;">
+                    <span style="font-size:14px;color:#ffffff;white-space:pre-wrap;line-height:1.6;">${esc(message)}</span>
                   </td>
                 </tr>
               </table>
