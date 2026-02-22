@@ -73,6 +73,8 @@ export default async function handler(
 
   const repriseConditionLabel = repriseCondition === 'excellent' ? 'Excellent état' : repriseCondition === 'tres-bon' ? 'Très bon état' : repriseCondition === 'bon' ? 'Bon état' : repriseCondition === 'moyen' ? 'État moyen' : repriseCondition ?? '-';
 
+  const showDetailsBlock = projectType === 'recherche' || projectType === 'reprise';
+
   const html = `
 <!DOCTYPE html>
 <html>
@@ -98,7 +100,7 @@ export default async function handler(
             <td style="padding:28px 32px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
                 <tr>
-                  <td width="48%" valign="top" style="padding:0 20px 0 0;border-right:1px solid rgba(224,176,32,0.2);">
+                  <td width="${showDetailsBlock ? '48%' : '100%'}" valign="top" style="padding:0 ${showDetailsBlock ? '20px 0 0' : '0'};${showDetailsBlock ? 'border-right:1px solid rgba(224,176,32,0.2);' : ''}">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
                       <tr>
                         <td style="padding:0 0 16px 0;">
@@ -112,6 +114,7 @@ export default async function handler(
                       <tr><td style="padding:10px 0;border-bottom:1px solid rgba(224,176,32,0.1);"><span style="font-size:12px;color:#a3a3a3;">Budget</span><br><span style="font-size:15px;color:#ffffff;">${esc(budget) || 'À définir'}</span></td></tr>
                     </table>
                   </td>
+                  ${showDetailsBlock ? `
                   <td width="48%" valign="top" style="padding:0 0 0 20px;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
                       <tr>
@@ -137,6 +140,7 @@ export default async function handler(
                       ` : ''}
                     </table>
                   </td>
+                  ` : ''}
                 </tr>
               </table>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
