@@ -114,11 +114,13 @@ export class CtaComponent {
     } catch (error) {
       console.error('Erreur lors de l\'envoi:', error);
       this.submitError.set(true);
-      const status = (error as { status?: number })?.status;
+      const err = error as { status?: number; error?: { error?: string } };
+      const status = err?.status;
+      const apiMsg = err?.error?.error;
       this.errorMessage.set(
         status === 429
           ? 'Trop de tentatives. Veuillez patienter quelques minutes avant de réessayer.'
-          : 'Une erreur est survenue. Veuillez réessayer ou me contacter directement par email.'
+          : apiMsg || 'Une erreur est survenue. Veuillez réessayer ou me contacter directement par email.'
       );
       
       // Reset error message after 8 seconds

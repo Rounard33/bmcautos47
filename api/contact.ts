@@ -49,6 +49,23 @@ export default async function handler(
     return response.status(400).json({ error: 'Missing required fields' });
   }
 
+  const MAX_TEXT = 255;
+  const MAX_MESSAGE = 1000;
+  const MAX_PHONE = 20;
+
+  if (name.length > MAX_TEXT || email.length > MAX_TEXT || message.length > MAX_MESSAGE) {
+    return response.status(400).json({ error: 'Un ou plusieurs champs dépassent la limite autorisée' });
+  }
+  if (phone && phone.length > MAX_PHONE) {
+    return response.status(400).json({ error: 'Le numéro de téléphone est trop long' });
+  }
+  const textFields = [brand, model, budget, mileage, yearFrom, yearTo, repriseBrand, repriseModel, repriseYear, repriseMileage];
+  for (const field of textFields) {
+    if (field != null && String(field).length > MAX_TEXT) {
+      return response.status(400).json({ error: 'Un ou plusieurs champs dépassent la limite autorisée' });
+    }
+  }
+
   const resend = new Resend(apiKey);
 
   // Destinataire des messages contact

@@ -39,6 +39,7 @@
                 name="name" 
                 [(ngModel)]="formData.name" 
                 required
+                maxlength="255"
                 class="form-input"
                 placeholder="Votre nom"
               >
@@ -52,6 +53,7 @@
                 name="email" 
                 [(ngModel)]="formData.email" 
                 required
+                maxlength="255"
                 class="form-input"
                 placeholder="votre@email.com"
               >
@@ -67,6 +69,7 @@
                 name="phone" 
                 [(ngModel)]="formData.phone"
                 required
+                maxlength="20"
                 class="form-input"
                 placeholder="06 12 34 56 78"
               >
@@ -121,6 +124,7 @@
                     name="model" 
                     [(ngModel)]="formData.model"
                     required
+                    maxlength="255"
                     class="form-input"
                     placeholder="Ex: Clio, 308, Golf..."
                   >
@@ -136,6 +140,7 @@
                     name="budget" 
                     [(ngModel)]="formData.budget"
                     required
+                    maxlength="255"
                     class="form-input"
                     placeholder="Ex: 15000"
                   >
@@ -200,6 +205,7 @@
                     id="mileage" 
                     name="mileage" 
                     [(ngModel)]="formData.mileage"
+                    maxlength="255"
                     class="form-input"
                     placeholder="Ex: 50000"
                   >
@@ -248,6 +254,7 @@
                     name="repriseBrand" 
                     [(ngModel)]="formData.repriseBrand"
                     required
+                    maxlength="255"
                     class="form-input"
                     placeholder="Marque du véhicule"
                   >
@@ -261,6 +268,7 @@
                     name="repriseModel" 
                     [(ngModel)]="formData.repriseModel"
                     required
+                    maxlength="255"
                     class="form-input"
                     placeholder="Modèle du véhicule"
                   >
@@ -292,6 +300,7 @@
                     name="repriseMileage" 
                     [(ngModel)]="formData.repriseMileage"
                     required
+                    maxlength="255"
                     class="form-input"
                     placeholder="Ex: 75000 km"
                   >
@@ -324,10 +333,12 @@
               name="message" 
               [(ngModel)]="formData.message" 
               required
+              maxlength="1000"
               rows="5"
               class="form-textarea"
               placeholder="Décrivez-nous votre demande, le véhicule qui vous intéresse, vos critères de recherche..."
             ></textarea>
+            <span class="char-counter">{{ (formData.message || '').length }}/1000</span>
           </div>
           
           <!-- Messages de feedback -->
