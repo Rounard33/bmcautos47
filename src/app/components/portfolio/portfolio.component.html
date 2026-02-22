@@ -186,7 +186,7 @@
           <!-- Image -->
           <div class="vehicle-image" (click)="openVehicle(vehicle)">
           <div class="image-wrapper">
-            <img [src]="(vehicle.thumbnails || vehicle.images)[0]" [alt]="vehicle.brand + ' ' + vehicle.model" loading="lazy">
+            <img [src]="(isMobile() ? vehicle.images : (vehicle.thumbnails || vehicle.images))[0]" [attr.data-fallback]="vehicle.images[0]" [alt]="vehicle.brand + ' ' + vehicle.model" loading="lazy" (error)="onThumbnailError($event)">
           </div>
           
           @if (vehicle.images.length > 1) {

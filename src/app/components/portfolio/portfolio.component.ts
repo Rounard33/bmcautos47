@@ -1,5 +1,5 @@
-import {CommonModule} from '@angular/common';
-import {Component, computed, HostListener, OnDestroy, OnInit, signal} from '@angular/core';
+import {CommonModule, isPlatformBrowser} from '@angular/common';
+import {Component, computed, HostListener, inject, OnDestroy, OnInit, PLATFORM_ID, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Vehicle} from '../../models/vehicle.model';
@@ -24,6 +24,8 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   private vehiclesSubscription?: Subscription;
   private preloadSubscription?: Subscription;
   private closeModalSubscription?: Subscription;
+  private mobileQuery?: MediaQueryList;
+  private mqListener?: (e: MediaQueryListEvent) => void;
   
   // Liste des véhicules (chargée depuis le service)
   vehicles = signal<Vehicle[]>([]);
@@ -35,6 +37,8 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   selectedFuel = signal<string>('');
   maxPrice = signal<number | null>(null);
 
+  private platformId = inject(PLATFORM_ID);
+
   constructor(
     private keplerService: KeplerVOService,
     private navigationService: NavigationService,
@@ -42,6 +46,14 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // Détecter mobile pour utiliser images pleine taille (thumb Kepler peuvent échouer sur mobile)
+    if (isPlatformBrowser(this.platformId) && typeof window !== 'undefined') {
+      this.mobileQuery = window.matchMedia('(max-width: 768px)');
+      this.isMobile.set(this.mobileQuery.matches);
+      this.mqListener = (e) => this.isMobile.set(e.matches);
+      this.mobileQuery.addEventListener('change', this.mqListener);
+    }
+
     // Fermer la modal quand l'utilisateur clique sur Accueil ou une catégorie du header
     this.closeModalSubscription = this.navigationService.closeModal$.subscribe(() => {
       if (this.showModal) {
@@ -71,6 +83,9 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.vehiclesSubscription?.unsubscribe();
     this.preloadSubscription?.unsubscribe();
     this.closeModalSubscription?.unsubscribe();
+    if (this.mobileQuery && this.mqListener) {
+      this.mobileQuery.removeEventListener('change', this.mqListener);
+    }
   }
 
   /**
@@ -185,6 +200,9 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   showLightbox = signal<boolean>(false);
   lightboxImageIndex = signal<number>(0);
 
+  /** Sur mobile, utiliser images (pleine taille) car les thumb Kepler peuvent échouer */
+  isMobile = signal(false);
+
   openVehicle(vehicle: Vehicle): void {
     this.selectedVehicle.set(vehicle);
     this.showModal = true;
@@ -277,6 +295,16 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.selectedTransmission.set('');
     this.selectedFuel.set('');
     this.maxPrice.set(null);
+  }
+
+  /** Fallback vers l'image pleine taille si la miniature échoue (ex: mobile) */
+  onThumbnailError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    const fallback = img.getAttribute('data-fallback');
+    if (fallback && img.src !== fallback) {
+      img.src = fallback;
+      img.removeAttribute('data-fallback');
+    }
   }
 
   scrollToContact(event: Event): void {
