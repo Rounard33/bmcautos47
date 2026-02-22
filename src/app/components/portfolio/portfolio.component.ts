@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Vehicle} from '../../models/vehicle.model';
 import {KeplerVOService} from '../../services/kepler-vo.service';
+import {NavigationService} from '../../services/navigation.service';
 import {PreloadService} from '../../services/preload.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   // Subscriptions pour nettoyer à la destruction du composant
   private vehiclesSubscription?: Subscription;
   private preloadSubscription?: Subscription;
+  private closeModalSubscription?: Subscription;
   
   // Liste des véhicules (chargée depuis le service)
   vehicles = signal<Vehicle[]>([]);
@@ -35,10 +37,18 @@ export class PortfolioComponent implements OnInit, OnDestroy {
 
   constructor(
     private keplerService: KeplerVOService,
+    private navigationService: NavigationService,
     private preloadService: PreloadService
   ) {}
 
   ngOnInit(): void {
+    // Fermer la modal quand l'utilisateur clique sur Accueil ou une catégorie du header
+    this.closeModalSubscription = this.navigationService.closeModal$.subscribe(() => {
+      if (this.showModal) {
+        this.closeModal();
+      }
+    });
+
     // S'abonner à l'état du preload pour éviter les appels API en double
     this.preloadSubscription = this.preloadService.state$.subscribe(state => {
       if (!state.isLoading) {
@@ -60,6 +70,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     // Nettoyer les subscriptions pour éviter les fuites mémoire
     this.vehiclesSubscription?.unsubscribe();
     this.preloadSubscription?.unsubscribe();
+    this.closeModalSubscription?.unsubscribe();
   }
 
   /**

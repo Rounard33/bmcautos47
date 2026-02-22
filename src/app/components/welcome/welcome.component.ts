@@ -21,19 +21,19 @@ export class WelcomeComponent implements AfterViewInit, OnDestroy {
   // Carrousel d'images
   carouselImages = [
     {
-      src: '../../../assets/img/presentation/facade garage.jpg',
+      src: '../../../assets/img/presentation/facade garage.webp',
       alt: 'Façade du garage BMC AUTOS 47'
     },
     {
-      src: '../../../assets/img/presentation/facade garage 2.jpg',
+      src: '../../../assets/img/presentation/facade garage 2.webp',
       alt: 'Façade du garage BMC AUTOS 47 - Vue 2'
     },
     {
-      src: '../../../assets/img/presentation/intérieur.jpg',
+      src: '../../../assets/img/presentation/intérieur.webp',
       alt: 'Intérieur du garage BMC AUTOS 47'
     },
     {
-      src: '../../../assets/img/presentation/panorama.jpg',
+      src: '../../../assets/img/presentation/panorama.webp',
       alt: 'Vue panoramique du garage BMC AUTOS 47'
     },
   ];

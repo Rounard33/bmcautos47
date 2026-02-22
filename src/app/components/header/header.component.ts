@@ -1,6 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component, HostListener, signal} from '@angular/core';
 import {NavigationEnd, Router, RouterModule} from '@angular/router';
+import {NavigationService} from '../../services/navigation.service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,10 @@ export class HeaderComponent {
   isScrolled = false;
   currentRoute = '';
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private navigationService: NavigationService
+  ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.currentRoute = event.url;
@@ -58,6 +62,7 @@ export class HeaderComponent {
     }
     
     this.closeMenu();
+    this.navigationService.requestCloseModal();
 
     // If already on home page, scroll directly
     if (this.currentRoute === '/home' || this.currentRoute === '/') {

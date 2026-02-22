@@ -35,6 +35,7 @@ export class VehicleMapper {
       price: this.formatter.formatPrice(apiVehicle.pricePublic || apiVehicle.prix || 0),
       image: this.extractMainImage(apiVehicle, isNewFormat),
       images: this.extractImages(apiVehicle, isNewFormat),
+      thumbnails: this.extractThumbnails(apiVehicle, isNewFormat),
       features: this.extractFeatures(apiVehicle, isNewFormat),
       status: this.formatter.mapStatus(apiVehicle.state || apiVehicle.statut),
       details: this.extractDetails(apiVehicle, isNewFormat)
@@ -91,6 +92,28 @@ export class VehicleMapper {
     }
 
     return images.length > 0 ? images : [placeholder];
+  }
+
+  /**
+   * Extrait les miniatures (thumb) pour la grille - images plus légères
+   * Fallback sur photo si thumb non disponible
+   */
+  private extractThumbnails(apiVehicle: any, isNewFormat: boolean): string[] {
+    const images = this.extractImages(apiVehicle, isNewFormat);
+    
+    if (isNewFormat && apiVehicle.gallery) {
+      const sortedGallery = [...(apiVehicle.gallery || [])]
+        .sort((a: any, b: any) => (a.position || 0) - (b.position || 0));
+      const thumbs = sortedGallery.map((g: any) => g.thumb || g.photo).filter(Boolean);
+      return thumbs.length > 0 ? thumbs : images;
+    }
+    if (apiVehicle.photos) {
+      const photos = [...(apiVehicle.photos || [])]
+        .sort((a: any, b: any) => (a.ordre || 0) - (b.ordre || 0));
+      const thumbs = photos.map((p: any) => p.miniature || p.url).filter(Boolean);
+      return thumbs.length > 0 ? thumbs : images;
+    }
+    return images;
   }
 
   /**

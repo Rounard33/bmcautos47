@@ -24,7 +24,7 @@
           @for (brand of brands; track brand.name) {
             <div class="brand-card">
               <div class="brand-logo">
-                <img [src]="brand.logo" [alt]="brand.name">
+                <img [src]="brand.logo" [alt]="brand.name" loading="lazy">
               </div>
             </div>
           }
@@ -32,7 +32,7 @@
           @for (brand of brands; track brand.name + '-duplicate') {
             <div class="brand-card">
               <div class="brand-logo">
-                <img [src]="brand.logo" [alt]="brand.name">
+                <img [src]="brand.logo" [alt]="brand.name" loading="lazy">
               </div>
             </div>
           }

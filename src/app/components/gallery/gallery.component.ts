@@ -23,49 +23,42 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   images: GalleryImage[] = [
     { 
-      src: 'assets/img/presentation/facade garage.jpg', 
+      src: 'assets/img/presentation/facade garage.webp', 
       alt: 'Façade principale BMC AUTOS 47 à Pujols', 
       category: 'exterieur',
       title: 'Notre Garage',
       description: 'Situé à Pujols sur la route d\'Agen, facile d\'accès'
     },
     { 
-      src: 'assets/img/presentation/panorama.jpg', 
+      src: 'assets/img/presentation/panorama.webp', 
       alt: 'Vue panoramique et parking véhicules', 
       category: 'exterieur',
       title: 'Vue Panoramique',
       description: 'Un grand parking pour accueillir nos véhicules en exposition'
     },
     { 
-      src: 'assets/img/presentation/exterieur 2.jpg', 
+      src: 'assets/img/presentation/exterieur 2.webp', 
       alt: 'Extérieur avec véhicules en exposition', 
       category: 'exterieur',
       title: 'Véhicules en Exposition',
       description: 'Une sélection de véhicules soigneusement préparés'
     },
     { 
-      src: 'assets/img/presentation/facade.png', 
-      alt: 'Devanture BMC AUTOS 47', 
-      category: 'exterieur',
-      title: 'Notre Enseigne',
-      description: 'Un garage familial reconnu dans le Lot-et-Garonne'
-    },
-    { 
-      src: 'assets/img/presentation/intérieur.jpg', 
+      src: 'assets/img/presentation/intérieur.webp', 
       alt: 'Intérieur', 
       category: 'interieur',
       title: 'Notre Atelier',
       description: 'Un atelier moderne et bien équipé pour la préparation'
     },
     { 
-      src: 'assets/img/presentation/exterieur occasion 1.jpg', 
+      src: 'assets/img/presentation/exterieur occasion 1.webp', 
       alt: 'Extérieur', 
       category: 'exterieur',
       title: 'Notre Atelier',
       description: 'Un atelier moderne et bien équipé pour la préparation'
     },
     { 
-      src: 'assets/img/presentation/exterieur occasion 2.jpg', 
+      src: 'assets/img/presentation/exterieur occasion 2.webp', 
       alt: 'Extérieur', 
       category: 'exterieur',
       title: 'Notre Atelier',

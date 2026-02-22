@@ -1,11 +1,19 @@
 import {Injectable} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
+import {Subject} from 'rxjs';
 import {filter} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavigationService {
+  /** Émis quand une navigation (header, lien) demande de fermer la modal véhicule */
+  readonly closeModal$ = new Subject<void>();
+
+  /** Demande la fermeture de la modal (ex: clic sur Accueil, catégorie, etc.) */
+  requestCloseModal(): void {
+    this.closeModal$.next();
+  }
   constructor(private router: Router) {
     this.initScrollToTop();
   }

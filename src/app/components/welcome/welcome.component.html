@@ -9,7 +9,11 @@
           [src]="image.src" 
           [alt]="image.alt" 
           class="carousel-image"
-          [class.active]="i === currentImageIndex">
+          [class.active]="i === currentImageIndex"
+          [attr.fetchpriority]="i === 0 ? 'high' : null"
+          [attr.loading]="i === 0 ? 'eager' : 'lazy'"
+          width="1920"
+          height="1080">
       }
     </div>
     
