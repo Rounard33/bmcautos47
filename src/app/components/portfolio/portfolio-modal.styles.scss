@@ -9,7 +9,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  z-index: 1000;
+  z-index: var(--z-modal);
+  touch-action: none;
   padding: 2rem;
   padding-top: calc(70px + 3rem);
   overflow-y: auto;

@@ -208,7 +208,6 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.showModal = true;
     this.currentImageIndex.set(0);
     this.activeTab.set('overview');
-    document.body.style.overflow = 'hidden'; // Empêche le scroll
   }
 
   closeModal(): void {
@@ -217,7 +216,6 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.currentImageIndex.set(0);
     this.activeTab.set('overview');
     this.closeLightbox(); // Ferme aussi la lightbox si elle est ouverte
-    document.body.style.overflow = ''; // Réactive le scroll
   }
 
   nextImage(): void {
@@ -246,12 +244,10 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   openLightbox(index: number): void {
     this.lightboxImageIndex.set(index);
     this.showLightbox.set(true);
-    document.body.style.overflow = 'hidden';
   }
   
   closeLightbox(): void {
     this.showLightbox.set(false);
-    document.body.style.overflow = '';
   }
   
   nextLightboxImage(): void {
@@ -297,12 +293,17 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.maxPrice.set(null);
   }
 
-  /** Fallback vers l'image pleine taille si la miniature échoue (ex: mobile) */
+  /** Fallback : photo si miniature échoue, puis placeholder si photo échoue aussi */
   onThumbnailError(event: Event): void {
     const img = event.target as HTMLImageElement;
     const fallback = img.getAttribute('data-fallback');
+    const placeholder = 'assets/img/placeholder.svg';
+
     if (fallback && img.src !== fallback) {
       img.src = fallback;
+      img.setAttribute('data-fallback', placeholder);
+    } else {
+      img.src = placeholder;
       img.removeAttribute('data-fallback');
     }
   }
