@@ -16,7 +16,6 @@ export interface Vehicle {
   price: string;
   image: string;
   images: string[];
-  thumbnails?: string[];
   features: string[];
   status: 'available' | 'sold' | 'reserved';
   details?: VehicleDetails;
