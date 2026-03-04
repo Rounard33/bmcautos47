@@ -42,7 +42,7 @@
   z-index: 1;
   overflow: hidden;
   
-  @media (max-width: 768px) {
+  @media (max-width: 500px) {
     height: 200px;
     top: 70px;
     bottom: auto;
@@ -304,11 +304,14 @@
 }
 
 .hero-text {
-  text-align: right; // Aligné à droite pour desktop
+  display: none;
+  text-align: right;
   position: relative;
   
-  @media (max-width: 768px) {
-    text-align: center; // Centré sur mobile
+
+  @media (max-width: 500px) {
+    display: block;
+    text-align: center;
     
     &::before {
       background: radial-gradient(
