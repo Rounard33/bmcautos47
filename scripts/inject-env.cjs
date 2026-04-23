@@ -29,7 +29,7 @@ try {
   // Configuration API KEPLER (via proxy Vercel)
   keplerVO: {
     apiUrl: '/api',  // Pointe vers le proxy Vercel (même domaine)
-    timeout: 10000,
+    timeout: 30000,
     cacheDuration: 600000,  // 10 minutes en production
     useMockData: ${useMockData}  // Géré par variable Vercel USE_MOCK_DATA
   }
