@@ -1,4 +1,12 @@
 import type {VercelRequest, VercelResponse} from '@vercel/node';
+import {Agent, fetch as keplerFetch} from 'undici';
+
+// Undici (fetch Node) : connectTimeout par défaut 10s — trop court vers Kepler depuis certaines régions Vercel
+const KEPLER_HTTP_AGENT = new Agent({
+  connectTimeout: 25_000,
+  headersTimeout: 28_000,
+  bodyTimeout: 28_000,
+});
 
 // ============================================
 // INTERFACES KEPLER API
@@ -70,12 +78,13 @@ async function getAuthToken(apiKey: string): Promise<string> {
 
   // Générer un nouveau token (utilise l'URL de base configurée)
   const baseUrl = process.env['KEPLER_API_URL'] || 'https://app.keplervo.com/api';
-  const tokenResponse = await fetch(`${baseUrl}/v3.0/auth-token/`, {
+  const tokenResponse = await keplerFetch(`${baseUrl}/v3.0/auth-token/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ apiKey }),
+    dispatcher: KEPLER_HTTP_AGENT,
   });
 
   if (!tokenResponse.ok) {
@@ -229,12 +238,13 @@ export default async function handler(
       }
 
       // Appel à l'API KeplerVO avec le token
-      const apiResponse = await fetch(url, {
+      const apiResponse = await keplerFetch(url, {
         method: 'GET',
         headers: {
           'X-Auth-Token': authToken,
           'Content-Type': 'application/json',
         },
+        dispatcher: KEPLER_HTTP_AGENT,
       });
 
       // Gérer les erreurs HTTP
