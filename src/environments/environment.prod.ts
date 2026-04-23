@@ -7,7 +7,7 @@ export const environment = {
   // Configuration API KEPLER (via proxy Vercel)
   keplerVO: {
     apiUrl: '/api',  // Pointe vers le proxy Vercel (même domaine)
-    timeout: 10000,
+    timeout: 30000,
     cacheDuration: 3600000,  // 1 heure en production (pour réduire les appels API)
     useMockData: false  // Géré par variable Vercel USE_MOCK_DATA
   }
